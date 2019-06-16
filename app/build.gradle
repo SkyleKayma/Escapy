@@ -70,9 +70,10 @@ dependencies {
 
     // --- Androidx ---
     implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.google.android.material:material:1.1.0-alpha07'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta1'
+//    implementation 'androidx.multidex:multidex:2.0.1'
 
     // --- Firebase ---
     implementation 'com.google.firebase:firebase-core:16.0.9'
@@ -88,6 +89,7 @@ dependencies {
     implementation 'com.github.akarnokd:rxjava2-extensions:0.20.8'
     implementation 'com.jakewharton.rxbinding3:rxbinding:3.0.0-alpha2'
     implementation 'com.jakewharton.rxbinding3:rxbinding-appcompat:3.0.0-alpha2'
+    implementation 'com.github.FrangSierra:RxFirebase:1.5.6'
 
     // --- Crashlytics ---
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
@@ -104,10 +106,9 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.0.2'
 
     // --- ARCH ---
-    implementation 'android.arch.lifecycle:extensions:1.1.1'
-    implementation 'android.arch.lifecycle:viewmodel:1.1.1'
-    implementation 'android.arch.lifecycle:reactivestreams:1.1.1'
-    kapt 'android.arch.lifecycle:compiler:1.1.1'
+    implementation 'android.arch.lifecycle:extensions:2.0.0'
+    implementation 'android.arch.lifecycle:viewmodel:2.0.0'
+    implementation 'android.arch.lifecycle:reactivestreams:2.0.0'
 
     // --- Test ---
     testImplementation 'junit:junit:4.12'
