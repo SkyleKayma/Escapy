@@ -1,4 +1,4 @@
-package fr.openium.escapy
+package fr.skyle.escapy
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

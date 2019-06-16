@@ -1,4 +1,4 @@
-package fr.openium.escapy
+package fr.skyle.escapy
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
