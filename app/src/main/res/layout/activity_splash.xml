@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray_dark_light"
+    android:background="@color/grey_dark"
     android:gravity="center"
     android:orientation="vertical">
 
@@ -19,7 +19,7 @@
         android:layout_marginEnd="24dp"
         android:gravity="center"
         android:text="@string/app_name"
-        android:textColor="@color/white_smoke"
+        android:textColor="@color/grey"
         android:textSize="24sp" />
 
     <ProgressBar

@@ -2,7 +2,7 @@ package fr.skyle.escapy
 
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
-import fr.skyle.escapy.injection.DebugModules
+import fr.skyle.escapy.di.DebugModules
 import io.fabric.sdk.android.Fabric
 import org.koin.dsl.koinApplication
 import timber.log.Timber
@@ -18,7 +18,7 @@ class ApplicationImpl : CustomApplication() {
         }
     }
 
-    override fun plantTimber() {
+    override fun setupTimberLogging() {
         Timber.plant(Timber.DebugTree())
     }
 

@@ -2,8 +2,8 @@ package fr.skyle.escapy
 
 import android.app.Application
 import com.crashlytics.android.Crashlytics
-import fr.skyle.escapy.injection.Modules.firebaseModule
-import fr.skyle.escapy.injection.Modules.serviceModule
+import fr.skyle.escapy.di.Modules.firebaseModule
+import fr.skyle.escapy.di.Modules.serviceModule
 import fr.skyle.escapy.log.CrashReportingTree
 import io.fabric.sdk.android.Fabric
 import org.koin.dsl.koinApplication
@@ -21,14 +21,14 @@ abstract class CustomApplication : Application() {
 
         initializeCrashlytics()
 
-        plantTimber()
+        setupTimberLogging()
     }
 
     open fun initializeCrashlytics() {
         Fabric.with(applicationContext, Crashlytics())
     }
 
-    protected open fun plantTimber() {
+    protected open fun setupTimberLogging() {
         Timber.plant(CrashReportingTree())
     }
 }
