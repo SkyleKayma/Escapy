@@ -8,7 +8,6 @@ import android.os.Bundle
 import fr.skyle.escapy.R
 import fr.skyle.escapy.base.AbstractFragment
 import fr.skyle.escapy.ext.textTrimmed
-import fr.skyle.escapy.ui.main.ActivityMain
 import kotlinx.android.synthetic.main.fragment_about.*
 import timber.log.Timber
 
@@ -27,13 +26,6 @@ class FragmentAbout : AbstractFragment() {
 
         setVersionNumber()
         setRepoListener()
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        //Need to toggle each time new fragment is pushed
-        (activity as? ActivityMain)?.toggleFabButton()
     }
 
     // -------------------------------------------------

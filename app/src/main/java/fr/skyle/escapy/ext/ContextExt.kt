@@ -20,8 +20,7 @@ import timber.log.Timber
 
 val Context.hasNetwork: Boolean
     get() {
-        val cm =
-            applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val cm = applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         return cm.activeNetworkInfo?.isConnected == true
     }
 
@@ -35,12 +34,10 @@ val Context.inputMethodManager: InputMethodManager
     get() = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
 fun Context.dip(value: Float, type: Int = TypedValue.COMPLEX_UNIT_DIP): Float {
-    val metrics = resources.displayMetrics
-    return TypedValue.applyDimension(type, value, metrics)
+    return TypedValue.applyDimension(type, value, resources.displayMetrics)
 }
 
-fun Context.getDrawableCompat(@DrawableRes resId: Int): Drawable? =
-    AppCompatResources.getDrawable(this, resId)
+fun Context.getDrawableCompat(@DrawableRes resId: Int): Drawable? = AppCompatResources.getDrawable(this, resId)
 
 fun Context.getColorCompat(@ColorRes resId: Int): Int = ContextCompat.getColor(this, resId)
 

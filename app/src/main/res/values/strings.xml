@@ -2,6 +2,25 @@
     <!--  Global Part  -->
     <string name="app_name">Escapy</string>
 
+    <!--  Main  -->
+    <string name="main_create_room_title">Créer une salle</string>
+    <string name="main_create_room_subtitle">Allez-y ! Montrez la voie</string>
+    <string name="main_join_room_title">Rejoindre une salle</string>
+    <string name="main_join_room_subtitle">"Laissez-vous guider durant l'aventure"</string>
+    <string name="main_history_title">Historique</string>
+    <string name="main_history_subtitle">Finissez-vous souvent dans les temps ?</string>
+
+    <!--  New room  -->
+    <string name="new_room_more_info_needed">Nous avons besoin de quelques informations:</string>
+    <string name="new_room_duration">Durée de la partie:</string>
+    <string name="new_room_duration_hint">00 h 00 min</string>
+    <string name="new_room_duration_format">%s h %s min</string>
+    <string name="new_room_title">Titre:</string>
+    <string name="new_room_title_hint">"Le Crime de l'Orient-Express"</string>
+    <string name="new_room_nb_players">Nombre de joueurs recommandés:</string>
+    <string name="new_room_nb_players_hint">6</string>
+    <string name="new_room_create">Créer la salle</string>
+
     <!--  About  -->
     <string name="about_version">Version</string>
     <string name="about_version_format">%s (%d)</string>

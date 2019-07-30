@@ -39,19 +39,6 @@ fun View.showWithAnimation() {
     }
 }
 
-fun View.dip(value: Int, type: Int = TypedValue.COMPLEX_UNIT_DIP): Float {
-    return dip(value.toFloat(), type)
-}
-
 fun View.dip(value: Float, type: Int = TypedValue.COMPLEX_UNIT_DIP): Float {
     return context.dip(value, type)
 }
-
-val View.isVisible: Boolean
-    get() = visibility == View.VISIBLE
-
-val View.isGone: Boolean
-    get() = visibility == View.GONE
-
-val View.isInvisible: Boolean
-    get() = visibility == View.INVISIBLE

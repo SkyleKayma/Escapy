@@ -41,13 +41,13 @@ inline fun <reified T : Activity> Fragment.startActivityForResult(
     }, requestCode)
 }
 
-fun Fragment.snackbar(str: String, @BaseTransientBottomBar.Duration duration: Int) {
+fun Fragment.snackbar(str: String, @Snackbar.Duration duration: Int = Snackbar.LENGTH_SHORT) {
     view?.let {
         Snackbar.make(it, str, duration).show()
     }
 }
 
-fun Fragment.snackbar(@StringRes id: Int, @BaseTransientBottomBar.Duration duration: Int) {
+fun Fragment.snackbar(@StringRes id: Int, @Snackbar.Duration duration: Int = Snackbar.LENGTH_SHORT) {
     view?.let {
         Snackbar.make(it, id, duration).show()
     }
@@ -67,10 +67,6 @@ fun Fragment.setTitle(title: String) {
 
 fun Fragment.setTitle(@StringRes title: Int) {
     appCompatActivity?.supportActionBar?.setTitle(title)
-}
-
-fun Fragment.dip(value: Int, type: Int = TypedValue.COMPLEX_UNIT_DIP): Int {
-    return dip(value.toFloat(), type)
 }
 
 fun Fragment.dip(value: Float, type: Int = TypedValue.COMPLEX_UNIT_DIP): Int {

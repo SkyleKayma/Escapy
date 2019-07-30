@@ -5,6 +5,9 @@
 
     <!-- Logo at the center of the screen -->
     <item
-        android:drawable="@mipmap/ic_launcher"
-        android:gravity="center" />
+        android:width="300dp"
+        android:height="300dp"
+        android:gravity="center">
+        <bitmap android:src="@drawable/ic_launcher_sablier" />
+    </item>
 </layer-list>

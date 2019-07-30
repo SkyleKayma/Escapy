@@ -27,10 +27,8 @@
 
         <activity
             android:name=".ui.main.ActivityMain"
-            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
-        <!-- TODO -->
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="fabricKeyExemple" />

@@ -11,16 +11,10 @@ abstract class AbstractActivityBackstack : AbstractActivity() {
             val currentFragment =
                 supportFragmentManager.findFragmentById(R.id.container_framelayout)
             if (currentFragment !is OnBackPressedListener || !currentFragment.onBackPressed()) {
-                popupBackstackIfNeeded()
+                super.onBackPressed()
             }
         } else {
             super.onBackPressed()
         }
-    }
-
-    private fun popupBackstackIfNeeded() {
-        super.onBackPressed()
-
-
     }
 }

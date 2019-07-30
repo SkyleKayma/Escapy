@@ -1,6 +1,7 @@
 package fr.skyle.escapy.ui.splash
 
 import android.os.Bundle
+import androidx.lifecycle.observe
 import fr.skyle.escapy.R
 import fr.skyle.escapy.base.AbstractActivity
 import fr.skyle.escapy.ext.startActivity
@@ -18,19 +19,9 @@ class ActivitySplash : AbstractActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        viewModelSplash.dataObs.observe(this, { value ->
-//            println(value)
-//        })
-//        viewModelSplash.error.observe(this, ::onError)
-
-        //Get new data
-//        viewModelSplash.getData().subscribe({
-//            startActivityMain()
-//        }, {
-//            Timber.e(it)
-//        }).addTo(disposables)
-
-        startActivityMain()
+        viewModelSplash.data.observe(this) {
+            startActivityMain()
+        }
     }
 
     // --- OTHER ---
@@ -38,6 +29,7 @@ class ActivitySplash : AbstractActivity() {
 
     private fun startActivityMain() {
         startActivity<ActivityMain>()
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         finish()
     }
 }
