@@ -1,38 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="fr.skyle.escapy">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <application
-        android:name="fr.skyle.escapy.ApplicationImpl"
-        android:allowBackup="false"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="false"
-        android:theme="@style/AppTheme"
-        tools:replace="android:supportsRtl">
-
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Escapy">
         <activity
-            android:name=".ui.splash.ActivitySplash"
-            android:theme="@style/SplashTheme">
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Escapy.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".ui.main.ActivityMain"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
-
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="fabricKeyExemple" />
-
     </application>
 
 </manifest>

@@ -17,22 +17,8 @@ build/
 
 # Android Studio
 *.iml
-.idea/
-
-#NDK
-obj/
+.idea
+.idea/*
 
 # External native build folder generated in Android Studio 2.2 and later
 .externalNativeBuild
-
-# Android Studio captures folder
-captures/
-
-# Android Studio Navigation editor temp files
-.navigation/
-
-# Keystore files
-*.jks
-
-# Google Services (e.g. APIs or Firebase)
-google-services.json
