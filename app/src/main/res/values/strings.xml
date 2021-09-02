@@ -1,3 +1,12 @@
 <resources>
+    <!-- App -->
     <string name="app_name">Escapy</string>
+
+    <!-- Generic -->
+    <string name="generic_retry">Retry</string>
+
+    <!-- Errors -->
+    <string name="error_generic_issue">We encountered a technical issue</string>
+    <string name="error_no_connection">You have no internet connection</string>
+
 </resources>

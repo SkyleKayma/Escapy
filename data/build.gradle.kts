@@ -1,3 +1,5 @@
+import org.gradle.language.nativeplatform.internal.BuildType
+
 plugins {
     id("com.android.library")
     id("kotlin-android")
@@ -17,12 +19,9 @@ android {
     }
 
     buildTypes {
-        getByName("release") {
+        named(BuildType.RELEASE.name).configure {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
 
@@ -59,4 +58,10 @@ dependencies {
 
     // Koin
     implementation(libs.bundles.koin)
+
+    // Retrofit
+    implementation(libs.bundles.retrofit)
+
+    // OkHttp
+    implementation(libs.bundles.okhttp)
 }

@@ -1,3 +1,8 @@
+import org.gradle.language.nativeplatform.internal.BuildType
+import java.text.SimpleDateFormat
+import java.util.TimeZone
+import java.util.Date
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -24,8 +29,17 @@ android {
     }
 
     buildTypes {
-        getByName("release") {
+        named(BuildType.DEBUG.name).configure {
             isMinifyEnabled = false
+
+            versionNameSuffix = "-debug-${buildTime()}"
+            applicationIdSuffix = ".debug"
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+        }
+        named(BuildType.RELEASE.name).configure {
+            isMinifyEnabled = false
+
+            versionNameSuffix = "-${buildTime()}"
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -55,6 +69,12 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1,NOTICE,NOTICE.txt,LICENSE,LICENSE.txt,DEPENDENCIES,DEPENDENCIES.txt}"
         }
     }
+}
+
+fun buildTime(): String? {
+    val df = SimpleDateFormat("yyyyMMdd")
+    df.timeZone = TimeZone.getTimeZone("UTC")
+    return df.format(Date())
 }
 
 dependencies {
