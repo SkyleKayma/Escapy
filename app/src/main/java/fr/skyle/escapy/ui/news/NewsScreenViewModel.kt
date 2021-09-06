@@ -24,12 +24,12 @@ class NewsScreenViewModel(
         newsRepository.watchNews().onStart {
             viewModelScope.launch {
                 try {
-                    newsRepository.fetchNews()
+//                    newsRepository.fetchNews()
                     stateFlow.emit(State.Loaded)
                 } catch (e: CancellationException) {
                     throw e
                 } catch (e: Exception) {
-                    Timber.e(e)
+                    Timber.e(e, "Error listening for news")
                     stateFlow.emit(State.Error(getErrorEventFromException(e)))
                 }
             }
