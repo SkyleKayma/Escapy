@@ -1,4 +1,4 @@
-package fr.skyle.escapy.ui.news.states
+package fr.skyle.escapy.ui.home.states
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
@@ -18,21 +18,21 @@ import fr.skyle.escapy.data.vo.News
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun NewsScreenLoaded(
+fun HomeScreenLoaded(
     newsList: List<News>
 ) {
     if (newsList.isNotEmpty()) {
-        NewsContainer(
+        HomeContainer(
             newsList = newsList
         )
-    } else NewsScreenEmptyView()
+    } else HomeScreenEmptyView()
 }
 
 /**
  * Default mode is [ListComponent.ListMode.list]
  */
 @Composable
-private fun NewsContainer(
+private fun HomeContainer(
     newsList: List<News>
 ) {
 //    NewsContainerListFirstHighlighted(
@@ -43,7 +43,7 @@ private fun NewsContainer(
 
 // TODO
 @Composable
-fun NewsScreenEmptyView() {
+fun HomeScreenEmptyView() {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -63,8 +63,8 @@ fun NewsScreenEmptyView() {
 
 @Preview("Loaded Empty")
 @Composable
-private fun PreviewNewsScreenLoadedEmpty() {
-    NewsScreenLoaded(
+private fun PreviewHomeScreenLoadedEmpty() {
+    HomeScreenLoaded(
         newsList = listOf()
     )
 }

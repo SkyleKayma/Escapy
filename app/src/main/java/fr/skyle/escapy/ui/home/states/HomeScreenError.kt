@@ -1,4 +1,4 @@
-package fr.skyle.escapy.ui.news.states
+package fr.skyle.escapy.ui.home.states
 
 
 import androidx.compose.foundation.Image
@@ -17,14 +17,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.skyle.escapy.R
-import fr.skyle.escapy.ui.news.NewsScreenViewModel
+import fr.skyle.escapy.ui.home.HomeScreenViewModel
 import org.koin.androidx.compose.getViewModel
 
 
 @Composable
-fun NewsScreenError(
-    model: NewsScreenViewModel = getViewModel(),
-    errorEvent: NewsScreenViewModel.ErrorEvent
+fun HomeScreenError(
+    model: HomeScreenViewModel = getViewModel(),
+    errorEvent: HomeScreenViewModel.ErrorEvent
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
@@ -59,22 +59,22 @@ fun NewsScreenError(
 /**
  * @return errorTextId to errorImageId
  */
-private fun getErrorData(errorEvent: NewsScreenViewModel.ErrorEvent): Int =
+private fun getErrorData(errorEvent: HomeScreenViewModel.ErrorEvent): Int =
     when (errorEvent) {
-        NewsScreenViewModel.ErrorEvent.NetworkIssue ->
+        HomeScreenViewModel.ErrorEvent.NetworkIssue ->
             R.string.error_no_connection
-        NewsScreenViewModel.ErrorEvent.OtherIssue ->
+        HomeScreenViewModel.ErrorEvent.OtherIssue ->
             R.string.error_generic_issue
     }
 
 @Preview("Network issue")
 @Composable
-private fun PreviewNewsScreenErrorNetworkIssue() {
-    NewsScreenError(errorEvent = NewsScreenViewModel.ErrorEvent.NetworkIssue)
+private fun PreviewHomeScreenErrorNetworkIssue() {
+    HomeScreenError(errorEvent = HomeScreenViewModel.ErrorEvent.NetworkIssue)
 }
 
 @Preview("Other issue")
 @Composable
-private fun PreviewNewsScreenErrorOtherIssue() {
-    NewsScreenError(errorEvent = NewsScreenViewModel.ErrorEvent.OtherIssue)
+private fun PreviewHomeScreenErrorOtherIssue() {
+    HomeScreenError(errorEvent = HomeScreenViewModel.ErrorEvent.OtherIssue)
 }

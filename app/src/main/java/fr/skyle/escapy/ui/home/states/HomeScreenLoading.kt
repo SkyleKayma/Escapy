@@ -1,4 +1,4 @@
-package fr.skyle.escapy.ui.news.states
+package fr.skyle.escapy.ui.home.states
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,7 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 
 
 @Composable
-fun NewsScreenLoading() {
+fun HomeScreenLoading() {
     Column(
         Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -23,6 +23,6 @@ fun NewsScreenLoading() {
 
 @Preview("Loading")
 @Composable
-private fun PreviewNewsScreenLoading() {
-    NewsScreenLoading()
+private fun PreviewHomeScreenLoading() {
+    HomeScreenLoading()
 }

@@ -1,6 +1,7 @@
 package fr.skyle.escapy.data.db.dao
 
 import androidx.room.*
+import fr.skyle.escapy.data.ext.model.toNews
 import fr.skyle.escapy.data.rest.model.RestNews
 import fr.skyle.escapy.data.vo.News
 import kotlinx.coroutines.flow.Flow
@@ -36,7 +37,6 @@ interface NewsDao {
     @Transaction
     suspend fun insertRestNewsList(restNewsList: List<RestNews>?) {
         restNewsList?.mapNotNull { it.toNews() }?.distinct()?.let { newsList ->
-            // News
             insertNews(newsList)
         }
     }

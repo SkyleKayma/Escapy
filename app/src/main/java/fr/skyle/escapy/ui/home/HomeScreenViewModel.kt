@@ -1,4 +1,4 @@
-package fr.skyle.escapy.ui.news
+package fr.skyle.escapy.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,7 +14,7 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 
-class NewsScreenViewModel(
+class HomeScreenViewModel(
     private val newsRepository: NewsRepository
 ) : ViewModel() {
 

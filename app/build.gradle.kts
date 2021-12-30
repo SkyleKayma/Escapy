@@ -1,7 +1,6 @@
 import org.gradle.language.nativeplatform.internal.BuildType
 import java.text.SimpleDateFormat
-import java.util.TimeZone
-import java.util.Date
+import java.util.*
 
 plugins {
     id("com.android.application")
@@ -15,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId = "fr.skyle.escapy"
-        minSdk = 23
+        minSdk = 26
         targetSdk = 31
         versionCode = 1
         versionName = "1.0"
@@ -24,7 +23,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         ndk {
-            abiFilters += setOf("arm64-v8a", "armeabi-v7a", "x86", "x86_64")
+            abiFilters += setOf("arm64-v8a", "arm64-v9a", "x86_64")
         }
     }
 
@@ -37,7 +36,7 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
         named(BuildType.RELEASE.name).configure {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
 
             versionNameSuffix = "-${buildTime()}"
             proguardFiles(
@@ -45,15 +44,6 @@ android {
                 "proguard-rules.pro"
             )
         }
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
     }
 
     buildFeatures {

@@ -2,6 +2,7 @@ package fr.skyle.escapy.data.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import fr.skyle.escapy.data.rest.EscapyApi
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
@@ -13,6 +14,7 @@ import java.util.concurrent.TimeUnit
 
 object ApiModules {
 
+    @OptIn(ExperimentalSerializationApi::class)
     private val restModule = module {
         // Urls
         factory {
