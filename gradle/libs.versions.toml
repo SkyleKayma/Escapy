@@ -3,15 +3,8 @@
 #gradle
 gradle = "7.0.2"
 
-#google services
-googleServices = "4.3.10"
-
 #firebase
 firebase = "28.4.0"
-firebase-gradle = "2.7.1"
-
-#easyLauncher
-easyLauncher = "4.1.1"
 
 #kotlin
 kotlin = "1.5.31"
@@ -58,25 +51,16 @@ espresso = "3.4.0"
 android-gradle-plugin = "7.0.4"
 appdistribution-gradle-plugin = "2.2.0"
 versions-gradle-plugin = "0.39.0"
+firebase-gradle-plugin = "2.7.1"
+easyLauncher-gradle-plugin = "4.1.1"
+googleServices-gradle-plugin = "4.3.10"
 
 [libraries]
-
-#gradle
-gradle-android = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
-gradle-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-gradle-kotlinSerialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
-gradle-firebase = { module = "com.google.firebase:firebase-crashlytics-gradle", version.ref = "firebase-gradle" }
-
-#google services
-googleServices = { module = "com.google.gms:google-services", version.ref = "googleServices" }
 
 #firebase
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
-
-#easyLauncher
-easyLauncher = { module = "com.project.starter:easylauncher", version.ref = "easyLauncher" }
 
 #kotlin
 kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlin-serialization" }
@@ -147,6 +131,9 @@ pluginGradle-kotlinSerialization = { module = "org.jetbrains.kotlin:kotlin-seria
 pluginGradle-appDistribution = { module = "com.google.firebase:firebase-appdistribution-gradle", version.ref = "appdistribution-gradle-plugin" }
 pluginGradle-safeArgs = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "androidx-navigation" }
 pluginGradle-versions = { module = "com.github.ben-manes:gradle-versions-plugin", version.ref = "versions-gradle-plugin" }
+pluginGradle-googleServices = { module = "com.google.gms:google-services", version.ref = "googleServices-gradle-plugin" }
+pluginGradle-easyLauncher = { module = "com.project.starter:easylauncher", version.ref = "easyLauncher-gradle-plugin" }
+pluginGradle-firebaseCrashlytics = { module = "com.google.firebase:firebase-crashlytics-gradle", version.ref = "firebase-gradle-plugin" }
 
 [bundles]
 androidx-compose = ["compose-ui-ui", "compose-ui-tooling", "compose-material", "compose-runtimelivedata"]

@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.flow
 
 
 class NewsRepository(
-    private val escapyApi: EscapyApi,
     private val newsDao: NewsDao
 ) {
 
@@ -21,13 +20,13 @@ class NewsRepository(
 
     // WS
 
-    suspend fun fetchNewsWithId(id: String) {
-        val news = escapyApi.getNewsWithId(id)
-        newsDao.insertRestNews(news)
-    }
-
-    suspend fun fetchNews() {
-        val newsList = escapyApi.getNews()
-        newsDao.insertRestNewsList(newsList)
-    }
+//    suspend fun fetchNewsWithId(id: String) {
+//        val news = escapyApi.getNewsWithId(id)
+//        newsDao.insertRestNews(news)
+//    }
+//
+//    suspend fun fetchNews() {
+//        val newsList = escapyApi.getNews()
+//        newsDao.insertRestNewsList(newsList)
+//    }
 }

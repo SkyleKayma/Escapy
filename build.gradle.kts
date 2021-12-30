@@ -19,9 +19,9 @@ buildscript {
         classpath(libs.pluginGradle.safeArgs)
         classpath(libs.pluginGradle.appDistribution)
         classpath(libs.pluginGradle.versions)
-        classpath(libs.easyLauncher)
-        classpath(libs.googleServices)
-        classpath(libs.gradle.firebase)
+        classpath(libs.pluginGradle.easyLauncher)
+        classpath(libs.pluginGradle.googleServices)
+        classpath(libs.pluginGradle.firebaseCrashlytics)
     }
 }
 

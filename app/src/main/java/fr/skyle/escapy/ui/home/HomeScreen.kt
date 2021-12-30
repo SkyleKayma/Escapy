@@ -11,7 +11,7 @@ import org.koin.androidx.compose.getViewModel
 
 
 @Composable
-fun NewsScreen(
+fun HomeScreen(
     model: HomeScreenViewModel = getViewModel()
 ) {
     val newsState by model.stateFlow.collectAsState()
