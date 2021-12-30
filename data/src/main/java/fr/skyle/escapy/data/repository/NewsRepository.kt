@@ -1,7 +1,6 @@
 package fr.skyle.escapy.data.repository
 
 import fr.skyle.escapy.data.db.dao.NewsDao
-import fr.skyle.escapy.data.rest.EscapyApi
 import fr.skyle.escapy.data.vo.News
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

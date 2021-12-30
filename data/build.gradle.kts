@@ -6,6 +6,7 @@ plugins {
     id("kotlin-kapt")
     id("kotlin-parcelize")
     id("kotlinx-serialization")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -50,9 +51,7 @@ dependencies {
     // Koin
     implementation(libs.bundles.koin)
 
-    // Retrofit
-    implementation(libs.bundles.retrofit)
-
     // OkHttp
-    implementation(libs.bundles.okhttp)
+    implementation(platform(libs.okhttp.bom))
+    implementation(libs.okhttp.core)
 }

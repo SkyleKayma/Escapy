@@ -9,6 +9,7 @@ buildscript {
         gradlePluginPortal()
         mavenCentral()
         maven { url = uri("https://www.jitpack.io") }
+        maven { url = uri("https://plugins.gradle.org/m2/") }
     }
 
     dependencies {
@@ -18,6 +19,9 @@ buildscript {
         classpath(libs.pluginGradle.safeArgs)
         classpath(libs.pluginGradle.appDistribution)
         classpath(libs.pluginGradle.versions)
+        classpath(libs.easyLauncher)
+        classpath(libs.googleServices)
+        classpath(libs.gradle.firebase)
     }
 }
 

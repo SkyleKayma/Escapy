@@ -15,4 +15,9 @@ class AppImpl : EscapyApplication() {
             }
         )
     }
+
+    override fun initTimber() {
+        super.initTimber()
+        TimberLogImplementation.init()
+    }
 }

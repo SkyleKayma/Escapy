@@ -7,6 +7,9 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("kotlinx-serialization")
+    id("com.starter.easylauncher")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -61,6 +64,14 @@ android {
     }
 }
 
+easylauncher {
+    buildTypes {
+        register(BuildType.DEBUG.name).configure {
+            filters(chromeLike(label = "debug", ribbonColor = "#DF0503"))
+        }
+    }
+}
+
 fun buildTime(): String? {
     val df = SimpleDateFormat("yyyyMMdd")
     df.timeZone = TimeZone.getTimeZone("UTC")
@@ -84,6 +95,11 @@ dependencies {
 
     // Serialization
     implementation(libs.kotlin.serialization)
+
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics)
 
     // Timber
     implementation(libs.timber)

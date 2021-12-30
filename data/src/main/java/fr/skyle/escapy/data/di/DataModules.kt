@@ -13,7 +13,7 @@ object DataModules {
     }
 
     private val repositoryModule = module {
-        factory { NewsRepository(get(), get()) }
+        factory { NewsRepository(get()) }
     }
 
     private val daoModule = module {
