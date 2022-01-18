@@ -5,7 +5,6 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("kotlin-parcelize")
-    id("kotlinx-serialization")
     id("com.google.gms.google-services")
 }
 
@@ -38,9 +37,6 @@ dependencies {
     // Android
     implementation(libs.android.material)
 
-    // Kotlin Serialization
-    implementation(libs.kotlin.serialization)
-
     // Timber
     implementation(libs.timber)
 
@@ -48,10 +44,7 @@ dependencies {
     implementation(libs.bundles.room)
     kapt(libs.room.compiler)
 
-    // Koin
-    implementation(libs.bundles.koin)
-
-    // OkHttp
-    implementation(platform(libs.okhttp.bom))
-    implementation(libs.okhttp.core)
+    // Hilt
+    implementation(libs.hilt)
+    kapt(libs.hilt.compiler)
 }

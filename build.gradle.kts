@@ -15,13 +15,13 @@ buildscript {
     dependencies {
         classpath(libs.pluginGradle.android)
         classpath(libs.pluginGradle.kotlin)
-        classpath(libs.pluginGradle.kotlinSerialization)
-        classpath(libs.pluginGradle.safeArgs)
-        classpath(libs.pluginGradle.appDistribution)
-        classpath(libs.pluginGradle.versions)
-        classpath(libs.pluginGradle.easyLauncher)
+        classpath(libs.pluginGradle.hilt)
         classpath(libs.pluginGradle.googleServices)
+        classpath(libs.pluginGradle.safeArgs)
         classpath(libs.pluginGradle.firebaseCrashlytics)
+        classpath(libs.pluginGradle.appDistribution)
+        classpath(libs.pluginGradle.easyLauncher)
+        classpath(libs.pluginGradle.versions)
     }
 }
 

@@ -6,10 +6,11 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-kapt")
-    id("kotlinx-serialization")
-    id("com.starter.easylauncher")
+    id("dagger.hilt.android.plugin")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
+    id("com.google.firebase.appdistribution")
+    id("com.starter.easylauncher")
 }
 
 android {
@@ -49,14 +50,6 @@ android {
         }
     }
 
-    buildFeatures {
-        compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.get()
-    }
-
     packagingOptions {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1,NOTICE,NOTICE.txt,LICENSE,LICENSE.txt,DEPENDENCIES,DEPENDENCIES.txt}"
@@ -85,16 +78,10 @@ dependencies {
     // AndroidX
     implementation(libs.androidx.core)
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.compose)
-    implementation(libs.androidx.navigation)
     implementation(libs.bundles.androidx.lifecycle)
-    implementation(libs.bundles.androidx.compose)
 
-    // Android
+    // Material
     implementation(libs.android.material)
-
-    // Serialization
-    implementation(libs.kotlin.serialization)
 
     // Firebase
     implementation(platform(libs.firebase.bom))
@@ -104,22 +91,21 @@ dependencies {
     // Timber
     implementation(libs.timber)
 
-    // Koin
-    implementation(libs.bundles.koin)
+    // Hilt
+    implementation(libs.hilt)
+    kapt(libs.hilt.compiler)
 
     // Coil
     implementation(libs.coil)
 
-    // Accompanist
-    implementation(libs.bundles.accompanist)
-
     // Coroutines
     implementation(libs.bundles.coroutines)
+
+    // Navigation
+    implementation(libs.bundles.navigation)
 
     // Tests
     testImplementation(libs.test.junit)
     androidTestImplementation(libs.test.androidx.junit)
     androidTestImplementation(libs.test.espresso.core)
-    androidTestImplementation(libs.test.compose.ui.junit)
-    androidTestImplementation(libs.test.compose.ui.tooling)
 }
