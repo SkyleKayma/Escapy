@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Escapy</string>
+
+    <!-- Home -->
+    <string name="home_welcome_format">Bienvenue,\n%s !</string>
+    <string name="home_join_a_room">Rejoindre une salle</string>
+    <string name="home_join_a_room_via_qrcode">Par QRcode</string>
+    <string name="home_join_a_room_via_id">Par ID</string>
+    <string name="home_history">Historique des parties</string>
+    <string name="home_game_in_progress">Parties en cours</string>
+    <string name="home_no_game_in_progress">Aucune partie en cours</string>
+
+</resources>

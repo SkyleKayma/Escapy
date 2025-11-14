@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1049626124086",
+    "project_id": "escapy-6bbda",
+    "storage_bucket": "escapy-6bbda.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1049626124086:android:4989bd32e64c5350655d97",
+        "android_client_info": {
+          "package_name": "fr.skyle.escapy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwUXgM-lIhni4y44AZ4xQWbeFFgbvZvNA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1049626124086:android:08c1601fd3ec485b655d97",
+        "android_client_info": {
+          "package_name": "fr.skyle.escapy.debug"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwUXgM-lIhni4y44AZ4xQWbeFFgbvZvNA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
