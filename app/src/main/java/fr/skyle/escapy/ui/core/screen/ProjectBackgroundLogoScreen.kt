@@ -20,9 +20,9 @@ fun ProjectBackgroundLogoScreen(
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             modifier = Modifier.width(375.dp),
-            painter = painterResource(id = R.drawable.background_image_2),
+            painter = painterResource(id = R.drawable.background_image),
             contentDescription = null,
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.FillWidth
         )
 
         content()
