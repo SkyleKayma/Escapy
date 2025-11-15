@@ -22,7 +22,7 @@ object ProjectButtonDefaults {
     const val BUTTON_SMALL_ICON_SIZE_DP = 16
     const val BUTTON_BORDER_WIDTH_DP = 1
 
-    enum class ProjectButtonStyle {
+    enum class ButtonStyle {
         OUTLINED,
         FILLED,
         TEXT;
@@ -35,7 +35,7 @@ object ProjectButtonDefaults {
             }
     }
 
-    enum class ProjectButtonTint {
+    enum class ButtonTint {
         PRIMARY,
         SECONDARY;
 
@@ -68,7 +68,7 @@ object ProjectButtonDefaults {
             }
     }
 
-    enum class ProjectButtonSize {
+    enum class ButtonSize {
         SMALL,
         MEDIUM,
         LARGE;
@@ -105,22 +105,22 @@ object ProjectButtonDefaults {
     }
 
     @Composable
-    fun getTextStyle(style: ProjectButtonStyle, size: ProjectButtonSize): TextStyle {
+    fun getTextStyle(style: ButtonStyle, size: ButtonSize): TextStyle {
         return when (style) {
-            ProjectButtonStyle.OUTLINED,
-            ProjectButtonStyle.FILLED -> {
+            ButtonStyle.OUTLINED,
+            ButtonStyle.FILLED -> {
                 when (size) {
-                    ProjectButtonSize.SMALL -> ProjectTheme.typography.buttonS
-                    ProjectButtonSize.MEDIUM,
-                    ProjectButtonSize.LARGE -> ProjectTheme.typography.buttonL
+                    ButtonSize.SMALL -> ProjectTheme.typography.buttonS
+                    ButtonSize.MEDIUM,
+                    ButtonSize.LARGE -> ProjectTheme.typography.buttonL
                 }
             }
 
-            ProjectButtonStyle.TEXT -> {
+            ButtonStyle.TEXT -> {
                 when (size) {
-                    ProjectButtonSize.SMALL -> ProjectTheme.typography.buttonS
-                    ProjectButtonSize.MEDIUM,
-                    ProjectButtonSize.LARGE -> ProjectTheme.typography.buttonL
+                    ButtonSize.SMALL -> ProjectTheme.typography.buttonS
+                    ButtonSize.MEDIUM,
+                    ButtonSize.LARGE -> ProjectTheme.typography.buttonL
                 }
             }
         }

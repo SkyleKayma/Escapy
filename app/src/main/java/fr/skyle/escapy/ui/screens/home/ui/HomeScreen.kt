@@ -165,9 +165,9 @@ private fun HomeScreenContent(
         ProjectButton(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(R.string.home_history),
-            style = ProjectButtonDefaults.ProjectButtonStyle.FILLED,
-            tint = ProjectButtonDefaults.ProjectButtonTint.PRIMARY,
-            size = ProjectButtonDefaults.ProjectButtonSize.LARGE,
+            style = ProjectButtonDefaults.ButtonStyle.FILLED,
+            tint = ProjectButtonDefaults.ButtonTint.PRIMARY,
+            size = ProjectButtonDefaults.ButtonSize.LARGE,
             onClick = {
                 // TODO
             },
