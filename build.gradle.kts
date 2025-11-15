@@ -15,6 +15,7 @@ plugins {
     alias(libs.plugins.firebase.crashlytics) apply false
     alias(libs.plugins.firebase.appdistribution) apply false
     alias(libs.plugins.easylauncher) apply false
+    alias(libs.plugins.stability.analyzer) apply false
 }
 
 subprojects {
