@@ -2,6 +2,7 @@ package fr.skyle.escapy
 
 import android.app.Application
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.skydoves.compose.stability.runtime.ComposeStabilityAnalyzer
 import dagger.hilt.android.HiltAndroidApp
 import fr.skyle.escapy.log.FirebaseCrashReportingTree
 import timber.log.Timber
@@ -15,6 +16,10 @@ open class CustomApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        // Enable recomposition tracking ONLY in debug builds
+        ComposeStabilityAnalyzer.setEnabled(BuildConfig.DEBUG)
+
         initTimber()
     }
 
