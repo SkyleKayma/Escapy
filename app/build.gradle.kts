@@ -1,3 +1,4 @@
+import com.project.starter.easylauncher.filter.ChromeLikeFilter
 import org.gradle.language.nativeplatform.internal.BuildType
 import java.io.FileInputStream
 import java.util.Properties
@@ -13,6 +14,7 @@ plugins {
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.firebase.appdistribution)
     alias(libs.plugins.easylauncher)
+    alias(libs.plugins.stability.analyzer)
 }
 
 // Keystore
@@ -80,8 +82,12 @@ easylauncher {
     buildTypes {
         register(BuildType.DEBUG.name).configure {
             filters(
-                customRibbon(
+                chromeLike(
                     label = "DEBUG",
+                    gravity = ChromeLikeFilter.Gravity.BOTTOM,
+                    ribbonColor = "#4F9E30",
+                    overlayHeight = 0.2f,
+                    textSizeRatio = 0.15f
                 )
             )
         }
@@ -118,6 +124,4 @@ dependencies {
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
-    implementation(libs.firebase.auth)
-    implementation(libs.firebase.database)
 }
