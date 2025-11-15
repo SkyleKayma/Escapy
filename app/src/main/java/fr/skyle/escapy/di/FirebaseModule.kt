@@ -13,6 +13,6 @@ object FirebaseModule {
 
     @Provides
     @Singleton
-    fun provideFirebaseCrashlytics(): FirebaseCrashlytics =
+    fun providesFirebaseCrashlytics(): FirebaseCrashlytics =
         FirebaseCrashlytics.getInstance()
 }
