@@ -26,6 +26,7 @@ data class ProjectTypography(
     val b2: TextStyle,
     val p1: TextStyle,
     val p2: TextStyle,
+    val p3: TextStyle,
     val buttonS: TextStyle,
     val buttonL: TextStyle,
     val badge: TextStyle,
@@ -39,6 +40,7 @@ val LocalTypography = staticCompositionLocalOf {
         b2 = TextStyle.Default,
         p1 = TextStyle.Default,
         p2 = TextStyle.Default,
+        p3 = TextStyle.Default,
         buttonS = TextStyle.Default,
         buttonL = TextStyle.Default,
         badge = TextStyle.Default,
@@ -101,6 +103,16 @@ val CustomTypography = ProjectTypography(
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None // Ensures the line height is applied even for single-line text
+        ),
+    ),
+    p3 = TextStyle(
+        fontFamily = Exo2,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp,
+        lineHeight = 16.sp,
         lineHeightStyle = LineHeightStyle(
             alignment = LineHeightStyle.Alignment.Center,
             trim = LineHeightStyle.Trim.None // Ensures the line height is applied even for single-line text

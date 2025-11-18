@@ -22,3 +22,4 @@ dependencyResolutionManagement {
 rootProject.name = "Escapy"
 include(":app")
 include(":design_system")
+include(":data")

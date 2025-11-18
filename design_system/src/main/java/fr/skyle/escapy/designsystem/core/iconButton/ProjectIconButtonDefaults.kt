@@ -25,21 +25,21 @@ object ProjectIconButtonDefaults {
             @Composable
             get() = when (this) {
                 NEUTRAL -> ProjectTheme.colors.grey500
-                DARK -> ProjectTheme.colors.black
+                DARK -> ProjectTheme.colors.surfaceContainerHigh
             }
 
         val contentColor: Color
             @Composable
             get() = when (this) {
                 NEUTRAL -> ProjectTheme.colors.black
-                DARK -> ProjectTheme.colors.white
+                DARK -> ProjectTheme.colors.onSurface
             }
 
-        val accentColor: Color
+        val borderColor: Color
             @Composable
             get() = when (this) {
-                NEUTRAL -> ProjectTheme.colors.white
-                DARK -> ProjectTheme.colors.black
+                NEUTRAL -> ProjectTheme.colors.grey500
+                DARK -> ProjectTheme.colors.grey500
             }
     }
 

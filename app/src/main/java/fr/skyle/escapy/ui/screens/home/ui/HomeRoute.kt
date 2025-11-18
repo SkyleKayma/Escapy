@@ -1,8 +1,15 @@
 package fr.skyle.escapy.ui.screens.home.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 
 @Composable
-fun HomeRoute() {
-    HomeScreen()
+fun HomeRoute(
+    viewModel: HomeViewModel = hiltViewModel()
+) {
+    val userName by viewModel.userName.collectAsState()
+
+    HomeScreen(userName = userName ?: "")
 }

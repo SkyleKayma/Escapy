@@ -119,13 +119,13 @@ private fun ProjectOutlinedIconButton(
         border = BorderStroke(
             width = ProjectIconButtonDefaults.ICON_BUTTON_BORDER_WIDTH_DP.dp,
             color = if (isEnabled) {
-                tint.containerColor
+                tint.borderColor
             } else {
                 ProjectButtonDefaults.disabledContainerColor
             }
         ),
         colors = IconButtonDefaults.outlinedIconButtonColors(
-            containerColor = tint.accentColor,
+            containerColor = tint.containerColor,
             contentColor = iconColor ?: tint.contentColor,
             disabledContainerColor = ProjectIconButtonDefaults.disabledContainerColor,
             disabledContentColor = ProjectIconButtonDefaults.disabledContentColor,

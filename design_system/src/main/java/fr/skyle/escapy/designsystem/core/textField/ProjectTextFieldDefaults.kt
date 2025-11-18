@@ -56,6 +56,18 @@ object ProjectTextFieldDefaults {
         @Composable
         get() = ProjectTheme.colors.error
 
+    val defaultLabelColor: Color
+        @Composable
+        get() = ProjectTheme.colors.grey250
+
+    val defaultDisabledLabelColor: Color
+        @Composable
+        get() = ProjectTheme.colors.grey500
+
+    val defaultErrorLabelColor: Color
+        @Composable
+        get() = ProjectTheme.colors.error
+
     val defaultPlaceholderColor: Color
         @Composable
         get() = ProjectTheme.colors.grey250
@@ -100,6 +112,9 @@ object ProjectTextFieldDefaults {
         val borderColor: Color,
         val disabledBorderColor: Color,
         val errorBorderColor: Color,
+        val labelColor: Color,
+        val disabledLabelColor: Color,
+        val errorLabelColor: Color,
         val placeholderColor: Color,
         val disabledPlaceholderColor: Color,
         val errorPlaceholderColor: Color,
@@ -119,6 +134,9 @@ object ProjectTextFieldDefaults {
                 placeholderColor: Color = defaultPlaceholderColor,
                 disabledPlaceholderColor: Color = defaultDisabledPlaceholderColor,
                 errorPlaceholderColor: Color = defaultErrorPlaceholderColor,
+                labelColor: Color = defaultLabelColor,
+                disabledLabelColor: Color = defaultDisabledLabelColor,
+                errorLabelColor: Color = defaultErrorLabelColor,
             ): Colors {
                 return Colors(
                     containerColor = containerColor,
@@ -133,6 +151,9 @@ object ProjectTextFieldDefaults {
                     placeholderColor = placeholderColor,
                     disabledPlaceholderColor = disabledPlaceholderColor,
                     errorPlaceholderColor = errorPlaceholderColor,
+                    labelColor = labelColor,
+                    disabledLabelColor = disabledLabelColor,
+                    errorLabelColor = errorLabelColor,
                 )
             }
 
@@ -155,6 +176,14 @@ object ProjectTextFieldDefaults {
                     unfocusedTrailingIconColor = contentColor,
                     errorTrailingIconColor = errorContentColor,
                     disabledTrailingIconColor = disabledContentColor,
+                    focusedLabelColor = labelColor,
+                    unfocusedLabelColor = labelColor,
+                    disabledLabelColor = disabledLabelColor,
+                    errorLabelColor = errorLabelColor,
+                    focusedPlaceholderColor = placeholderColor,
+                    unfocusedPlaceholderColor = placeholderColor,
+                    disabledPlaceholderColor = disabledPlaceholderColor,
+                    errorPlaceholderColor = errorPlaceholderColor,
                     focusedTextColor = contentColor,
                     unfocusedTextColor = contentColor,
                     errorTextColor = errorContentColor,
@@ -165,10 +194,6 @@ object ProjectTextFieldDefaults {
                     disabledSupportingTextColor = disabledContentColor,
                     cursorColor = contentColor,
                     errorCursorColor = errorContentColor,
-                    focusedPlaceholderColor = placeholderColor,
-                    unfocusedPlaceholderColor = placeholderColor,
-                    disabledPlaceholderColor = disabledPlaceholderColor,
-                    errorPlaceholderColor = errorPlaceholderColor,
                 )
             }
         }

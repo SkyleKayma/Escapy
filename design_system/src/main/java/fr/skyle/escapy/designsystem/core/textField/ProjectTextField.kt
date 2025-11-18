@@ -37,6 +37,7 @@ fun ProjectTextField(
     onValueChange: (String) -> Unit = {},
     leadingContent: @Composable (ProjectTextFieldSideContentScope.() -> Unit)? = null,
     trailingContent: @Composable (ProjectTextFieldSideContentScope.() -> Unit)? = null,
+    label: String? = null,
     placeholder: String? = null,
     isEnabled: Boolean = true,
     isError: Boolean = false,
@@ -62,12 +63,13 @@ fun ProjectTextField(
     val interactionSource = remember { MutableInteractionSource() }
     val textFieldColors = colors.toTextFieldColors()
 
+    val isFocused = interactionSource.collectIsFocusedAsState().value
+
     val textColor = textStyle.color.takeOrElse {
-        val focused = interactionSource.collectIsFocusedAsState().value
         textFieldColors.textColor(
             enabled = isEnabled,
             isError = isError,
-            focused = focused
+            focused = isFocused
         )
     }
 
@@ -117,6 +119,15 @@ fun ProjectTextField(
                             ).trailingContent()
                         }
                     },
+                    label = label?.let {
+                        {
+                            ProjectTextFieldLabel(
+                                modifier = Modifier.wrapContentWidth(),
+                                text = label,
+                                isFocused = isFocused
+                            )
+                        }
+                    },
                     placeholder = placeholder?.let {
                         {
                             ProjectTextFieldPlaceholder(
@@ -142,6 +153,23 @@ fun ProjectTextField(
                     contentPadding = shape.innerPadding
                 )
             }
+    )
+}
+
+@Composable
+fun ProjectTextFieldLabel(
+    text: String,
+    isFocused: Boolean,
+    modifier: Modifier = Modifier
+) {
+    Text(
+        modifier = modifier,
+        text = text,
+        style = if (isFocused) {
+            ProjectTheme.typography.b2
+        } else {
+            ProjectTheme.typography.p1
+        }
     )
 }
 
@@ -229,12 +257,33 @@ private fun ProjectTextFieldEmptyPreview(
 
 @Preview
 @Composable
+private fun ProjectTextFieldWithLabelPreview(
+    @PreviewParameter(ProjectTextFieldPreviewDataProvider::class) data: ProjectTextFieldPreviewData
+) {
+    ProjectTheme {
+        ProjectTextField(
+            value = "",
+            label = "Label",
+            placeholder = "XXX-XX-X",
+            isEnabled = data.isEnabled,
+            isError = data.isError,
+            isReadOnly = data.isReadOnly,
+            isSingleLine = data.isSingleLine,
+            shape = data.shape,
+            onValueChange = {}
+        )
+    }
+}
+
+@Preview
+@Composable
 private fun ProjectTextFieldPreview(
     @PreviewParameter(ProjectTextFieldPreviewDataProvider::class) data: ProjectTextFieldPreviewData
 ) {
     ProjectTheme {
         ProjectTextField(
             value = "Value",
+            label = "Label",
             leadingContent = {
                 Icon(
                     painter = rememberVectorPainter(Icons.Default.Person),

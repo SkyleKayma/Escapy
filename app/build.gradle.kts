@@ -96,6 +96,7 @@ easylauncher {
 
 dependencies {
     implementation(project(":design_system"))
+    implementation(project(":data"))
 
     // AndroidX
     implementation(libs.androidx.core.ktx)

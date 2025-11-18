@@ -8,7 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navigation
 import fr.skyle.escapy.ui.screens.home.impl.homeRoute
-import fr.skyle.escapy.ui.screens.login.impl.loginRoute
+import fr.skyle.escapy.ui.screens.signIn.impl.signInRoute
 
 @Composable
 fun ProjectNavHost(
@@ -45,9 +45,9 @@ fun ProjectNavHost(
         }
     ) {
         navigation<Graph.Auth>(
-            startDestination = Route.Login
+            startDestination = Route.SignIn
         ) {
-            loginRoute(
+            signInRoute(
                 navHostController = navHostController
             )
         }

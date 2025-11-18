@@ -1,6 +1,26 @@
 <resources>
     <string name="app_name">Escapy</string>
 
+    <!-- SignIn -->
+    <string name="sign_in_title">Connexion</string>
+    <string name="sign_in_action">Se connecter</string>
+    <string name="sign_in_no_account">Vous n\'avez pas de compte ?\nInscrivez-vous !</string>
+    <string name="sign_in_no_account_highlighted">Inscrivez-vous</string>
+    <string name="sign_in_error">Une erreur est survenue lors de la connexion (%@)</string>
+
+    <!-- SignUp -->
+    <string name="sign_up_title">Inscription</string>
+    <string name="sign_up_action">S\'inscrire</string>
+    <string name="sign_in_have_account">Vous avez déjà un compte ?\nConnectez-vous !</string>
+    <string name="sign_in_have_account_highlighted">Connectez-vous</string>
+    <string name="sign_up_error">Une erreur est survenue lors de l\'inscription (%@)</string>
+
+    <!-- SignIn SignUp -->
+    <string name="sign_in_up_subtitle">Renseignez vos identifiants</string>
+    <string name="sign_in_up_email">Email</string>
+    <string name="sign_in_up_password">Mot de passe</string>
+    <string name="sign_in_up_or_sign_in_with">Ou connectez-vous avec</string>
+
     <!-- Home -->
     <string name="home_welcome_format">Bienvenue,\n%s !</string>
     <string name="home_join_a_room">Rejoindre une salle</string>

@@ -1,4 +1,4 @@
-package fr.skyle.escapy.ui.screens.login.impl
+package fr.skyle.escapy.ui.screens.signIn.impl
 
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -7,12 +7,12 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import fr.skyle.escapy.ui.main.navigation.Route
-import fr.skyle.escapy.ui.screens.login.ui.LoginRoute
+import fr.skyle.escapy.ui.screens.signIn.ui.SignInRoute
 
-fun NavGraphBuilder.loginRoute(
+fun NavGraphBuilder.signInRoute(
     navHostController: NavHostController,
 ) {
-    composable<Route.Login>(
+    composable<Route.SignIn>(
         enterTransition = {
             fadeIn(animationSpec = tween())
         },
@@ -20,6 +20,17 @@ fun NavGraphBuilder.loginRoute(
             fadeOut(animationSpec = tween())
         }
     ) {
-        LoginRoute()
+        SignInRoute(
+            navigateToHome = {
+                navHostController.navigate(Route.Home) {
+                    popUpTo(Route.SignIn) {
+                        inclusive = true
+                    }
+                }
+            },
+            navigateToSignUp = {
+
+            }
+        )
     }
 }

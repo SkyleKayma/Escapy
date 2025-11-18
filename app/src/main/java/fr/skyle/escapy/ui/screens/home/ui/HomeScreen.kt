@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,13 +33,18 @@ import fr.skyle.escapy.designsystem.core.iconButton.ProjectIconButton
 import fr.skyle.escapy.designsystem.core.iconButton.ProjectIconButtonDefaults
 import fr.skyle.escapy.designsystem.core.topAppBar.ProjectTopAppBar
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
-import fr.skyle.escapy.ext.getTextWithHighlightedColorPart
-import fr.skyle.escapy.ui.core.screen.ProjectBackgroundLogoScreen
+import fr.skyle.escapy.ui.core.structure.ProjectScreenStructure
 import fr.skyle.escapy.ui.screens.home.ui.component.HomeActionCell
+import fr.skyle.escapy.utils.AnnotatedData
+import fr.skyle.escapy.utils.buildAnnotatedString
 
 @Composable
-fun HomeScreen() {
-    ProjectBackgroundLogoScreen {
+fun HomeScreen(
+    userName: String
+) {
+    ProjectScreenStructure(
+        isPatternDisplayed = true
+    ) {
         Box(modifier = Modifier.fillMaxSize()) {
             Column(modifier = Modifier.fillMaxSize()) {
                 ProjectTopAppBar(
@@ -57,7 +63,8 @@ fun HomeScreen() {
                 HomeScreenContent(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(start = 24.dp, end = 24.dp, bottom = 24.dp)
+                        .padding(start = 24.dp, end = 24.dp, bottom = 24.dp),
+                    userName = userName
                 )
             }
 
@@ -83,19 +90,23 @@ fun HomeScreen() {
 
 @Composable
 private fun HomeScreenContent(
-    modifier: Modifier = Modifier
+    userName: String,
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
-        val welcomeTitle = stringResource(R.string.home_welcome_format, "John Doe")
-        val welcomeTitleAnnotated = getTextWithHighlightedColorPart(
-            fullText = welcomeTitle,
-            highlightedText = "John Doe",
-            highlightedColor = ProjectTheme.colors.primary
+        val welcomeTitle = buildAnnotatedString(
+            fullText = stringResource(R.string.home_welcome_format, userName),
+            AnnotatedData(
+                text = userName,
+                spanStyle = SpanStyle(
+                    color = ProjectTheme.colors.primary
+                )
+            )
         )
 
         Text(
             modifier = Modifier.fillMaxWidth(),
-            text = welcomeTitleAnnotated,
+            text = welcomeTitle,
             style = ProjectTheme.typography.h1,
             color = ProjectTheme.colors.onSurface
         )
@@ -186,7 +197,9 @@ private fun HomeScreenContent(
 @Composable
 private fun HomeScreenPreview() {
     ProjectTheme {
-        HomeScreen()
+        HomeScreen(
+            userName = "John Doe"
+        )
     }
 }
 
@@ -194,6 +207,8 @@ private fun HomeScreenPreview() {
 @Composable
 private fun HomeScreenContentPreview() {
     ProjectTheme {
-        HomeScreenContent()
+        HomeScreenContent(
+            userName = "John Doe"
+        )
     }
 }
