@@ -18,6 +18,7 @@ timber = "5.0.1"
 firebaseBom = "34.5.0"
 lifecycle = "2.9.4"
 datastore = "1.1.7"
+splashscreen = "1.0.1"
 
 # Tests
 junit = "4.13.2"
@@ -75,6 +76,9 @@ firebase-database = { module = "com.google.firebase:firebase-database" }
 # Datastore
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
+
+# SplashScreen
+splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "splashscreen" }
 
 # Tests
 junit = { group = "junit", name = "junit", version.ref = "junit" }

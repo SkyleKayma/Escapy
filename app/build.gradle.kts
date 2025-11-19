@@ -138,4 +138,7 @@ dependencies {
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
+
+    // Splash screen API
+    implementation(libs.splashscreen)
 }
