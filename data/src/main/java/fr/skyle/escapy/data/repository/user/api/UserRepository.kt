@@ -5,6 +5,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
 
+    fun isUserLoggedIn() : Boolean
+
     suspend fun signInAsGuest()
 
     fun watchCurrentUser(): Flow<User?>

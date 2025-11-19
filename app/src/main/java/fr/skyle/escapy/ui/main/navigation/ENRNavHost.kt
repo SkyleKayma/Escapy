@@ -14,11 +14,12 @@ import fr.skyle.escapy.ui.screens.signIn.impl.signInRoute
 fun ProjectNavHost(
     navHostController: NavHostController,
     modifier: Modifier = Modifier,
+    startDestination: Route,
 ) {
     NavHost(
         modifier = modifier,
         navController = navHostController,
-        startDestination = Graph.Auth,
+        startDestination = startDestination,
         enterTransition = {
             slideIntoContainer(
                 towards = AnimatedContentTransitionScope.SlideDirection.Left,

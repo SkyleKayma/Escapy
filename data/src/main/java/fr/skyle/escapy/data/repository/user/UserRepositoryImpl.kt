@@ -26,6 +26,9 @@ class UserRepositoryImpl @Inject constructor(
 
     // Firebase
 
+    override fun isUserLoggedIn(): Boolean =
+        firebaseAuth.currentUser != null
+
     private suspend fun insertUser(
         uid: String,
         user: User
