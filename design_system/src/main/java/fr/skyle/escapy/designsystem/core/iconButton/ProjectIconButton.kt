@@ -21,7 +21,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import fr.skyle.escapy.designsystem.core.button.ProjectButtonDefaults
 import fr.skyle.escapy.designsystem.ext.values
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
 
@@ -29,8 +28,8 @@ import fr.skyle.escapy.designsystem.theme.ProjectTheme
 fun ProjectIconButton(
     icon: Painter,
     onClick: () -> Unit,
-    style: ProjectIconButtonDefaults.ProjectIconButtonStyle,
-    tint: ProjectIconButtonDefaults.ProjectIconButtonTint,
+    style: ProjectIconButtonDefaults.IconButtonStyle,
+    tint: ProjectIconButtonDefaults.IconButtonTint,
     modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
     isLoading: Boolean = false,
@@ -44,7 +43,7 @@ fun ProjectIconButton(
     }
 
     when (style) {
-        ProjectIconButtonDefaults.ProjectIconButtonStyle.FILLED -> {
+        ProjectIconButtonDefaults.IconButtonStyle.FILLED -> {
             ProjectFilledIconButton(
                 modifier = modifier.size(ProjectIconButtonDefaults.BUTTON_SIZE_DP.dp),
                 onClick = onClick,
@@ -55,7 +54,7 @@ fun ProjectIconButton(
             )
         }
 
-        ProjectIconButtonDefaults.ProjectIconButtonStyle.OUTLINED -> {
+        ProjectIconButtonDefaults.IconButtonStyle.OUTLINED -> {
             ProjectOutlinedIconButton(
                 modifier = modifier.size(ProjectIconButtonDefaults.BUTTON_SIZE_DP.dp),
                 onClick = onClick,
@@ -66,7 +65,7 @@ fun ProjectIconButton(
             )
         }
 
-        ProjectIconButtonDefaults.ProjectIconButtonStyle.SIMPLE -> {
+        ProjectIconButtonDefaults.IconButtonStyle.SIMPLE -> {
             ProjectSimpleIconButton(
                 modifier = modifier.size(ProjectIconButtonDefaults.BUTTON_SIZE_DP.dp),
                 onClick = onClick,
@@ -82,7 +81,7 @@ fun ProjectIconButton(
 @Composable
 private fun ProjectFilledIconButton(
     onClick: () -> Unit,
-    tint: ProjectIconButtonDefaults.ProjectIconButtonTint,
+    tint: ProjectIconButtonDefaults.IconButtonTint,
     isEnabled: Boolean,
     content: @Composable () -> Unit,
     modifier: Modifier = Modifier,
@@ -106,7 +105,7 @@ private fun ProjectFilledIconButton(
 @Composable
 private fun ProjectOutlinedIconButton(
     onClick: () -> Unit,
-    tint: ProjectIconButtonDefaults.ProjectIconButtonTint,
+    tint: ProjectIconButtonDefaults.IconButtonTint,
     isEnabled: Boolean,
     content: @Composable () -> Unit,
     modifier: Modifier = Modifier,
@@ -121,7 +120,7 @@ private fun ProjectOutlinedIconButton(
             color = if (isEnabled) {
                 tint.borderColor
             } else {
-                ProjectButtonDefaults.disabledContainerColor
+                ProjectIconButtonDefaults.disabledContainerColor
             }
         ),
         colors = IconButtonDefaults.outlinedIconButtonColors(
@@ -138,7 +137,7 @@ private fun ProjectOutlinedIconButton(
 @Composable
 private fun ProjectSimpleIconButton(
     onClick: () -> Unit,
-    tint: ProjectIconButtonDefaults.ProjectIconButtonTint,
+    tint: ProjectIconButtonDefaults.IconButtonTint,
     isEnabled: Boolean,
     content: @Composable () -> Unit,
     modifier: Modifier = Modifier,
@@ -179,8 +178,8 @@ private fun ProjectIconButtonContent(
 private class ProjectIconButtonPreviewDataProvider :
     CollectionPreviewParameterProvider<ProjectIconButtonPreviewData>(
         collection = buildList {
-            ProjectIconButtonDefaults.ProjectIconButtonStyle.entries.forEach { style ->
-                ProjectIconButtonDefaults.ProjectIconButtonTint.entries.forEach { tint ->
+            ProjectIconButtonDefaults.IconButtonStyle.entries.forEach { style ->
+                ProjectIconButtonDefaults.IconButtonTint.entries.forEach { tint ->
                     Boolean.values.forEach { isEnabled ->
                         Boolean.values.forEach { isLoading ->
                             add(
@@ -199,8 +198,8 @@ private class ProjectIconButtonPreviewDataProvider :
     )
 
 private data class ProjectIconButtonPreviewData(
-    val style: ProjectIconButtonDefaults.ProjectIconButtonStyle,
-    val tint: ProjectIconButtonDefaults.ProjectIconButtonTint,
+    val style: ProjectIconButtonDefaults.IconButtonStyle,
+    val tint: ProjectIconButtonDefaults.IconButtonTint,
     val isEnabled: Boolean,
     val isLoading: Boolean,
 )

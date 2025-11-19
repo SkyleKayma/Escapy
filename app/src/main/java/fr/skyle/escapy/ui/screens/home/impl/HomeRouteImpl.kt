@@ -1,8 +1,9 @@
 package fr.skyle.escapy.ui.screens.home.impl
 
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -14,12 +15,38 @@ fun NavGraphBuilder.homeRoute(
 ) {
     composable<Route.Home>(
         enterTransition = {
-            fadeIn(animationSpec = tween())
+            if (initialState.destination.hasRoute<Route.SignIn>()) {
+                fadeIn(animationSpec = tween())
+            } else {
+                slideIntoContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween()
+                )
+            }
         },
         exitTransition = {
-            fadeOut(animationSpec = tween())
+            slideOutOfContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Left,
+                animationSpec = tween()
+            )
+        },
+        popEnterTransition = {
+            slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Right,
+                animationSpec = tween()
+            )
+        },
+        popExitTransition = {
+            slideOutOfContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Right,
+                animationSpec = tween()
+            )
         }
     ) {
-        HomeRoute()
+        HomeRoute(
+            navigateToProfile = {
+                navHostController.navigate(Route.Profile)
+            }
+        )
     }
 }

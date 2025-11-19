@@ -33,6 +33,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import fr.skyle.escapy.R
 import fr.skyle.escapy.designsystem.core.button.ProjectButton
@@ -40,6 +42,7 @@ import fr.skyle.escapy.designsystem.core.button.ProjectButtonDefaults
 import fr.skyle.escapy.designsystem.core.iconButton.ProjectIconButton
 import fr.skyle.escapy.designsystem.core.iconButton.ProjectIconButtonDefaults
 import fr.skyle.escapy.designsystem.core.textField.ProjectTextField
+import fr.skyle.escapy.designsystem.ext.values
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
 import fr.skyle.escapy.ui.core.snackbar.state.ProjectSnackbarState
 import fr.skyle.escapy.ui.core.snackbar.state.rememberProjectSnackbarState
@@ -50,6 +53,7 @@ import fr.skyle.escapy.ui.screens.signIn.ui.ext.otherAuthTypeText
 import fr.skyle.escapy.ui.screens.signIn.ui.ext.otherAuthTypeTextHighlighted
 import fr.skyle.escapy.ui.screens.signIn.ui.ext.title
 import fr.skyle.escapy.utils.AnnotatedData
+import fr.skyle.escapy.utils.ProjectScreenPreview
 import fr.skyle.escapy.utils.buildAnnotatedString
 
 @Composable
@@ -217,8 +221,8 @@ private fun SignInScreenContent(
         ) {
             ProjectIconButton(
                 icon = painterResource(R.drawable.ic_google),
-                style = ProjectIconButtonDefaults.ProjectIconButtonStyle.FILLED,
-                tint = ProjectIconButtonDefaults.ProjectIconButtonTint.DARK,
+                style = ProjectIconButtonDefaults.IconButtonStyle.FILLED,
+                tint = ProjectIconButtonDefaults.IconButtonTint.DARK,
                 onClick = onGoogleSignInClicked,
                 isEnabled = !isButtonLoading
             )
@@ -234,7 +238,9 @@ private fun SignInScreenContent(
                     color = ProjectTheme.colors.primary,
                     textDecoration = TextDecoration.Underline
                 ),
-                onClick = onChangeAuthTypeClicked
+                onClick = if (!isButtonLoading) {
+                    onChangeAuthTypeClicked
+                } else null
             )
         )
 
@@ -260,13 +266,53 @@ private fun SignInScreenContent(
     }
 }
 
-@Preview
+@ProjectScreenPreview
 @Composable
 private fun SignInScreenPreview() {
     ProjectTheme {
         SignInScreen(
             projectSnackbarState = rememberProjectSnackbarState(),
             signInState = SignInViewModel.SignInState(),
+            onSignInClicked = { _, _ -> },
+            onSignUpClicked = { _, _ -> },
+            onGoogleSignInClicked = {},
+            onContinueAsGuestClicked = {},
+            onChangeAuthTypeClicked = {}
+        )
+    }
+}
+
+private class SignInScreenContentPreviewDataProvider :
+    CollectionPreviewParameterProvider<SignInScreenContentPreviewData>(
+        collection = buildList {
+            AuthType.entries.forEach { authType ->
+                Boolean.values.forEach { isButtonLoading ->
+                    add(
+                        SignInScreenContentPreviewData(
+                            authType = authType,
+                            isButtonLoading = isButtonLoading,
+                        )
+                    )
+                }
+            }
+        }
+    )
+
+private data class SignInScreenContentPreviewData(
+    val authType: AuthType,
+    val isButtonLoading: Boolean,
+)
+
+@Preview
+@Composable
+private fun SignInScreenContentPreview(
+    @PreviewParameter(SignInScreenContentPreviewDataProvider::class) data: SignInScreenContentPreviewData
+
+) {
+    ProjectTheme {
+        SignInScreenContent(
+            authType = data.authType,
+            isButtonLoading = data.isButtonLoading,
             onSignInClicked = { _, _ -> },
             onSignUpClicked = { _, _ -> },
             onGoogleSignInClicked = {},

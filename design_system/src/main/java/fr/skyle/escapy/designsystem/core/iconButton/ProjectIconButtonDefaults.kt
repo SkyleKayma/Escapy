@@ -11,13 +11,13 @@ object ProjectIconButtonDefaults {
     internal const val ICON_SIZE_DP = 20
     const val ICON_BUTTON_BORDER_WIDTH_DP = 1
 
-    enum class ProjectIconButtonStyle {
+    enum class IconButtonStyle {
         OUTLINED,
         FILLED,
         SIMPLE
     }
 
-    enum class ProjectIconButtonTint {
+    enum class IconButtonTint {
         NEUTRAL,
         DARK;
 
@@ -47,9 +47,9 @@ object ProjectIconButtonDefaults {
 
     val disabledContainerColor: Color
         @Composable
-        get() = ProjectTheme.colors.grey250
+        get() = ProjectTheme.colors.grey750
 
     val disabledContentColor: Color
         @Composable
-        get() = ProjectTheme.colors.grey500
+        get() = ProjectTheme.colors.surfaceContainerLow
 }

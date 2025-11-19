@@ -7,11 +7,13 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 
 @Composable
 fun HomeRoute(
-    viewModel: HomeViewModel = hiltViewModel()
+    navigateToProfile: () -> Unit,
+    homeViewModel: HomeViewModel = hiltViewModel()
 ) {
-    val homeState by viewModel.homeState.collectAsState()
+    val homeState by homeViewModel.homeState.collectAsState()
 
     HomeScreen(
-        userName = homeState.userName
+        homeState = homeState,
+        onProfileClicked = navigateToProfile
     )
 }

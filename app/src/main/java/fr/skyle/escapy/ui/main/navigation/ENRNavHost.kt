@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navigation
 import fr.skyle.escapy.ui.screens.home.impl.homeRoute
+import fr.skyle.escapy.ui.screens.profile.impl.profileRoute
 import fr.skyle.escapy.ui.screens.signIn.impl.signInRoute
 
 @Composable
@@ -57,6 +58,10 @@ fun ProjectNavHost(
             startDestination = Route.Home
         ) {
             homeRoute(
+                navHostController = navHostController
+            )
+
+            profileRoute(
                 navHostController = navHostController
             )
         }

@@ -40,25 +40,25 @@ import fr.skyle.escapy.designsystem.theme.ProjectTheme
 import fr.skyle.escapy.ui.core.structure.ProjectScreenStructure
 import fr.skyle.escapy.ui.screens.home.ui.component.HomeActionCell
 import fr.skyle.escapy.utils.AnnotatedData
+import fr.skyle.escapy.utils.ProjectScreenPreview
 import fr.skyle.escapy.utils.buildAnnotatedString
 
 @Composable
 fun HomeScreen(
-    userName: String?
+    homeState: HomeViewModel.HomeState,
+    onProfileClicked: () -> Unit
 ) {
     ProjectScreenStructure(
         modifier = Modifier.fillMaxSize(),
         isPatternDisplayed = true,
-        topAppBar = {
+        topContent = {
             ProjectTopAppBar(
                 trailingContent = {
                     ProjectIconButton(
                         icon = rememberVectorPainter(Icons.Default.Person2),
-                        style = ProjectIconButtonDefaults.ProjectIconButtonStyle.OUTLINED,
-                        tint = ProjectIconButtonDefaults.ProjectIconButtonTint.NEUTRAL,
-                        onClick = {
-                            // TODO Go to Profile
-                        }
+                        style = ProjectIconButtonDefaults.IconButtonStyle.OUTLINED,
+                        tint = ProjectIconButtonDefaults.IconButtonTint.NEUTRAL,
+                        onClick = onProfileClicked
                     )
                 }
             )
@@ -74,7 +74,7 @@ fun HomeScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(start = 24.dp, end = 24.dp, bottom = 24.dp),
-                userName = userName
+                userName = homeState.userName
             )
 
             // TODO Add to DesignSystem
@@ -210,12 +210,15 @@ private fun HomeScreenContent(
     }
 }
 
-@Preview
+@ProjectScreenPreview
 @Composable
 private fun HomeScreenPreview() {
     ProjectTheme {
         HomeScreen(
-            userName = "John Doe"
+            homeState = HomeViewModel.HomeState(
+                userName = "John Doe"
+            ),
+            onProfileClicked = {}
         )
     }
 }
@@ -225,6 +228,7 @@ private fun HomeScreenPreview() {
 private fun HomeScreenContentPreview() {
     ProjectTheme {
         HomeScreenContent(
+            modifier = Modifier.fillMaxSize(),
             userName = "John Doe"
         )
     }

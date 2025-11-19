@@ -16,7 +16,7 @@ import fr.skyle.escapy.designsystem.theme.ProjectTheme
 fun ProjectTopAppBarItem(
     icon: Painter,
     onClick: () -> Unit,
-    style: ProjectIconButtonDefaults.ProjectIconButtonStyle,
+    style: ProjectIconButtonDefaults.IconButtonStyle,
     modifier: Modifier = Modifier,
     iconColor: Color? = null,
     isEnabled: Boolean = true,
@@ -27,7 +27,7 @@ fun ProjectTopAppBarItem(
         icon = icon,
         onClick = onClick,
         style = style,
-        tint = ProjectIconButtonDefaults.ProjectIconButtonTint.NEUTRAL,
+        tint = ProjectIconButtonDefaults.IconButtonTint.NEUTRAL,
         iconColor = iconColor,
         isEnabled = isEnabled,
         isLoading = isLoading,
@@ -41,7 +41,7 @@ private fun ProjectTopAppBarItemPreview() {
         ProjectTopAppBarItem(
             icon = rememberVectorPainter(Icons.AutoMirrored.Filled.ArrowBack),
             onClick = {},
-            style = ProjectIconButtonDefaults.ProjectIconButtonStyle.OUTLINED
+            style = ProjectIconButtonDefaults.IconButtonStyle.OUTLINED
         )
     }
 }

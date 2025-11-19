@@ -86,7 +86,7 @@ private fun ProjectTopAppBarContent(
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
                 style = ProjectTheme.typography.h1,
-                color = ProjectTheme.colors.primary
+                color = ProjectTheme.colors.onSurface
             )
         }
 
@@ -124,26 +124,26 @@ private fun ProjectTopAppBarPreview() {
             leadingContent = {
                 ProjectTopAppBarItem(
                     icon = rememberVectorPainter(Icons.AutoMirrored.Filled.ArrowBack),
-                    style = ProjectIconButtonDefaults.ProjectIconButtonStyle.FILLED,
+                    style = ProjectIconButtonDefaults.IconButtonStyle.FILLED,
                     onClick = {},
                 )
 
                 ProjectTopAppBarItem(
                     icon = rememberVectorPainter(Icons.Default.Settings),
-                    style = ProjectIconButtonDefaults.ProjectIconButtonStyle.FILLED,
+                    style = ProjectIconButtonDefaults.IconButtonStyle.FILLED,
                     onClick = {},
                 )
             },
             trailingContent = {
                 ProjectTopAppBarItem(
                     icon = rememberVectorPainter(Icons.Default.Settings),
-                    style = ProjectIconButtonDefaults.ProjectIconButtonStyle.FILLED,
+                    style = ProjectIconButtonDefaults.IconButtonStyle.FILLED,
                     onClick = {},
                 )
 
                 ProjectTopAppBarItem(
                     icon = rememberVectorPainter(Icons.Default.Settings),
-                    style = ProjectIconButtonDefaults.ProjectIconButtonStyle.FILLED,
+                    style = ProjectIconButtonDefaults.IconButtonStyle.FILLED,
                     onClick = {},
                 )
             }

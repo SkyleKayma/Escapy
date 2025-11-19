@@ -2,6 +2,10 @@ package fr.skyle.escapy.ui.core.structure
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -17,21 +21,30 @@ import fr.skyle.escapy.designsystem.ext.values
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
 import fr.skyle.escapy.ui.core.snackbar.ProjectSnackbar
 import fr.skyle.escapy.ui.core.snackbar.state.ProjectSnackbarState
+import fr.skyle.escapy.utils.ProjectScreenPreview
 
 @Composable
 fun ProjectScreenStructure(
     modifier: Modifier = Modifier,
     isPatternDisplayed: Boolean = false,
     projectSnackbarState: ProjectSnackbarState? = null,
-    topAppBar: (@Composable () -> Unit)? = null,
+    topContent: (@Composable () -> Unit)? = null,
     bottomContent: (@Composable () -> Unit)? = null,
     content: @Composable (PaddingValues) -> Unit,
 ) {
+    val insets = if (topContent != null && bottomContent != null) {
+        WindowInsets.systemBars
+    } else if (topContent != null) {
+        WindowInsets.statusBars
+    } else if (bottomContent != null) {
+        WindowInsets.navigationBars
+    } else WindowInsets(0.dp)
+
     Scaffold(
         modifier = modifier,
         containerColor = ProjectTheme.colors.surfaceContainerLow,
         topBar = {
-            topAppBar?.invoke()
+            topContent?.invoke()
         },
         bottomBar = {
             bottomContent?.invoke()
@@ -49,7 +62,8 @@ fun ProjectScreenStructure(
             }
 
             content(paddingValues)
-        }
+        },
+        contentWindowInsets = insets
     )
 }
 
@@ -80,7 +94,7 @@ private data class ProjectScreenStructurePreviewData(
     val isPatternDisplayed: Boolean
 )
 
-@Preview
+@ProjectScreenPreview
 @Composable
 private fun ProjectScreenStructurePreview(
     @PreviewParameter(ProjectScreenStructurePreviewDataProvider::class) data: ProjectScreenStructurePreviewData
