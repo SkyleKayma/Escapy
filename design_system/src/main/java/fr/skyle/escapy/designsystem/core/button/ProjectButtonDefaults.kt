@@ -53,14 +53,21 @@ object ProjectButtonDefaults {
                 SECONDARY -> ProjectTheme.colors.onSecondary
             }
 
-        val outlinedContentColor: Color
+        val outlineContentColor: Color
             @Composable
             get() = when (this) {
                 PRIMARY -> ProjectTheme.colors.primary
-                SECONDARY -> ProjectTheme.colors.secondary
+                SECONDARY -> ProjectTheme.colors.onSecondary
             }
 
-        val borderColor: Color
+        val textContentColor: Color
+            @Composable
+            get() = when (this) {
+                PRIMARY -> ProjectTheme.colors.primary
+                SECONDARY -> ProjectTheme.colors.onSecondary
+            }
+
+        val outlineColor: Color
             @Composable
             get() = when (this) {
                 PRIMARY -> ProjectTheme.colors.primary

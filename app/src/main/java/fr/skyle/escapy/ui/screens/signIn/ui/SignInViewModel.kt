@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,7 +30,7 @@ class SignInViewModel @Inject constructor(
 
             try {
                 // TODO: Replace with actual sign in logic
-                userRepository.insertUser("fake_token", email)
+//                userRepository.insertUser("fake_token", email)
 
                 _signInState.update {
                     it.copy(
@@ -38,6 +39,7 @@ class SignInViewModel @Inject constructor(
                     )
                 }
             } catch (e: Exception) {
+                Timber.e(e)
                 _signInState.update {
                     it.copy(
                         isButtonLoading = false,
@@ -56,7 +58,7 @@ class SignInViewModel @Inject constructor(
 
             try {
                 // TODO: Replace with actual sign up logic
-                userRepository.insertUser("fake_token", email)
+//                userRepository.insertUser("fake_token", email)
 
                 _signInState.update {
                     it.copy(
@@ -65,6 +67,7 @@ class SignInViewModel @Inject constructor(
                     )
                 }
             } catch (e: Exception) {
+                Timber.e(e)
                 _signInState.update {
                     it.copy(
                         isButtonLoading = false,
@@ -82,7 +85,7 @@ class SignInViewModel @Inject constructor(
             }
 
             try {
-                userRepository.insertUser("fake_google_token", "Google User name")
+//                userRepository.insertUser("fake_google_token", "Google User name")
                 _signInState.update {
                     it.copy(
                         isButtonLoading = false,
@@ -90,6 +93,7 @@ class SignInViewModel @Inject constructor(
                     )
                 }
             } catch (e: Exception) {
+                Timber.e(e)
                 _signInState.update {
                     it.copy(
                         isButtonLoading = false,
@@ -100,8 +104,34 @@ class SignInViewModel @Inject constructor(
         }
     }
 
-    fun changeAuthType(){
-        val newAuthType = when(_signInState.value.authType){
+    fun signInAsGuest() {
+        viewModelScope.launch {
+            _signInState.update {
+                it.copy(isButtonLoading = true)
+            }
+
+            try {
+                userRepository.signInAsGuest()
+                _signInState.update {
+                    it.copy(
+                        isButtonLoading = false,
+                        event = SignInEvent.SignInSuccess
+                    )
+                }
+            } catch (e: Exception) {
+                Timber.e(e)
+                _signInState.update {
+                    it.copy(
+                        isButtonLoading = false,
+                        event = SignInEvent.SignInError(e.message ?: "An error occurred"),
+                    )
+                }
+            }
+        }
+    }
+
+    fun changeAuthType() {
+        val newAuthType = when (_signInState.value.authType) {
             AuthType.SIGN_IN -> AuthType.SIGN_UP
             AuthType.SIGN_UP -> AuthType.SIGN_IN
         }

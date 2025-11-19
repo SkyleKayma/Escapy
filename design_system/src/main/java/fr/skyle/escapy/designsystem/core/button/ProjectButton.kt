@@ -138,7 +138,7 @@ private fun ProjectTextButton(
         enabled = isEnabled,
         shape = ProjectButtonDefaults.buttonShape,
         colors = ButtonDefaults.textButtonColors(
-            contentColor = tint.containerColor,
+            contentColor = tint.textContentColor,
             disabledContentColor = ProjectButtonDefaults.disabledContentColor,
         ),
         contentPadding = size.contentPadding,
@@ -164,13 +164,13 @@ private fun ProjectOutlinedButton(
         border = BorderStroke(
             width = ProjectButtonDefaults.BUTTON_BORDER_WIDTH_DP.dp,
             color = if (isEnabled) {
-                tint.borderColor
+                tint.outlineColor
             } else {
                 ProjectButtonDefaults.disabledContentColor
             }
         ),
         colors = ButtonDefaults.outlinedButtonColors(
-            contentColor = tint.outlinedContentColor,
+            contentColor = tint.outlineContentColor,
             disabledContentColor = ProjectButtonDefaults.disabledContentColor,
         ),
         contentPadding = size.contentPadding,

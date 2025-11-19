@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -58,14 +59,17 @@ fun SignInScreen(
     onSignInClicked: (String, String) -> Unit,
     onSignUpClicked: (String, String) -> Unit,
     onGoogleSignInClicked: () -> Unit,
+    onContinueAsGuestClicked: () -> Unit,
     onChangeAuthTypeClicked: () -> Unit,
 ) {
     ProjectScreenStructure(
+        modifier = Modifier.fillMaxSize(),
         isPatternDisplayed = true,
         projectSnackbarState = projectSnackbarState
     ) {
         SignInScreenContent(
             modifier = Modifier
+                .systemBarsPadding()
                 .fillMaxSize()
                 .padding(24.dp),
             authType = signInState.authType,
@@ -73,6 +77,7 @@ fun SignInScreen(
             onSignInClicked = onSignInClicked,
             onSignUpClicked = onSignUpClicked,
             onGoogleSignInClicked = onGoogleSignInClicked,
+            onContinueAsGuestClicked = onContinueAsGuestClicked,
             onChangeAuthTypeClicked = onChangeAuthTypeClicked
         )
     }
@@ -85,6 +90,7 @@ private fun SignInScreenContent(
     onSignInClicked: (String, String) -> Unit,
     onSignUpClicked: (String, String) -> Unit,
     onGoogleSignInClicked: () -> Unit,
+    onContinueAsGuestClicked: () -> Unit,
     onChangeAuthTypeClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -98,6 +104,8 @@ private fun SignInScreenContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        Spacer(modifier = Modifier.weight(1f))
+
         Image(
             modifier = Modifier.size(64.dp),
             painter = painterResource(id = R.drawable.ic_logo),
@@ -130,7 +138,8 @@ private fun SignInScreenContent(
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next,
                 keyboardType = KeyboardType.Email
-            )
+            ),
+            isEnabled = !isButtonLoading
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -149,7 +158,8 @@ private fun SignInScreenContent(
                 onDone = {
                     onSignInClicked(email, password)
                 }
-            )
+            ),
+            isEnabled = !isButtonLoading
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -173,69 +183,80 @@ private fun SignInScreenContent(
             isLoading = isButtonLoading
         )
 
-        if (!isButtonLoading) {
-            Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                HorizontalDivider(
-                    modifier = Modifier.weight(1f),
-                    color = ProjectTheme.colors.onSurface
-                )
-
-                Text(
-                    modifier = Modifier.wrapContentWidth(),
-                    text = stringResource(R.string.sign_in_up_or_sign_in_with),
-                    style = ProjectTheme.typography.p3,
-                    color = ProjectTheme.colors.onSurface
-                )
-
-                HorizontalDivider(
-                    modifier = Modifier.weight(1f),
-                    color = ProjectTheme.colors.onSurface
-                )
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                ProjectIconButton(
-                    icon = painterResource(R.drawable.ic_google),
-                    style = ProjectIconButtonDefaults.ProjectIconButtonStyle.FILLED,
-                    tint = ProjectIconButtonDefaults.ProjectIconButtonTint.DARK,
-                    onClick = onGoogleSignInClicked
-                )
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            val accountText = buildAnnotatedString(
-                fullText = authType.otherAuthTypeText,
-                AnnotatedData(
-                    text = authType.otherAuthTypeTextHighlighted,
-                    spanStyle = SpanStyle(
-                        color = ProjectTheme.colors.primary,
-                        textDecoration = TextDecoration.Underline
-                    ),
-                    onClick = onChangeAuthTypeClicked
-                )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            HorizontalDivider(
+                modifier = Modifier.weight(1f),
+                color = ProjectTheme.colors.onSurface
             )
 
             Text(
                 modifier = Modifier.wrapContentWidth(),
-                text = accountText,
-                style = ProjectTheme.typography.p2,
-                color = ProjectTheme.colors.onSurface,
-                textAlign = TextAlign.Center
+                text = stringResource(R.string.sign_in_up_or_sign_in_with),
+                style = ProjectTheme.typography.p3,
+                color = ProjectTheme.colors.onSurface
+            )
+
+            HorizontalDivider(
+                modifier = Modifier.weight(1f),
+                color = ProjectTheme.colors.onSurface
             )
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            ProjectIconButton(
+                icon = painterResource(R.drawable.ic_google),
+                style = ProjectIconButtonDefaults.ProjectIconButtonStyle.FILLED,
+                tint = ProjectIconButtonDefaults.ProjectIconButtonTint.DARK,
+                onClick = onGoogleSignInClicked,
+                isEnabled = !isButtonLoading
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        val accountText = buildAnnotatedString(
+            fullText = authType.otherAuthTypeText,
+            AnnotatedData(
+                text = authType.otherAuthTypeTextHighlighted,
+                spanStyle = SpanStyle(
+                    color = ProjectTheme.colors.primary,
+                    textDecoration = TextDecoration.Underline
+                ),
+                onClick = onChangeAuthTypeClicked
+            )
+        )
+
+        Text(
+            modifier = Modifier.wrapContentWidth(),
+            text = accountText,
+            style = ProjectTheme.typography.p2,
+            color = ProjectTheme.colors.onSurface,
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        ProjectButton(
+            modifier = Modifier.wrapContentWidth(),
+            text = stringResource(R.string.sign_in_up_continue_as_guest),
+            onClick = onContinueAsGuestClicked,
+            style = ProjectButtonDefaults.ButtonStyle.OUTLINED,
+            tint = ProjectButtonDefaults.ButtonTint.SECONDARY,
+            size = ProjectButtonDefaults.ButtonSize.SMALL,
+            isEnabled = !isButtonLoading
+        )
     }
 }
 
@@ -249,6 +270,7 @@ private fun SignInScreenPreview() {
             onSignInClicked = { _, _ -> },
             onSignUpClicked = { _, _ -> },
             onGoogleSignInClicked = {},
+            onContinueAsGuestClicked = {},
             onChangeAuthTypeClicked = {}
         )
     }

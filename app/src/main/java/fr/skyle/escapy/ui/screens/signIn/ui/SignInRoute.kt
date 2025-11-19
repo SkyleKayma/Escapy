@@ -26,7 +26,7 @@ fun SignInRoute(
             when (event) {
                 is SignInViewModel.SignInEvent.SignInError -> {
                     projectSnackbarState.showSnackbar(
-                        message = context.getString(R.string.sign_in_error)
+                        message = context.getString(R.string.sign_in_error, event.errorMessage)
                     )
                 }
 
@@ -37,7 +37,7 @@ fun SignInRoute(
 
                 is SignInViewModel.SignInEvent.SignUpError -> {
                     projectSnackbarState.showSnackbar(
-                        message = context.getString(R.string.sign_up_error)
+                        message = context.getString(R.string.sign_up_error, event.errorMessage)
                     )
                 }
             }
@@ -52,6 +52,7 @@ fun SignInRoute(
         onSignInClicked = signInViewModel::signIn,
         onSignUpClicked = signInViewModel::signIn,
         onGoogleSignInClicked = signInViewModel::signInWithGoogle,
+        onContinueAsGuestClicked = signInViewModel::signInAsGuest,
         onChangeAuthTypeClicked = signInViewModel::changeAuthType
     )
 }

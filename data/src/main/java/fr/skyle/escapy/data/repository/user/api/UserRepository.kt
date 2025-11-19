@@ -5,12 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
 
-    suspend fun insertUser(
-        accessToken: String,
-        name: String,
-    )
+    suspend fun signInAsGuest()
 
-    suspend fun getUser(): User?
-
-    fun watchUser(): Flow<User?>
+    fun watchCurrentUser(): Flow<User?>
 }

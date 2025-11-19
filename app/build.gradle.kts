@@ -22,6 +22,11 @@ val keystorePropertiesFile = rootProject.file("private/keys/keystore.properties"
 val keystoreProperties = Properties()
 keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 
+// Secrets
+val secretsPropertiesFile = rootProject.file("private/secrets.properties")
+val secretsProperties = Properties()
+secretsProperties.load(FileInputStream(secretsPropertiesFile))
+
 android {
     namespace = "fr.skyle.escapy"
     compileSdk = libs.versions.compileSdk.get().toInt()
@@ -34,6 +39,14 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        secretsProperties.forEach {
+            buildConfigField(
+                type = "String",
+                name = it.key as String,
+                value = it.value as? String ?: ""
+            )
+        }
     }
 
     signingConfigs {

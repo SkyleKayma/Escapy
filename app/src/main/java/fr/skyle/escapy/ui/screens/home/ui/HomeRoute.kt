@@ -9,7 +9,9 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 fun HomeRoute(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
-    val userName by viewModel.userName.collectAsState()
+    val homeState by viewModel.homeState.collectAsState()
 
-    HomeScreen(userName = userName ?: "")
+    HomeScreen(
+        userName = homeState.userName
+    )
 }

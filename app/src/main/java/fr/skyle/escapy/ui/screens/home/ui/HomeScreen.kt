@@ -6,8 +6,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Add
@@ -22,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,34 +44,40 @@ import fr.skyle.escapy.utils.buildAnnotatedString
 
 @Composable
 fun HomeScreen(
-    userName: String
+    userName: String?
 ) {
     ProjectScreenStructure(
-        isPatternDisplayed = true
-    ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            Column(modifier = Modifier.fillMaxSize()) {
-                ProjectTopAppBar(
-                    trailingContent = {
-                        ProjectIconButton(
-                            icon = rememberVectorPainter(Icons.Default.Person2),
-                            style = ProjectIconButtonDefaults.ProjectIconButtonStyle.OUTLINED,
-                            tint = ProjectIconButtonDefaults.ProjectIconButtonTint.NEUTRAL,
-                            onClick = {
-                                // TODO Go to Profile
-                            }
-                        )
-                    }
-                )
+        modifier = Modifier.fillMaxSize(),
+        isPatternDisplayed = true,
+        topAppBar = {
+            ProjectTopAppBar(
+                trailingContent = {
+                    ProjectIconButton(
+                        icon = rememberVectorPainter(Icons.Default.Person2),
+                        style = ProjectIconButtonDefaults.ProjectIconButtonStyle.OUTLINED,
+                        tint = ProjectIconButtonDefaults.ProjectIconButtonTint.NEUTRAL,
+                        onClick = {
+                            // TODO Go to Profile
+                        }
+                    )
+                }
+            )
+        }
+    ) { innerPadding ->
+        Box(
+            modifier = Modifier
+                .padding(innerPadding)
+                .navigationBarsPadding()
+                .fillMaxSize()
+        ) {
+            HomeScreenContent(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(start = 24.dp, end = 24.dp, bottom = 24.dp),
+                userName = userName
+            )
 
-                HomeScreenContent(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(start = 24.dp, end = 24.dp, bottom = 24.dp),
-                    userName = userName
-                )
-            }
-
+            // TODO Add to DesignSystem
             FloatingActionButton(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
@@ -90,19 +100,26 @@ fun HomeScreen(
 
 @Composable
 private fun HomeScreenContent(
-    userName: String,
+    userName: String?,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier) {
-        val welcomeTitle = buildAnnotatedString(
-            fullText = stringResource(R.string.home_welcome_format, userName),
-            AnnotatedData(
-                text = userName,
-                spanStyle = SpanStyle(
-                    color = ProjectTheme.colors.primary
+    Column(
+        modifier = modifier
+            .verticalScroll(rememberScrollState())
+    ) {
+        val welcomeTitle = userName?.let {
+            buildAnnotatedString(
+                fullText = stringResource(R.string.home_welcome_format, userName),
+                AnnotatedData(
+                    text = userName,
+                    spanStyle = SpanStyle(
+                        color = ProjectTheme.colors.primary
+                    )
                 )
             )
-        )
+        } ?: run {
+            AnnotatedString(stringResource(R.string.home_welcome))
+        }
 
         Text(
             modifier = Modifier.fillMaxWidth(),
