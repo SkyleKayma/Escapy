@@ -3,5 +3,6 @@ theme: jekyll-theme-tactile
 include:
   - docs
 
+baseurl: ""     # ensure the site is at the root
 readme_index:
   enabled: false
