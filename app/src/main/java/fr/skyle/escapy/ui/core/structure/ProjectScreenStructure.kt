@@ -2,11 +2,8 @@ package fr.skyle.escapy.ui.core.structure
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -30,16 +27,10 @@ fun ProjectScreenStructure(
     projectSnackbarState: ProjectSnackbarState? = null,
     topContent: (@Composable () -> Unit)? = null,
     bottomContent: (@Composable () -> Unit)? = null,
+    floatingActionButton: (@Composable () -> Unit)? = null,
+    floatingActionButtonPosition: FabPosition = FabPosition.End,
     content: @Composable (PaddingValues) -> Unit,
 ) {
-    val insets = if (topContent != null && bottomContent != null) {
-        WindowInsets.systemBars
-    } else if (topContent != null) {
-        WindowInsets.statusBars
-    } else if (bottomContent != null) {
-        WindowInsets.navigationBars
-    } else WindowInsets(0.dp)
-
     Scaffold(
         modifier = modifier,
         containerColor = ProjectTheme.colors.surfaceContainerLow,
@@ -49,6 +40,10 @@ fun ProjectScreenStructure(
         bottomBar = {
             bottomContent?.invoke()
         },
+        floatingActionButton = {
+            floatingActionButton?.invoke()
+        },
+        floatingActionButtonPosition = floatingActionButtonPosition,
         snackbarHost = {
             projectSnackbarState?.let {
                 ProjectSnackbar(
@@ -63,7 +58,6 @@ fun ProjectScreenStructure(
 
             content(paddingValues)
         },
-        contentWindowInsets = insets
     )
 }
 

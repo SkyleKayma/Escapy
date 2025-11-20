@@ -1,11 +1,11 @@
 package fr.skyle.escapy.ui.screens.profile.ui
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -25,11 +25,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.skyle.escapy.R
 import fr.skyle.escapy.data.enums.AuthProvider
+import fr.skyle.escapy.data.enums.Avatar
 import fr.skyle.escapy.designsystem.core.iconButton.ProjectIconButtonDefaults
 import fr.skyle.escapy.designsystem.core.topAppBar.ProjectTopAppBar
 import fr.skyle.escapy.designsystem.core.topAppBar.component.ProjectTopAppBarItem
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
-import fr.skyle.escapy.data.enums.Avatar
 import fr.skyle.escapy.ext.displayText
 import fr.skyle.escapy.ui.core.structure.ProjectScreenStructure
 import fr.skyle.escapy.ui.screens.profile.ui.component.ProfileAvatar
@@ -63,9 +63,8 @@ fun ProfileScreen(
         }
     ) { innerPadding ->
         ProfileScreenContent(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
+            innerPadding = innerPadding,
             username = profileState.userName,
             avatar = profileState.avatar,
             authProvider = profileState.authProvider
@@ -75,6 +74,7 @@ fun ProfileScreen(
 
 @Composable
 private fun ProfileScreenContent(
+    innerPadding: PaddingValues,
     username: String?,
     avatar: Avatar?,
     authProvider: AuthProvider,
@@ -82,6 +82,7 @@ private fun ProfileScreenContent(
 ) {
     Column(
         modifier = modifier
+            .padding(top = innerPadding.calculateTopPadding())
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 24.dp)
             .padding(bottom = 24.dp)
@@ -209,9 +210,7 @@ private fun ProfileScreenContent(
             data = generalMenuData
         )
 
-        Spacer(
-            modifier = Modifier.navigationBarsPadding()
-        )
+        Spacer(modifier = Modifier.padding(innerPadding.calculateBottomPadding()))
     }
 }
 
@@ -235,7 +234,7 @@ private fun ProfileScreenPreview() {
 private fun ProfileScreenContentPreview() {
     ProjectTheme {
         ProfileScreenContent(
-            modifier = Modifier.fillMaxSize(),
+            innerPadding = PaddingValues(),
             username = "John Doe",
             avatar = null,
             authProvider = AuthProvider.ANONYMOUS

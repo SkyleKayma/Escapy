@@ -1,12 +1,14 @@
 package fr.skyle.escapy.ui.screens.home.ui
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -21,7 +23,6 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
@@ -62,26 +63,11 @@ fun HomeScreen(
                     )
                 }
             )
-        }
-    ) { innerPadding ->
-        Box(
-            modifier = Modifier
-                .padding(innerPadding)
-                .navigationBarsPadding()
-                .fillMaxSize()
-        ) {
-            HomeScreenContent(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(start = 24.dp, end = 24.dp, bottom = 24.dp),
-                userName = homeState.userName
-            )
-
+        },
+        floatingActionButton = {
             // TODO Add to DesignSystem
             FloatingActionButton(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(end = 24.dp, bottom = 24.dp),
+                modifier = Modifier.size(56.dp),
                 containerColor = ProjectTheme.colors.primary,
                 onClick = {
                     // TODO
@@ -95,17 +81,26 @@ fun HomeScreen(
                 )
             }
         }
+    ) { innerPadding ->
+        HomeScreenContent(
+            modifier = Modifier.fillMaxSize(),
+            innerPadding = innerPadding,
+            userName = homeState.userName,
+        )
     }
 }
 
 @Composable
 private fun HomeScreenContent(
+    innerPadding: PaddingValues,
     userName: String?,
     modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier
+            .padding(top = innerPadding.calculateTopPadding())
             .verticalScroll(rememberScrollState())
+            .padding(start = 24.dp, end = 24.dp, bottom = 24.dp)
     ) {
         val welcomeTitle = userName?.let {
             buildAnnotatedString(
@@ -207,6 +202,8 @@ private fun HomeScreenContent(
                 )
             }
         )
+
+        Spacer(modifier = Modifier.height(innerPadding.calculateBottomPadding()))
     }
 }
 
@@ -228,8 +225,9 @@ private fun HomeScreenPreview() {
 private fun HomeScreenContentPreview() {
     ProjectTheme {
         HomeScreenContent(
+            innerPadding = PaddingValues(),
+            userName = "John Doe",
             modifier = Modifier.fillMaxSize(),
-            userName = "John Doe"
         )
     }
 }

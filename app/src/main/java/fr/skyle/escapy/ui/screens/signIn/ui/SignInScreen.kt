@@ -3,6 +3,7 @@ package fr.skyle.escapy.ui.screens.signIn.ui
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,10 +11,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -70,12 +72,10 @@ fun SignInScreen(
         modifier = Modifier.fillMaxSize(),
         isPatternDisplayed = true,
         projectSnackbarState = projectSnackbarState
-    ) {
+    ) { innerPadding ->
         SignInScreenContent(
-            modifier = Modifier
-                .systemBarsPadding()
-                .fillMaxSize()
-                .padding(24.dp),
+            modifier = Modifier.fillMaxSize(),
+            innerPadding = innerPadding,
             authType = signInState.authType,
             isButtonLoading = signInState.isButtonLoading,
             onSignInClicked = onSignInClicked,
@@ -89,6 +89,7 @@ fun SignInScreen(
 
 @Composable
 private fun SignInScreenContent(
+    innerPadding: PaddingValues,
     authType: AuthType,
     isButtonLoading: Boolean,
     onSignInClicked: (String, String) -> Unit,
@@ -104,10 +105,14 @@ private fun SignInScreenContent(
     var password by remember { mutableStateOf("") }
 
     Column(
-        modifier = modifier,
+        modifier = modifier
+            .padding(24.dp)
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        Spacer(modifier = Modifier.padding(innerPadding.calculateTopPadding()))
+
         Spacer(modifier = Modifier.weight(1f))
 
         Image(
@@ -263,6 +268,8 @@ private fun SignInScreenContent(
             size = ProjectButtonDefaults.ButtonSize.SMALL,
             isEnabled = !isButtonLoading
         )
+
+        Spacer(modifier = Modifier.padding(innerPadding.calculateBottomPadding()))
     }
 }
 
@@ -311,13 +318,14 @@ private fun SignInScreenContentPreview(
 ) {
     ProjectTheme {
         SignInScreenContent(
+            innerPadding = PaddingValues(),
             authType = data.authType,
             isButtonLoading = data.isButtonLoading,
             onSignInClicked = { _, _ -> },
             onSignUpClicked = { _, _ -> },
             onGoogleSignInClicked = {},
             onContinueAsGuestClicked = {},
-            onChangeAuthTypeClicked = {}
+            onChangeAuthTypeClicked = {},
         )
     }
 }
