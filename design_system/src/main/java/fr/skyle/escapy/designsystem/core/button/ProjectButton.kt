@@ -139,7 +139,7 @@ private fun ProjectTextButton(
         shape = ProjectButtonDefaults.buttonShape,
         colors = ButtonDefaults.textButtonColors(
             contentColor = tint.textContentColor,
-            disabledContentColor = ProjectButtonDefaults.disabledContentColor,
+            disabledContentColor = ProjectButtonDefaults.disabledContainerColor,
         ),
         contentPadding = size.contentPadding,
     ) {
@@ -171,7 +171,7 @@ private fun ProjectOutlinedButton(
         ),
         colors = ButtonDefaults.outlinedButtonColors(
             contentColor = tint.outlineContentColor,
-            disabledContentColor = ProjectButtonDefaults.disabledContentColor,
+            disabledContentColor = ProjectButtonDefaults.disabledContainerColor,
         ),
         contentPadding = size.contentPadding,
     ) {

@@ -143,7 +143,7 @@ object ProjectButtonDefaults {
 
     val disabledContainerColor: Color
         @Composable
-        get() = ProjectTheme.colors.grey750
+        get() = ProjectTheme.colors.grey500
 
     val disabledContentColor: Color
         @Composable
