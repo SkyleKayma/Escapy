@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -31,6 +32,8 @@ import fr.skyle.escapy.designsystem.core.topAppBar.ProjectTopAppBar
 import fr.skyle.escapy.designsystem.core.topAppBar.component.ProjectTopAppBarItem
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
 import fr.skyle.escapy.ext.displayText
+import fr.skyle.escapy.ext.navigateToDataPrivacy
+import fr.skyle.escapy.ext.navigateToOpenium
 import fr.skyle.escapy.ui.core.structure.ProjectScreenStructure
 import fr.skyle.escapy.ui.screens.profile.ui.component.ProfileAvatar
 import fr.skyle.escapy.ui.screens.profile.ui.component.ProfileMenuStructure
@@ -80,6 +83,8 @@ private fun ProfileScreenContent(
     authProvider: AuthProvider,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
+
     Column(
         modifier = modifier
             .padding(top = innerPadding.calculateTopPadding())
@@ -170,15 +175,11 @@ private fun ProfileScreenContent(
                         ),
                         ProfileMenuStructureItemData(
                             title = AnnotatedString(stringResource(R.string.profile_openium)),
-                            onCellClicked = {
-                                // TODO
-                            }
+                            onCellClicked = context::navigateToOpenium
                         ),
                         ProfileMenuStructureItemData(
                             title = AnnotatedString(stringResource(R.string.profile_privacy_policy)),
-                            onCellClicked = {
-                                // TODO
-                            }
+                            onCellClicked = context::navigateToDataPrivacy
                         ),
                         ProfileMenuStructureItemData(
                             title = AnnotatedString(stringResource(R.string.profile_about_app)),

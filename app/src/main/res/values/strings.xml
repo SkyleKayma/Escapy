@@ -1,5 +1,8 @@
 <resources>
-    <string name="app_name">Escapy</string>
+    <!-- App -->
+    <string name="app_name" translatable="false">Escapy</string>
+    <string name="openium_url" translatable="false">https://www.openium.fr</string>
+    <string name="data_privacy_url" translatable="false">https://skylekayma.github.io/Escapy/docs/privacy-policy.html</string>
 
     <!-- SignIn -->
     <string name="sign_in_title">Connexion</string>

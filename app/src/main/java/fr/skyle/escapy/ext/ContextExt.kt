@@ -1,0 +1,18 @@
+package fr.skyle.escapy.ext
+
+import android.content.Context
+import android.content.Intent
+import androidx.core.net.toUri
+import fr.skyle.escapy.R
+
+fun Context.navigateToLink(link: String) {
+    startActivity(Intent.createChooser(Intent(Intent.ACTION_VIEW, link.toUri()), null))
+}
+
+fun Context.navigateToOpenium() {
+    navigateToLink(getString(R.string.openium_url))
+}
+
+fun Context.navigateToDataPrivacy() {
+    navigateToLink(getString(R.string.data_privacy_url))
+}
