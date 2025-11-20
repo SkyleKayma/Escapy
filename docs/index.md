@@ -1,3 +1,8 @@
+---
+layout: default
+title: Escapy
+---
+
 ## Escapy
 
 Escapy est une application mobile conçue pour gérer facilement vos propres escape games à jouer avec vos amis.  
