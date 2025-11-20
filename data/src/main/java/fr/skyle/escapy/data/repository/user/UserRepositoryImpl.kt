@@ -14,7 +14,6 @@ import fr.skyle.escapy.data.ext.toUserPost
 import fr.skyle.escapy.data.repository.user.api.UserRepository
 import fr.skyle.escapy.data.vo.User
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -53,9 +52,6 @@ class UserRepositoryImpl @Inject constructor(
         val result = firebaseAuth.signInAnonymously().awaitWithTimeout()
 
         result?.user?.let { user ->
-            // To prevent screens to switch too fast
-            delay(200)
-
             val currentUserUid = user.uid
             val currentUser = User(
                 uid = currentUserUid,
