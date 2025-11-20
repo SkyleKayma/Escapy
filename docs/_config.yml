@@ -2,3 +2,6 @@ theme: jekyll-theme-tactile
 
 include:
   - docs
+
+readme_index:
+  enabled: false
