@@ -6,11 +6,14 @@ import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
 
-    fun isUserLoggedIn() : Boolean
+    fun isUserLoggedIn(): Boolean
 
-    fun getAuthProvider() : AuthProvider
+    fun getAuthProvider(): AuthProvider
 
     suspend fun signInAsGuest()
 
+    fun signOut()
+
     fun watchCurrentUser(): Flow<User?>
+
 }

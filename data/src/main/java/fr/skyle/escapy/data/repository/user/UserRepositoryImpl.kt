@@ -72,6 +72,10 @@ class UserRepositoryImpl @Inject constructor(
         } ?: throw Exception("No user returned from API")
     }
 
+    override fun signOut() {
+        FirebaseAuth.getInstance().signOut()
+    }
+
     fun fetchCurrentUser(): Flow<User?> =
         callbackFlow {
             val listener = object : ValueEventListener {

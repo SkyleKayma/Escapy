@@ -12,7 +12,6 @@ import fr.skyle.escapy.ui.core.snackbar.state.rememberProjectSnackbarState
 @Composable
 fun SignInRoute(
     navigateToHome: () -> Unit,
-    navigateToSignUp: () -> Unit,
     signInViewModel: SignInViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current

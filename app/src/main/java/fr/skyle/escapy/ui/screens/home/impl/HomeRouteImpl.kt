@@ -7,6 +7,7 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import fr.skyle.escapy.ext.navigateWithLifecycle
 import fr.skyle.escapy.ui.main.navigation.Route
 import fr.skyle.escapy.ui.screens.home.ui.HomeRoute
 
@@ -45,7 +46,7 @@ fun NavGraphBuilder.homeRoute(
     ) {
         HomeRoute(
             navigateToProfile = {
-                navHostController.navigate(Route.Profile)
+                navHostController.navigateWithLifecycle(Route.Profile)
             }
         )
     }

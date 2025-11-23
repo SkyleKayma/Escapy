@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.skyle.escapy.data.enums.AuthProvider
-import fr.skyle.escapy.data.repository.user.api.UserRepository
 import fr.skyle.escapy.data.enums.Avatar
+import fr.skyle.escapy.data.repository.user.api.UserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    userRepository: UserRepository
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
     private val _profileState = MutableStateFlow<ProfileState>(ProfileState())
@@ -36,9 +36,32 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+    fun signOut() {
+        userRepository.signOut()
+
+        _profileState.update {
+            it.copy(
+                event = ProfileEvent.SignOutSuccess
+            )
+        }
+    }
+
+    fun eventDelivered() {
+        viewModelScope.launch {
+            _profileState.update {
+                it.copy(event = null)
+            }
+        }
+    }
+
     data class ProfileState(
         val userName: String? = null,
         val avatar: Avatar? = null,
         val authProvider: AuthProvider = AuthProvider.ANONYMOUS,
+        val event: ProfileEvent? = null
     )
+
+    sealed interface ProfileEvent {
+        data object SignOutSuccess : ProfileEvent
+    }
 }

@@ -6,6 +6,8 @@ import androidx.compose.animation.fadeOut
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import fr.skyle.escapy.ext.navigateToDestinationAndPopUpTo
+import fr.skyle.escapy.ui.main.navigation.Graph
 import fr.skyle.escapy.ui.main.navigation.Route
 import fr.skyle.escapy.ui.screens.signIn.ui.SignInRoute
 
@@ -22,14 +24,7 @@ fun NavGraphBuilder.signInRoute(
     ) {
         SignInRoute(
             navigateToHome = {
-                navHostController.navigate(Route.Home) {
-                    popUpTo(Route.SignIn) {
-                        inclusive = true
-                    }
-                }
-            },
-            navigateToSignUp = {
-
+                navHostController.navigateToDestinationAndPopUpTo<Graph.Auth>(Route.Home)
             }
         )
     }

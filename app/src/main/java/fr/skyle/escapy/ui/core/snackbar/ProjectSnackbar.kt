@@ -115,7 +115,7 @@ private fun ProjectSnackbarContent(
 
 @Preview
 @Composable
-private fun GrandTourSnackbarPreview() {
+private fun ProjectSnackbarPreview() {
     ProjectTheme {
         ProjectSnackbarContent(
             message = "message",
@@ -126,7 +126,7 @@ private fun GrandTourSnackbarPreview() {
 
 @Composable
 @Preview
-private fun GrandTourSnackbarWithActionPreview() {
+private fun ProjectSnackbarWithActionPreview() {
     ProjectTheme {
         ProjectSnackbarContent(
             message = "message",

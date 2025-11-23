@@ -47,7 +47,8 @@ import fr.skyle.escapy.utils.buildAnnotatedString
 @Composable
 fun ProfileScreen(
     profileState: ProfileViewModel.ProfileState,
-    onBackButtonClicked: () -> Unit
+    onBackButtonClicked: () -> Unit,
+    onSignOutClicked: () -> Unit
 ) {
     ProjectScreenStructure(
         modifier = Modifier.fillMaxSize(),
@@ -70,7 +71,8 @@ fun ProfileScreen(
             innerPadding = innerPadding,
             username = profileState.userName,
             avatar = profileState.avatar,
-            authProvider = profileState.authProvider
+            authProvider = profileState.authProvider,
+            onSignOutClicked = onSignOutClicked,
         )
     }
 }
@@ -81,6 +83,7 @@ private fun ProfileScreenContent(
     username: String?,
     avatar: Avatar?,
     authProvider: AuthProvider,
+    onSignOutClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -197,9 +200,7 @@ private fun ProfileScreenContent(
                                     )
                                 )
                             ),
-                            onCellClicked = {
-                                // TODO
-                            }
+                            onCellClicked = onSignOutClicked
                         )
                     )
                 )
@@ -225,7 +226,8 @@ private fun ProfileScreenPreview() {
                 avatar = Avatar.AVATAR_01,
                 authProvider = AuthProvider.ANONYMOUS
             ),
-            onBackButtonClicked = {}
+            onBackButtonClicked = {},
+            onSignOutClicked = {},
         )
     }
 }
@@ -238,7 +240,8 @@ private fun ProfileScreenContentPreview() {
             innerPadding = PaddingValues(),
             username = "John Doe",
             avatar = null,
-            authProvider = AuthProvider.ANONYMOUS
+            authProvider = AuthProvider.ANONYMOUS,
+            onSignOutClicked = {},
         )
     }
 }

@@ -1,6 +1,5 @@
 package fr.skyle.escapy.ui.screens.signIn.ui
 
-import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -157,7 +156,6 @@ class SignInViewModel @Inject constructor(
         val event: SignInEvent? = null
     )
 
-    @Stable
     sealed interface SignInEvent {
         data class SignInError(val errorMessage: String) : SignInEvent
         data class SignUpError(val errorMessage: String) : SignInEvent
