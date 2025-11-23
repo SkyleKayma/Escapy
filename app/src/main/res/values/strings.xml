@@ -9,14 +9,14 @@
     <string name="sign_in_action">Se connecter</string>
     <string name="sign_in_no_account">Vous n\'avez pas de compte ?\nInscrivez-vous !</string>
     <string name="sign_in_no_account_highlighted">Inscrivez-vous</string>
-    <string name="sign_in_error">Une erreur est survenue lors de la connexion (%s)</string>
+    <string name="sign_in_error_format">Une erreur est survenue lors de la connexion (%s)</string>
 
     <!-- SignUp -->
     <string name="sign_up_title">Inscription</string>
     <string name="sign_up_action">S\'inscrire</string>
     <string name="sign_in_have_account">Vous avez déjà un compte ?\nConnectez-vous !</string>
     <string name="sign_in_have_account_highlighted">Connectez-vous</string>
-    <string name="sign_up_error">Une erreur est survenue lors de l\'inscription (%s)</string>
+    <string name="sign_up_error_format">Une erreur est survenue lors de l\'inscription (%s)</string>
 
     <!-- SignIn SignUp -->
     <string name="sign_in_up_subtitle">Renseignez vos identifiants</string>
@@ -42,9 +42,8 @@
 
     <!-- Profile -->
     <string name="profile_title">Profil</string>
-    <string name="profile_username">Pseudo</string>
-    <string name="profile_email">Email</string>
-    <string name="profile_auth_provider">Authentifié: %s</string>
+    <string name="profile_created_at_format">Crée le %s</string>
+    <string name="profile_auth_provider_format">Authentifié: %s</string>
     <string name="profile_warning_guest">Vous utilisez actuellement un compte \"invité\". Sans lier votre compte, vous risquez une perte de données (historique, stats, etc.).</string>
     <string name="profile_account">Compte</string>
     <string name="profile_edit_profile">Modifier mon profil</string>
@@ -55,6 +54,6 @@
     <string name="profile_privacy_policy">Politique de confidentialité</string>
     <string name="profile_about_app">A propos de l\'application</string>
     <string name="profile_sign_out">Se déconnecter</string>
-    <string name="profile_version_format">Version %s (Build %s)</string>
+    <string name="profile_version_format">Version %1$s (Build %2$s)</string>
 
 </resources>

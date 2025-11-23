@@ -80,10 +80,8 @@ fun ProfileMenuStructure(
 
                     if (indexItem != group.items.lastIndex) {
                         HorizontalDivider(
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 12.dp),
-                            color = ProjectTheme.colors.grey500
+                            Modifier.fillMaxWidth(),
+                            color = ProjectTheme.colors.surfaceContainerLow
                         )
                     }
                 }
@@ -125,7 +123,7 @@ fun ProfileMenuScope.Group.ProfileMenuStructureItem(
             ) {
                 onCellClicked?.invoke()
             }
-            .padding(12.dp),
+            .padding(horizontal = 20.dp, vertical = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(modifier = Modifier.weight(1f)) {
@@ -244,7 +242,7 @@ private fun ProfileMenuStructureItemWithSubtitleAndActionPreview() {
             ProfileMenuStructureItem(
                 title = buildAnnotatedString(
                     fullText = stringResource(
-                        R.string.profile_auth_provider,
+                        R.string.profile_auth_provider_format,
                         AuthProvider.ANONYMOUS.displayText
                     ),
                     AnnotatedData(

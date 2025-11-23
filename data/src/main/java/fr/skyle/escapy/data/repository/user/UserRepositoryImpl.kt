@@ -58,6 +58,7 @@ class UserRepositoryImpl @Inject constructor(
                 name = "Guest_${user.uid.takeLast(10)}",
                 email = user.email,
                 avatarType = Avatar.entries.random().type,
+                createdAt = System.currentTimeMillis()
             )
 
             // Insert in Firebase

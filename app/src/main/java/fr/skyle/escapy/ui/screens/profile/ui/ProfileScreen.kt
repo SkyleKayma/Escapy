@@ -1,13 +1,17 @@
 package fr.skyle.escapy.ui.screens.profile.ui
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -19,8 +23,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import fr.skyle.escapy.BuildConfig
 import fr.skyle.escapy.R
 import fr.skyle.escapy.data.enums.AuthProvider
 import fr.skyle.escapy.data.enums.Avatar
@@ -32,7 +38,9 @@ import fr.skyle.escapy.ui.core.structure.ProjectScreenStructure
 import fr.skyle.escapy.ui.screens.profile.ui.component.ProfileAccountStructure
 import fr.skyle.escapy.ui.screens.profile.ui.component.ProfileAvatar
 import fr.skyle.escapy.ui.screens.profile.ui.component.ProfileGeneralStructure
+import fr.skyle.escapy.utils.DateFormat
 import fr.skyle.escapy.utils.ProjectScreenPreview
+import fr.skyle.escapy.utils.format
 
 @Composable
 fun ProfileScreen(
@@ -65,6 +73,7 @@ fun ProfileScreen(
             modifier = Modifier.fillMaxSize(),
             innerPadding = innerPadding,
             username = profileState.userName,
+            createdAt = profileState.createdAt,
             avatar = profileState.avatar,
             authProvider = profileState.authProvider,
             onLinkAccountClicked = onLinkAccountClicked,
@@ -81,6 +90,7 @@ fun ProfileScreen(
 private fun ProfileScreenContent(
     innerPadding: PaddingValues,
     username: String?,
+    createdAt: Long?,
     avatar: Avatar?,
     authProvider: AuthProvider,
     onLinkAccountClicked: () -> Unit,
@@ -95,25 +105,44 @@ private fun ProfileScreenContent(
         modifier = modifier
             .padding(top = innerPadding.calculateTopPadding())
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 24.dp)
-            .padding(bottom = 24.dp)
+            .padding(24.dp)
     ) {
-        ProfileAvatar(
-            modifier = Modifier
-                .size(100.dp)
-                .align(Alignment.CenterHorizontally),
-            avatar = avatar
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Text(
+        Row(
             modifier = Modifier.fillMaxWidth(),
-            text = username ?: "-",
-            style = ProjectTheme.typography.p2,
-            color = ProjectTheme.colors.onSurface,
-            textAlign = TextAlign.Center
-        )
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            ProfileAvatar(
+                modifier = Modifier.size(100.dp),
+                avatar = avatar
+            )
+
+            Spacer(modifier = Modifier.width(24.dp))
+
+            Column(modifier = Modifier.wrapContentWidth()) {
+                Text(
+                    modifier = Modifier.wrapContentWidth(),
+                    text = username ?: "-",
+                    style = ProjectTheme.typography.b2,
+                    color = ProjectTheme.colors.primary,
+                    textAlign = TextAlign.Center,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1
+                )
+
+                createdAt?.format(DateFormat.LONG_DATE)?.let { date ->
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        modifier = Modifier.wrapContentWidth(),
+                        text = stringResource(R.string.profile_created_at_format, date),
+                        style = ProjectTheme.typography.p3,
+                        color = ProjectTheme.colors.onSurface,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+        }
 
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -134,6 +163,20 @@ private fun ProfileScreenContent(
             onSignOutClicked = onSignOutClicked,
         )
 
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Text(
+            modifier = Modifier.fillMaxWidth(),
+            text = stringResource(
+                R.string.profile_version_format,
+                BuildConfig.VERSION_NAME,
+                BuildConfig.VERSION_CODE.toString()
+            ),
+            style = ProjectTheme.typography.p3,
+            color = ProjectTheme.colors.grey500,
+            textAlign = TextAlign.End
+        )
+
         Spacer(modifier = Modifier.padding(innerPadding.calculateBottomPadding()))
     }
 }
@@ -146,7 +189,6 @@ private fun ProfileScreenPreview() {
             profileState = ProfileViewModel.ProfileState(
                 userName = "John Doe",
                 avatar = Avatar.AVATAR_01,
-                authProvider = AuthProvider.ANONYMOUS
             ),
             onBackButtonClicked = {},
             onLinkAccountClicked = {},
@@ -166,6 +208,7 @@ private fun ProfileScreenContentPreview() {
         ProfileScreenContent(
             innerPadding = PaddingValues(),
             username = "John Doe",
+            createdAt = System.currentTimeMillis(),
             avatar = null,
             authProvider = AuthProvider.ANONYMOUS,
             onLinkAccountClicked = {},

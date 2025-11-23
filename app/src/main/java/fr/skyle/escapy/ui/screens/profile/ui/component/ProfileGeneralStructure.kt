@@ -60,7 +60,9 @@ fun ProfileGeneralStructure(
                     onCellClicked = onAboutAppClicked
                 )
             }
+        }
 
+        group {
             item {
                 ProfileMenuStructureItem(
                     modifier = Modifier.fillMaxWidth(),

@@ -28,6 +28,7 @@ class ProfileViewModel @Inject constructor(
                 _profileState.update {
                     it.copy(
                         userName = currentUser.name,
+                        createdAt = currentUser.createdAt,
                         avatar = Avatar.fromType(currentUser.avatarType),
                         authProvider = userRepository.getAuthProvider()
                     )
@@ -56,9 +57,10 @@ class ProfileViewModel @Inject constructor(
 
     data class ProfileState(
         val userName: String? = null,
+        val createdAt: Long? = null,
         val avatar: Avatar? = null,
         val authProvider: AuthProvider = AuthProvider.ANONYMOUS,
-        val event: ProfileEvent? = null
+        val event: ProfileEvent? = null,
     )
 
     sealed interface ProfileEvent {

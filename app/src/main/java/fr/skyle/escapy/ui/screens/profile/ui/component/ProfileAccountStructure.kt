@@ -35,7 +35,7 @@ fun ProfileAccountStructure(
                         modifier = Modifier.fillMaxWidth(),
                         title = buildAnnotatedString(
                             fullText = stringResource(
-                                R.string.profile_auth_provider,
+                                R.string.profile_auth_provider_format,
                                 authProvider.displayText
                             ),
                             AnnotatedData(
