@@ -17,10 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,23 +28,21 @@ import fr.skyle.escapy.designsystem.core.iconButton.ProjectIconButtonDefaults
 import fr.skyle.escapy.designsystem.core.topAppBar.ProjectTopAppBar
 import fr.skyle.escapy.designsystem.core.topAppBar.component.ProjectTopAppBarItem
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
-import fr.skyle.escapy.ext.displayText
-import fr.skyle.escapy.ext.navigateToDataPrivacy
-import fr.skyle.escapy.ext.navigateToOpenium
 import fr.skyle.escapy.ui.core.structure.ProjectScreenStructure
+import fr.skyle.escapy.ui.screens.profile.ui.component.ProfileAccountStructure
 import fr.skyle.escapy.ui.screens.profile.ui.component.ProfileAvatar
-import fr.skyle.escapy.ui.screens.profile.ui.component.ProfileMenuStructure
-import fr.skyle.escapy.ui.screens.profile.ui.component.ProfileMenuStructureData
-import fr.skyle.escapy.ui.screens.profile.ui.component.ProfileMenuStructureGroupData
-import fr.skyle.escapy.ui.screens.profile.ui.component.ProfileMenuStructureItemData
-import fr.skyle.escapy.utils.AnnotatedData
+import fr.skyle.escapy.ui.screens.profile.ui.component.ProfileGeneralStructure
 import fr.skyle.escapy.utils.ProjectScreenPreview
-import fr.skyle.escapy.utils.buildAnnotatedString
 
 @Composable
 fun ProfileScreen(
     profileState: ProfileViewModel.ProfileState,
     onBackButtonClicked: () -> Unit,
+    onLinkAccountClicked: () -> Unit,
+    onEditProfileClicked: () -> Unit,
+    onChangePasswordClicked: () -> Unit,
+    onNotificationsClicked: () -> Unit,
+    onAboutAppClicked: () -> Unit,
     onSignOutClicked: () -> Unit
 ) {
     ProjectScreenStructure(
@@ -72,6 +67,11 @@ fun ProfileScreen(
             username = profileState.userName,
             avatar = profileState.avatar,
             authProvider = profileState.authProvider,
+            onLinkAccountClicked = onLinkAccountClicked,
+            onEditProfileClicked = onEditProfileClicked,
+            onChangePasswordClicked = onChangePasswordClicked,
+            onNotificationsClicked = onNotificationsClicked,
+            onAboutAppClicked = onAboutAppClicked,
             onSignOutClicked = onSignOutClicked,
         )
     }
@@ -83,11 +83,14 @@ private fun ProfileScreenContent(
     username: String?,
     avatar: Avatar?,
     authProvider: AuthProvider,
+    onLinkAccountClicked: () -> Unit,
+    onEditProfileClicked: () -> Unit,
+    onChangePasswordClicked: () -> Unit,
+    onNotificationsClicked: () -> Unit,
+    onAboutAppClicked: () -> Unit,
     onSignOutClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
-
     Column(
         modifier = modifier
             .padding(top = innerPadding.calculateTopPadding())
@@ -114,102 +117,21 @@ private fun ProfileScreenContent(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        val accountMenuData = ProfileMenuStructureData(
-            title = stringResource(R.string.profile_account),
-            groups = listOf(
-                ProfileMenuStructureGroupData(
-                    items = listOf(
-                        ProfileMenuStructureItemData(
-                            title = buildAnnotatedString(
-                                fullText = stringResource(
-                                    R.string.profile_auth_provider,
-                                    authProvider.displayText
-                                ),
-                                AnnotatedData(
-                                    text = authProvider.displayText,
-                                    spanStyle = SpanStyle(
-                                        color = ProjectTheme.colors.warning,
-                                    )
-                                )
-                            ),
-                            subtitle = stringResource(R.string.profile_warning_guest),
-                            onCellClicked = {
-                                // TODO
-                            }
-                        )
-                    )
-                ),
-                ProfileMenuStructureGroupData(
-                    items = listOf(
-                        ProfileMenuStructureItemData(
-                            title = AnnotatedString(stringResource(R.string.profile_edit_profile)),
-                            onCellClicked = {
-                                // TODO
-                            }
-                        ),
-                        ProfileMenuStructureItemData(
-                            title = AnnotatedString(stringResource(R.string.profile_change_password)),
-                            onCellClicked = {
-                                // TODO
-                            }
-                        )
-                    )
-                )
-            )
-        )
-
-        ProfileMenuStructure(
+        ProfileAccountStructure(
             modifier = Modifier.fillMaxWidth(),
-            data = accountMenuData
+            authProvider = authProvider,
+            onLinkAccountClicked = onLinkAccountClicked,
+            onEditProfileClicked = onEditProfileClicked,
+            onChangePasswordClicked = onChangePasswordClicked,
         )
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        val generalMenuData = ProfileMenuStructureData(
-            title = stringResource(R.string.profile_general),
-            groups = listOf(
-                ProfileMenuStructureGroupData(
-                    items = listOf(
-                        ProfileMenuStructureItemData(
-                            title = AnnotatedString(stringResource(R.string.profile_notifications)),
-                            onCellClicked = {
-                                // TODO
-                            }
-                        ),
-                        ProfileMenuStructureItemData(
-                            title = AnnotatedString(stringResource(R.string.profile_openium)),
-                            onCellClicked = context::navigateToOpenium
-                        ),
-                        ProfileMenuStructureItemData(
-                            title = AnnotatedString(stringResource(R.string.profile_privacy_policy)),
-                            onCellClicked = context::navigateToDataPrivacy
-                        ),
-                        ProfileMenuStructureItemData(
-                            title = AnnotatedString(stringResource(R.string.profile_about_app)),
-                            onCellClicked = {
-                                // TODO
-                            }
-                        ),
-                        ProfileMenuStructureItemData(
-                            title = buildAnnotatedString(
-                                fullText = stringResource(R.string.profile_sign_out),
-                                AnnotatedData(
-                                    text = stringResource(R.string.profile_sign_out),
-                                    spanStyle = SpanStyle(
-                                        color = ProjectTheme.colors.error,
-                                    )
-                                )
-                            ),
-                            onCellClicked = onSignOutClicked
-                        )
-                    )
-                )
-            )
-        )
-
-        ProfileMenuStructure(
+        ProfileGeneralStructure(
             modifier = Modifier.fillMaxWidth(),
-            data = generalMenuData
+            onNotificationsClicked = onNotificationsClicked,
+            onAboutAppClicked = onAboutAppClicked,
+            onSignOutClicked = onSignOutClicked,
         )
 
         Spacer(modifier = Modifier.padding(innerPadding.calculateBottomPadding()))
@@ -227,6 +149,11 @@ private fun ProfileScreenPreview() {
                 authProvider = AuthProvider.ANONYMOUS
             ),
             onBackButtonClicked = {},
+            onLinkAccountClicked = {},
+            onEditProfileClicked = {},
+            onChangePasswordClicked = {},
+            onNotificationsClicked = {},
+            onAboutAppClicked = {},
             onSignOutClicked = {},
         )
     }
@@ -241,6 +168,11 @@ private fun ProfileScreenContentPreview() {
             username = "John Doe",
             avatar = null,
             authProvider = AuthProvider.ANONYMOUS,
+            onLinkAccountClicked = {},
+            onEditProfileClicked = {},
+            onChangePasswordClicked = {},
+            onNotificationsClicked = {},
+            onAboutAppClicked = {},
             onSignOutClicked = {},
         )
     }

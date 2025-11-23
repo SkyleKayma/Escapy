@@ -17,6 +17,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,51 +35,71 @@ import fr.skyle.escapy.ext.displayText
 import fr.skyle.escapy.utils.AnnotatedData
 import fr.skyle.escapy.utils.buildAnnotatedString
 
-data class ProfileMenuStructureData(
-    val title: String,
-    val groups: List<ProfileMenuStructureGroupData>
-)
+class ProfileMenuBuilder {
+    internal val groups = mutableListOf<Group>()
 
-data class ProfileMenuStructureGroupData(
-    val items: List<ProfileMenuStructureItemData>,
-)
+    fun group(content: Group.() -> Unit) {
+        groups += Group().apply(content)
+    }
 
-data class ProfileMenuStructureItemData(
-    val title: AnnotatedString,
-    val subtitle: String? = null,
-    val onCellClicked: (() -> Unit)? = null,
-)
+    class Group {
+        internal val items = mutableListOf<@Composable () -> Unit>()
+
+        fun item(content: @Composable () -> Unit) {
+            items += content
+        }
+    }
+}
 
 @Composable
 fun ProfileMenuStructure(
-    data: ProfileMenuStructureData,
-    modifier: Modifier = Modifier
+    title: String,
+    modifier: Modifier = Modifier,
+    content: ProfileMenuBuilder.() -> Unit
 ) {
-    Text(
-        modifier = modifier,
-        text = data.title,
-        style = ProjectTheme.typography.b1,
-        color = ProjectTheme.colors.onSurface,
-    )
-
-    Spacer(modifier = Modifier.height(8.dp))
-
-    data.groups.forEachIndexed { index, group ->
-        ProfileMenuStructureGroup(
+    Column(modifier = modifier) {
+        Text(
             modifier = Modifier.fillMaxWidth(),
-            items = group.items
+            text = title,
+            style = ProjectTheme.typography.b1,
+            color = ProjectTheme.colors.onSurface,
         )
 
-        if (index != data.groups.lastIndex) {
-            Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(8.dp))
+
+        val builder = remember { ProfileMenuBuilder() }
+        builder.groups.clear()                      // ensure rebuild safety
+        builder.content()                           // ⬅️ execute your DSL
+
+        builder.groups.forEachIndexed { indexGroup, group ->
+            ProfileMenuStructureGroup(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                group.items.forEachIndexed { indexItem, item ->
+                    item()
+
+                    if (indexItem != group.items.lastIndex) {
+                        HorizontalDivider(
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 12.dp),
+                            color = ProjectTheme.colors.grey500
+                        )
+                    }
+                }
+            }
+
+            if (indexGroup != builder.groups.lastIndex) {
+                Spacer(modifier = Modifier.height(8.dp))
+            }
         }
     }
 }
 
 @Composable
 private fun ProfileMenuStructureGroup(
-    items: List<ProfileMenuStructureItemData>,
     modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -86,28 +107,12 @@ private fun ProfileMenuStructureGroup(
             .clip(RoundedCornerShape(12.dp))
             .background(ProjectTheme.colors.surfaceContainerHigh)
     ) {
-        items.forEachIndexed { index, item ->
-            ProfileMenuStructureItem(
-                modifier = Modifier.fillMaxWidth(),
-                title = item.title,
-                subtitle = item.subtitle,
-                onCellClicked = item.onCellClicked
-            )
-
-            if (index != items.lastIndex) {
-                HorizontalDivider(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 12.dp),
-                    color = ProjectTheme.colors.grey500
-                )
-            }
-        }
+        content()
     }
 }
 
 @Composable
-private fun ProfileMenuStructureItem(
+fun ProfileMenuBuilder.Group.ProfileMenuStructureItem(
     title: AnnotatedString,
     modifier: Modifier = Modifier,
     subtitle: String? = null,
@@ -156,47 +161,53 @@ private fun ProfileMenuStructureItem(
 
 @Preview
 @Composable
-private fun ProfileMenuStructurePreview() {
+private fun ProfileMenuStructureEmptyPreview() {
     ProjectTheme {
         ProfileMenuStructure(
-            data = ProfileMenuStructureData(
-                title = "Compte",
-                groups = listOf(
-                    ProfileMenuStructureGroupData(
-                        items = listOf(
-                            ProfileMenuStructureItemData(
-                                title = AnnotatedString(
-                                    text = stringResource(R.string.profile_change_password),
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+            title = "Compte"
+        ) {}
     }
 }
 
 @Preview
 @Composable
-private fun ProfileMenuStructureGroupPreview() {
+private fun ProfileMenuStructureOneEntryPreview() {
     ProjectTheme {
-        ProfileMenuStructureGroup(
-            items = listOf(
-                ProfileMenuStructureItemData(
-                    title = AnnotatedString(
-                        text = stringResource(R.string.profile_edit_profile),
-                    ),
-                    onCellClicked = {}
-                ),
-                ProfileMenuStructureItemData(
-                    title = AnnotatedString(
-                        text = stringResource(R.string.profile_change_password),
-                    ),
-                    onCellClicked = {}
-                ),
-            )
-        )
+        ProfileMenuStructure(
+            title = "Compte"
+        ) {
+            group {
+                item {
+                    ProfileMenuStructureItem(
+                        title = AnnotatedString(stringResource(R.string.profile_edit_profile))
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun ProfileMenuStructurePreview() {
+    ProjectTheme {
+        ProfileMenuStructure(
+            title = "Compte"
+        ) {
+            group {
+                item {
+                    ProfileMenuStructureItem(
+                        title = AnnotatedString(stringResource(R.string.profile_edit_profile))
+                    )
+                }
+
+                item {
+                    ProfileMenuStructureItem(
+                        title = AnnotatedString(stringResource(R.string.profile_change_password))
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -204,11 +215,24 @@ private fun ProfileMenuStructureGroupPreview() {
 @Composable
 private fun ProfileMenuStructureItemPreview() {
     ProjectTheme {
-        ProfileMenuStructureItem(
-            title = AnnotatedString(
-                text = stringResource(R.string.profile_change_password),
+        ProfileMenuBuilder.Group().apply {
+            ProfileMenuStructureItem(
+                title = AnnotatedString(stringResource(R.string.profile_change_password)),
+                onCellClicked = {}
             )
-        )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun ProfileMenuStructureItemNoActionPreview() {
+    ProjectTheme {
+        ProfileMenuBuilder.Group().apply {
+            ProfileMenuStructureItem(
+                title = AnnotatedString(stringResource(R.string.profile_change_password))
+            )
+        }
     }
 }
 
@@ -216,21 +240,23 @@ private fun ProfileMenuStructureItemPreview() {
 @Composable
 private fun ProfileMenuStructureItemWithSubtitleAndActionPreview() {
     ProjectTheme {
-        ProfileMenuStructureItem(
-            title = buildAnnotatedString(
-                fullText = stringResource(
-                    R.string.profile_auth_provider,
-                    AuthProvider.ANONYMOUS.displayText
-                ),
-                AnnotatedData(
-                    text = AuthProvider.ANONYMOUS.displayText,
-                    spanStyle = SpanStyle(
-                        color = ProjectTheme.colors.warning,
+        ProfileMenuBuilder.Group().apply {
+            ProfileMenuStructureItem(
+                title = buildAnnotatedString(
+                    fullText = stringResource(
+                        R.string.profile_auth_provider,
+                        AuthProvider.ANONYMOUS.displayText
+                    ),
+                    AnnotatedData(
+                        text = AuthProvider.ANONYMOUS.displayText,
+                        spanStyle = SpanStyle(
+                            color = ProjectTheme.colors.warning,
+                        )
                     )
-                )
-            ),
-            subtitle = stringResource(R.string.profile_warning_guest),
-            onCellClicked = {}
-        )
+                ),
+                subtitle = stringResource(R.string.profile_warning_guest),
+                onCellClicked = {}
+            )
+        }
     }
 }

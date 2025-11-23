@@ -235,7 +235,6 @@ private data class ProjectTextFieldPreviewData(
     val isSingleLine: Boolean,
 )
 
-
 @Preview
 @Composable
 private fun ProjectTextFieldEmptyPreview(

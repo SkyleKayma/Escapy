@@ -9,6 +9,11 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 @Composable
 fun ProfileRoute(
     navigateBack: () -> Unit,
+    navigateLinkAccount: () -> Unit,
+    navigateEditProfile: () -> Unit,
+    navigateChangePassword: () -> Unit,
+    navigateToNotifications: () -> Unit,
+    navigateToAboutApp: () -> Unit,
     navigateToSignIn: () -> Unit,
     profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
@@ -29,6 +34,11 @@ fun ProfileRoute(
     ProfileScreen(
         profileState = profileState,
         onBackButtonClicked = navigateBack,
-        onSignOutClicked = profileViewModel::signOut
+        onLinkAccountClicked = navigateLinkAccount,
+        onEditProfileClicked = navigateEditProfile,
+        onChangePasswordClicked = navigateChangePassword,
+        onNotificationsClicked = navigateToNotifications,
+        onAboutAppClicked = navigateToAboutApp,
+        onSignOutClicked = profileViewModel::signOut,
     )
 }
