@@ -35,18 +35,18 @@ import fr.skyle.escapy.ext.displayText
 import fr.skyle.escapy.utils.AnnotatedData
 import fr.skyle.escapy.utils.buildAnnotatedString
 
-class ProfileMenuBuilder {
+class ProfileMenuScope {
     internal val groups = mutableListOf<Group>()
 
     fun group(content: Group.() -> Unit) {
-        groups += Group().apply(content)
+        groups.add(Group().apply(content))
     }
 
     class Group {
         internal val items = mutableListOf<@Composable () -> Unit>()
 
         fun item(content: @Composable () -> Unit) {
-            items += content
+            items.add(content)
         }
     }
 }
@@ -55,7 +55,7 @@ class ProfileMenuBuilder {
 fun ProfileMenuStructure(
     title: String,
     modifier: Modifier = Modifier,
-    content: ProfileMenuBuilder.() -> Unit
+    content: ProfileMenuScope.() -> Unit
 ) {
     Column(modifier = modifier) {
         Text(
@@ -67,9 +67,9 @@ fun ProfileMenuStructure(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        val builder = remember { ProfileMenuBuilder() }
-        builder.groups.clear()                      // ensure rebuild safety
-        builder.content()                           // ⬅️ execute your DSL
+        // Recreate the scope only when content changes
+        val builder = remember(content) { ProfileMenuScope() }
+        builder.content()
 
         builder.groups.forEachIndexed { indexGroup, group ->
             ProfileMenuStructureGroup(
@@ -112,7 +112,7 @@ private fun ProfileMenuStructureGroup(
 }
 
 @Composable
-fun ProfileMenuBuilder.Group.ProfileMenuStructureItem(
+fun ProfileMenuScope.Group.ProfileMenuStructureItem(
     title: AnnotatedString,
     modifier: Modifier = Modifier,
     subtitle: String? = null,
@@ -164,7 +164,7 @@ fun ProfileMenuBuilder.Group.ProfileMenuStructureItem(
 private fun ProfileMenuStructureEmptyPreview() {
     ProjectTheme {
         ProfileMenuStructure(
-            title = "Compte"
+            title = stringResource(R.string.profile_account)
         ) {}
     }
 }
@@ -174,7 +174,7 @@ private fun ProfileMenuStructureEmptyPreview() {
 private fun ProfileMenuStructureOneEntryPreview() {
     ProjectTheme {
         ProfileMenuStructure(
-            title = "Compte"
+            title = stringResource(R.string.profile_account)
         ) {
             group {
                 item {
@@ -192,7 +192,7 @@ private fun ProfileMenuStructureOneEntryPreview() {
 private fun ProfileMenuStructurePreview() {
     ProjectTheme {
         ProfileMenuStructure(
-            title = "Compte"
+            title = stringResource(R.string.profile_account)
         ) {
             group {
                 item {
@@ -215,7 +215,7 @@ private fun ProfileMenuStructurePreview() {
 @Composable
 private fun ProfileMenuStructureItemPreview() {
     ProjectTheme {
-        ProfileMenuBuilder.Group().apply {
+        ProfileMenuScope.Group().apply {
             ProfileMenuStructureItem(
                 title = AnnotatedString(stringResource(R.string.profile_change_password)),
                 onCellClicked = {}
@@ -228,7 +228,7 @@ private fun ProfileMenuStructureItemPreview() {
 @Composable
 private fun ProfileMenuStructureItemNoActionPreview() {
     ProjectTheme {
-        ProfileMenuBuilder.Group().apply {
+        ProfileMenuScope.Group().apply {
             ProfileMenuStructureItem(
                 title = AnnotatedString(stringResource(R.string.profile_change_password))
             )
@@ -240,7 +240,7 @@ private fun ProfileMenuStructureItemNoActionPreview() {
 @Composable
 private fun ProfileMenuStructureItemWithSubtitleAndActionPreview() {
     ProjectTheme {
-        ProfileMenuBuilder.Group().apply {
+        ProfileMenuScope.Group().apply {
             ProfileMenuStructureItem(
                 title = buildAnnotatedString(
                     fullText = stringResource(
