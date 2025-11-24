@@ -1,4 +1,4 @@
-package fr.skyle.escapy.data.ext
+package fr.skyle.escapy.data.vo.adapter
 
 import fr.skyle.escapy.data.rest.firebase.UserFirebase
 import fr.skyle.escapy.data.vo.User

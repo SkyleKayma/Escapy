@@ -13,8 +13,8 @@ import fr.skyle.escapy.data.enums.Avatar
 import fr.skyle.escapy.data.ext.awaitWithTimeout
 import fr.skyle.escapy.data.ext.readOnce
 import fr.skyle.escapy.data.ext.requireUser
-import fr.skyle.escapy.data.ext.toUser
-import fr.skyle.escapy.data.ext.toUserFirebase
+import fr.skyle.escapy.data.vo.adapter.toUser
+import fr.skyle.escapy.data.vo.adapter.toUserFirebase
 import fr.skyle.escapy.data.repository.user.api.UserRepository
 import fr.skyle.escapy.data.rest.firebase.UserFirebase
 import fr.skyle.escapy.data.vo.User

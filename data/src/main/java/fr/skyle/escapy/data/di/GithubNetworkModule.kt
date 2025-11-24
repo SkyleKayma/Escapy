@@ -9,7 +9,7 @@ import fr.skyle.escapy.data.di.qualifiers.GithubOkHttpClient
 import fr.skyle.escapy.data.di.qualifiers.GithubRetrofit
 import fr.skyle.escapy.data.di.qualifiers.GithubUrl
 import fr.skyle.escapy.data.json
-import fr.skyle.escapy.data.rest.GithubAPI
+import fr.skyle.escapy.data.rest.github.GithubAPI
 import okhttp3.HttpUrl
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient

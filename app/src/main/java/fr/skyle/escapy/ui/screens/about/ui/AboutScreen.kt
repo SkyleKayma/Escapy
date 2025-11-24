@@ -23,7 +23,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.skyle.escapy.R
-import fr.skyle.escapy.data.rest.response.GithubContributorResponse
+import fr.skyle.escapy.data.rest.github.response.GithubContributorResponse
+import fr.skyle.escapy.data.vo.GithubContributor
 import fr.skyle.escapy.designsystem.core.iconButton.ProjectIconButtonDefaults
 import fr.skyle.escapy.designsystem.core.topAppBar.ProjectTopAppBar
 import fr.skyle.escapy.designsystem.core.topAppBar.component.ProjectTopAppBarItem
@@ -72,7 +73,7 @@ fun AboutScreen(
 private fun AboutScreenContent(
     innerPadding: PaddingValues,
     isContributorsLoading: Boolean,
-    contributors: List<GithubContributorResponse>,
+    contributors: List<GithubContributor>,
     modifier: Modifier = Modifier,
 ) {
     val defaultContributorPainter = painterResource(R.drawable.avatar_default)
@@ -149,9 +150,9 @@ private fun AboutScreenPreview() {
             aboutState = AboutViewModel.AboutState(
                 isContributorsLoading = false,
                 contributors = listOf(
-                    GithubContributorResponse(
+                    GithubContributor(
                         id = 1,
-                        login = "SkyleKayma",
+                        username = "SkyleKayma",
                     )
                 ),
             ),
@@ -168,13 +169,13 @@ private fun AboutScreenContentPreview() {
             innerPadding = PaddingValues(),
             isContributorsLoading = false,
             contributors = listOf(
-                GithubContributorResponse(
+                GithubContributor(
                     id = 1,
-                    login = "SkyleKayma",
+                    username = "SkyleKayma",
                 ),
-                GithubContributorResponse(
+                GithubContributor(
                     id = 2,
-                    login = "SkyleKayma",
+                    username = "SkyleKayma",
                     personalRepoUrl = ""
                 )
             ),
@@ -190,9 +191,9 @@ private fun AboutScreenContentContributorsLoadingPreview() {
             innerPadding = PaddingValues(),
             isContributorsLoading = true,
             contributors = listOf(
-                GithubContributorResponse(
+                GithubContributor(
                     id = 1,
-                    login = "SkyleKayma",
+                    username = "SkyleKayma",
                     personalRepoUrl = "https://github.com"
                 )
             ),

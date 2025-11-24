@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.skyle.escapy.data.repository.github.api.GithubRepository
-import fr.skyle.escapy.data.rest.response.GithubContributorResponse
+import fr.skyle.escapy.data.vo.GithubContributor
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -39,12 +39,12 @@ class AboutViewModel @Inject constructor(
             }
 
             try {
-                val contributors = githubRepository.getGithubContributors().getOrThrow() ?: listOf()
+                val contributors = githubRepository.getGithubContributors().getOrThrow()
 
                 showLoadingJob.cancel()
 
                 _aboutState.update {
-                    it.copy(contributors = contributors.sortedByDescending { it.contributions })
+                    it.copy(contributors = contributors.sortedByDescending { it.nbContributions })
                 }
             } catch (e: CancellationException) {
                 throw e
@@ -60,6 +60,6 @@ class AboutViewModel @Inject constructor(
 
     data class AboutState(
         val isContributorsLoading: Boolean = true,
-        val contributors: List<GithubContributorResponse> = listOf(),
+        val contributors: List<GithubContributor> = listOf(),
     )
 }

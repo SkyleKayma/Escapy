@@ -24,7 +24,7 @@ import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import fr.skyle.escapy.R
-import fr.skyle.escapy.data.rest.response.GithubContributorResponse
+import fr.skyle.escapy.data.vo.GithubContributor
 import fr.skyle.escapy.designsystem.core.iconButton.ProjectIconButton
 import fr.skyle.escapy.designsystem.core.iconButton.ProjectIconButtonDefaults
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
@@ -33,7 +33,7 @@ import fr.skyle.escapy.ext.navigateToLink
 
 @Composable
 fun AboutContributorCell(
-    contributor: GithubContributorResponse,
+    contributor: GithubContributor,
     defaultPainter: Painter,
     modifier: Modifier = Modifier,
 ) {
@@ -67,7 +67,7 @@ fun AboutContributorCell(
 
         Text(
             modifier = Modifier.weight(1f),
-            text = contributor.login ?: "-",
+            text = contributor.username,
             style = ProjectTheme.typography.p3,
             color = ProjectTheme.colors.onSurface,
             overflow = TextOverflow.Ellipsis,
@@ -96,9 +96,9 @@ fun AboutContributorCell(
 private fun AboutContributorCellPreview() {
     ProjectTheme {
         AboutContributorCell(
-            contributor = GithubContributorResponse(
+            contributor = GithubContributor(
                 id = 1,
-                login = "SkyleKayma"
+                username = "SkyleKayma"
             ),
             defaultPainter = painterResource(R.drawable.avatar_default)
         )
@@ -110,9 +110,9 @@ private fun AboutContributorCellPreview() {
 private fun AboutContributorCellWithGithubUrlPreview() {
     ProjectTheme {
         AboutContributorCell(
-            contributor = GithubContributorResponse(
+            contributor = GithubContributor(
                 id = 1,
-                login = "SkyleKayma",
+                username = "SkyleKayma",
                 personalRepoUrl = "https://github.com"
             ),
             defaultPainter = painterResource(R.drawable.avatar_default)

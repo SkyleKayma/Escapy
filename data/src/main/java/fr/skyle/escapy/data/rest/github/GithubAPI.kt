@@ -1,6 +1,6 @@
-package fr.skyle.escapy.data.rest
+package fr.skyle.escapy.data.rest.github
 
-import fr.skyle.escapy.data.rest.response.GithubContributorResponse
+import fr.skyle.escapy.data.rest.github.response.GithubContributorResponse
 import retrofit2.Response
 import retrofit2.http.GET
 
