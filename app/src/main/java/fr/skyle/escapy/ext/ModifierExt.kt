@@ -1,0 +1,25 @@
+package fr.skyle.escapy.ext
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import fr.skyle.escapy.designsystem.theme.ProjectTheme
+
+@Composable
+fun Modifier.boxCardStyle(
+    elevation: Dp = 4.dp,
+    shape: Shape = RoundedCornerShape(12.dp),
+    backgroundColor: Color = ProjectTheme.colors.surfaceContainerHigh
+): Modifier {
+    return this
+        .shadow(elevation = elevation, shape = shape)
+        .clip(shape)
+        .background(backgroundColor)
+}

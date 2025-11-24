@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowCircleRight
 import androidx.compose.material.icons.filled.QrCode
@@ -20,7 +19,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
@@ -28,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.skyle.escapy.R
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
+import fr.skyle.escapy.ext.boxCardStyle
 
 @Composable
 fun HomeActionCell(
@@ -38,9 +37,7 @@ fun HomeActionCell(
 ) {
     Column(
         modifier = modifier
-            .shadow(elevation = 4.dp, shape = RoundedCornerShape(12.dp))
-            .clip(RoundedCornerShape(12.dp))
-            .background(ProjectTheme.colors.surfaceContainerHigh)
+            .boxCardStyle()
             .clickable(onClick = onClick)
             .padding(12.dp),
     ) {

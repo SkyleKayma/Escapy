@@ -23,7 +23,8 @@ abstract class ProjectDatabase : RoomDatabase() {
                 context.applicationContext,
                 ProjectDatabase::class.java,
                 DATABASE_NAME
-            ).fallbackToDestructiveMigration() // TODO Do real migration when in production
+            )
+                .fallbackToDestructiveMigration(dropAllTables = true) // TODO Do real migration when in production
 
         private const val DATABASE_NAME = "escapy.db"
     }

@@ -2,9 +2,9 @@ package fr.skyle.escapy.ui.screens.profile.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 fun ProfileRoute(
@@ -17,7 +17,7 @@ fun ProfileRoute(
     navigateToSignIn: () -> Unit,
     profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
-    val profileState by profileViewModel.profileState.collectAsState()
+    val profileState by profileViewModel.profileState.collectAsStateWithLifecycle()
 
     LaunchedEffect(profileState.event) {
         profileState.event?.let { event ->

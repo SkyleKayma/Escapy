@@ -58,6 +58,7 @@ fun ProfileScreen(
         isPatternDisplayed = true,
         topContent = {
             ProjectTopAppBar(
+                modifier = Modifier.fillMaxWidth(),
                 title = stringResource(R.string.profile_title),
                 leadingContent = {
                     ProjectTopAppBarItem(

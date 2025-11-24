@@ -9,6 +9,10 @@ fun Context.navigateToLink(link: String) {
     startActivity(Intent.createChooser(Intent(Intent.ACTION_VIEW, link.toUri()), null))
 }
 
+fun Context.navigateToProjectRepository() {
+    navigateToLink(getString(R.string.github_project_repository_url))
+}
+
 fun Context.navigateToOpenium() {
     navigateToLink(getString(R.string.openium_url))
 }

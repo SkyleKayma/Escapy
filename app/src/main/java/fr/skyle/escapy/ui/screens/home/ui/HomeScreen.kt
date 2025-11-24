@@ -54,6 +54,7 @@ fun HomeScreen(
         isPatternDisplayed = true,
         topContent = {
             ProjectTopAppBar(
+                modifier = Modifier.fillMaxWidth(),
                 trailingContent = {
                     ProjectIconButton(
                         icon = rememberVectorPainter(Icons.Default.Person2),

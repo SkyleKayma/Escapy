@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
+import kotlin.coroutines.cancellation.CancellationException
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
@@ -33,17 +34,21 @@ class SignInViewModel @Inject constructor(
 
                 _signInState.update {
                     it.copy(
-                        isButtonLoading = false,
                         event = SignInEvent.SignInSuccess
                     )
                 }
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
                 Timber.e(e)
                 _signInState.update {
                     it.copy(
-                        isButtonLoading = false,
                         event = SignInEvent.SignInError(e.message ?: "An error occurred"),
                     )
+                }
+            } finally {
+                _signInState.update {
+                    it.copy(isButtonLoading = false)
                 }
             }
         }
@@ -61,17 +66,21 @@ class SignInViewModel @Inject constructor(
 
                 _signInState.update {
                     it.copy(
-                        isButtonLoading = false,
                         event = SignInEvent.SignUpSuccess
                     )
                 }
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
                 Timber.e(e)
                 _signInState.update {
                     it.copy(
-                        isButtonLoading = false,
                         event = SignInEvent.SignUpError(e.message ?: "An error occurred"),
                     )
+                }
+            } finally {
+                _signInState.update {
+                    it.copy(isButtonLoading = false)
                 }
             }
         }
@@ -87,17 +96,21 @@ class SignInViewModel @Inject constructor(
 //                userRepository.insertUser("fake_google_token", "Google User name")
                 _signInState.update {
                     it.copy(
-                        isButtonLoading = false,
                         event = SignInEvent.SignInSuccess
                     )
                 }
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
                 Timber.e(e)
                 _signInState.update {
                     it.copy(
-                        isButtonLoading = false,
                         event = SignInEvent.SignInError(e.message ?: "An error occurred"),
                     )
+                }
+            } finally {
+                _signInState.update {
+                    it.copy(isButtonLoading = false)
                 }
             }
         }
@@ -113,17 +126,21 @@ class SignInViewModel @Inject constructor(
                 userRepository.signInAsGuest()
                 _signInState.update {
                     it.copy(
-                        isButtonLoading = false,
                         event = SignInEvent.SignInSuccess
                     )
                 }
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
                 Timber.e(e)
                 _signInState.update {
                     it.copy(
-                        isButtonLoading = false,
                         event = SignInEvent.SignInError(e.message ?: "An error occurred"),
                     )
+                }
+            } finally {
+                _signInState.update {
+                    it.copy(isButtonLoading = false)
                 }
             }
         }

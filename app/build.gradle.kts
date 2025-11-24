@@ -139,6 +139,13 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
 
+    // OKHttp BOM
+    implementation(platform(libs.okhttp.bom))
+    implementation(libs.okhttp)
+
+    // Coil
+    implementation(libs.bundles.coil)
+
     // Splash screen API
     implementation(libs.splashscreen)
 }

@@ -2,10 +2,10 @@ package fr.skyle.escapy.ui.screens.signIn.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fr.skyle.escapy.R
 import fr.skyle.escapy.ui.core.snackbar.state.rememberProjectSnackbarState
 
@@ -16,7 +16,7 @@ fun SignInRoute(
 ) {
     val context = LocalContext.current
 
-    val signInState by signInViewModel.signInState.collectAsState()
+    val signInState by signInViewModel.signInState.collectAsStateWithLifecycle()
 
     val projectSnackbarState = rememberProjectSnackbarState()
 
@@ -25,7 +25,10 @@ fun SignInRoute(
             when (event) {
                 is SignInViewModel.SignInEvent.SignInError -> {
                     projectSnackbarState.showSnackbar(
-                        message = context.getString(R.string.sign_in_error_format, event.errorMessage)
+                        message = context.getString(
+                            R.string.sign_in_error_format,
+                            event.errorMessage
+                        )
                     )
                 }
 
@@ -36,7 +39,10 @@ fun SignInRoute(
 
                 is SignInViewModel.SignInEvent.SignUpError -> {
                     projectSnackbarState.showSnackbar(
-                        message = context.getString(R.string.sign_up_error_format, event.errorMessage)
+                        message = context.getString(
+                            R.string.sign_up_error_format,
+                            event.errorMessage
+                        )
                     )
                 }
             }

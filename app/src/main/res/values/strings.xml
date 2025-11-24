@@ -1,6 +1,8 @@
 <resources>
     <!-- App -->
     <string name="app_name" translatable="false">Escapy</string>
+    <string name="github_project_repository_url" translatable="false">https://github.com/SkyleKayma/Escapy</string>
+    <string name="github_api_project_repository_url" translatable="false">https://api.github.com/repos/SkyleKayma/Escapy/</string>
     <string name="openium_url" translatable="false">https://www.openium.fr</string>
     <string name="data_privacy_url" translatable="false">https://skylekayma.github.io/Escapy/docs/privacy-policy.html</string>
 
@@ -52,8 +54,12 @@
     <string name="profile_notifications">Notifications</string>
     <string name="profile_openium">Openium</string>
     <string name="profile_privacy_policy">Politique de confidentialité</string>
-    <string name="profile_about_app">A propos de l\'application</string>
+    <string name="profile_about_app">À propos de l\'application</string>
     <string name="profile_sign_out">Se déconnecter</string>
     <string name="profile_version_format">Version %1$s (Build %2$s)</string>
+
+    <!-- About -->
+    <string name="about_title">À propos</string>
+    <string name="about_contributors">Contributeurs</string>
 
 </resources>

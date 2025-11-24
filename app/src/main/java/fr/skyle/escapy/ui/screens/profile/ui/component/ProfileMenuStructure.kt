@@ -1,6 +1,5 @@
 package fr.skyle.escapy.ui.screens.profile.ui.component
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.HorizontalDivider
@@ -20,8 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -31,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import fr.skyle.escapy.R
 import fr.skyle.escapy.data.enums.AuthProvider
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
+import fr.skyle.escapy.ext.boxCardStyle
 import fr.skyle.escapy.ext.displayText
 import fr.skyle.escapy.utils.AnnotatedData
 import fr.skyle.escapy.utils.buildAnnotatedString
@@ -101,9 +98,7 @@ private fun ProfileMenuStructureGroup(
 ) {
     Column(
         modifier = modifier
-            .shadow(elevation = 4.dp, shape = RoundedCornerShape(12.dp))
-            .clip(RoundedCornerShape(12.dp))
-            .background(ProjectTheme.colors.surfaceContainerHigh)
+            .boxCardStyle()
     ) {
         content()
     }

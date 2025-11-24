@@ -33,13 +33,27 @@ dependencies {
     ksp(libs.hilt.android.compiler)
     implementation(libs.hilt.navigation.compose)
 
+    // Kotlin Serialization
+    implementation(libs.kotlin.serialization)
+
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database)
 
+    // Timber
+    implementation(libs.timber)
+
     // Room
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
+
+    // Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.serialization.converter)
+
+    // OKHttp BOM
+    implementation(platform(libs.okhttp.bom))
+    implementation(libs.okhttp)
 }
