@@ -11,9 +11,12 @@ import fr.skyle.escapy.data.db.dao.UserDao
 import fr.skyle.escapy.data.enums.AuthProvider
 import fr.skyle.escapy.data.enums.Avatar
 import fr.skyle.escapy.data.ext.awaitWithTimeout
+import fr.skyle.escapy.data.ext.readOnce
 import fr.skyle.escapy.data.ext.requireUser
-import fr.skyle.escapy.data.ext.toUserPost
+import fr.skyle.escapy.data.ext.toUser
+import fr.skyle.escapy.data.ext.toUserFirebase
 import fr.skyle.escapy.data.repository.user.api.UserRepository
+import fr.skyle.escapy.data.rest.firebase.UserFirebase
 import fr.skyle.escapy.data.vo.User
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.channels.awaitClose
@@ -65,7 +68,7 @@ class UserRepositoryImpl @Inject constructor(
     ) {
         dbRef.child(FirebaseNode.Users.path)
             .child(uid)
-            .setValue(user.toUserPost())
+            .setValue(user.toUserFirebase())
             .awaitWithTimeout()
     }
 
@@ -133,6 +136,36 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun signIn(
+        email: String,
+        password: String
+    ): Result<Unit> {
+        return try {
+            val result =
+                firebaseAuth.signInWithEmailAndPassword(email, password).awaitWithTimeout()
+
+            val user = result.requireUser()
+            val currentUserUid = user.uid
+
+            // Read once from Realtime Database
+            val currentUser = dbRef
+                .child(FirebaseNode.Users.path)
+                .child(currentUserUid)
+                .readOnce(UserFirebase::class.java)
+
+            // Insert in DB
+            // This is helpful to have user info on home screen directly after login
+            // TODO What should we do if user is null ?? Has been manually deleted ??
+            currentUser?.toUser(currentUserUid)?.let { userDao.insert(it) }
+
+            Result.success(Unit)
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     override suspend fun changePassword(
         currentPassword: String,
         newPassword: String
@@ -157,12 +190,16 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun signOut() {
+    override suspend fun signOut() {
         FirebaseAuth.getInstance().signOut()
+
+        userDao.deleteAll()
     }
 
     fun fetchCurrentUser(): Flow<User?> =
         callbackFlow {
+            val userId = firebaseAuth.currentUser?.uid ?: ""
+
             val listener = object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     trySend(snapshot.getValue(User::class.java))
@@ -174,17 +211,17 @@ class UserRepositoryImpl @Inject constructor(
             }
 
             dbRef.child(FirebaseNode.Users.path)
-                .child("currentUserId")
+                .child(userId)
                 .addValueEventListener(listener)
 
             awaitClose {
                 dbRef.child(FirebaseNode.Users.path)
-                    .child("currentUserId")
+                    .child(userId)
                     .removeEventListener(listener)
             }
         }
 
-// Local
+    // Local
 
     override fun watchCurrentUser(): Flow<User?> =
         userDao.watchUser(firebaseAuth.currentUser?.uid ?: "").distinctUntilChanged()

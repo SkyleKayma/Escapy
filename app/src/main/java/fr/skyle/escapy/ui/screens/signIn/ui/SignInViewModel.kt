@@ -29,8 +29,7 @@ class SignInViewModel @Inject constructor(
             }
 
             try {
-                // TODO: Replace with actual sign in logic
-//                userRepository.insertUser("fake_token", email)
+                userRepository.signIn(email, password).getOrThrow()
 
                 _signInState.update {
                     it.copy(

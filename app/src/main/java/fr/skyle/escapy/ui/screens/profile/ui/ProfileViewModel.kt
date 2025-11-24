@@ -38,12 +38,14 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun signOut() {
-        userRepository.signOut()
+        viewModelScope.launch {
+            userRepository.signOut()
 
-        _profileState.update {
-            it.copy(
-                event = ProfileEvent.SignOutSuccess
-            )
+            _profileState.update {
+                it.copy(
+                    event = ProfileEvent.SignOutSuccess
+                )
+            }
         }
     }
 

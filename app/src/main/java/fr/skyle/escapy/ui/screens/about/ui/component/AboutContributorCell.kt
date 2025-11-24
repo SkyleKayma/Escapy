@@ -24,7 +24,7 @@ import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import fr.skyle.escapy.R
-import fr.skyle.escapy.data.rest.response.GithubContributor
+import fr.skyle.escapy.data.rest.response.GithubContributorResponse
 import fr.skyle.escapy.designsystem.core.iconButton.ProjectIconButton
 import fr.skyle.escapy.designsystem.core.iconButton.ProjectIconButtonDefaults
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
@@ -33,7 +33,7 @@ import fr.skyle.escapy.ext.navigateToLink
 
 @Composable
 fun AboutContributorCell(
-    contributor: GithubContributor,
+    contributor: GithubContributorResponse,
     defaultPainter: Painter,
     modifier: Modifier = Modifier,
 ) {
@@ -96,7 +96,7 @@ fun AboutContributorCell(
 private fun AboutContributorCellPreview() {
     ProjectTheme {
         AboutContributorCell(
-            contributor = GithubContributor(
+            contributor = GithubContributorResponse(
                 id = 1,
                 login = "SkyleKayma"
             ),
@@ -110,7 +110,7 @@ private fun AboutContributorCellPreview() {
 private fun AboutContributorCellWithGithubUrlPreview() {
     ProjectTheme {
         AboutContributorCell(
-            contributor = GithubContributor(
+            contributor = GithubContributorResponse(
                 id = 1,
                 login = "SkyleKayma",
                 personalRepoUrl = "https://github.com"

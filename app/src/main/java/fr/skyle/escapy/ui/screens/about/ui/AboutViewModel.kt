@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.skyle.escapy.data.repository.github.api.GithubRepository
-import fr.skyle.escapy.data.rest.response.GithubContributor
+import fr.skyle.escapy.data.rest.response.GithubContributorResponse
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -60,6 +60,6 @@ class AboutViewModel @Inject constructor(
 
     data class AboutState(
         val isContributorsLoading: Boolean = true,
-        val contributors: List<GithubContributor> = listOf(),
+        val contributors: List<GithubContributorResponse> = listOf(),
     )
 }

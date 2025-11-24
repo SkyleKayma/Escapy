@@ -2,14 +2,14 @@ package fr.skyle.escapy.data.repository.github
 
 import fr.skyle.escapy.data.repository.github.api.GithubRepository
 import fr.skyle.escapy.data.rest.GithubAPI
-import fr.skyle.escapy.data.rest.response.GithubContributor
+import fr.skyle.escapy.data.rest.response.GithubContributorResponse
 import javax.inject.Inject
 
 class GithubRepositoryImpl @Inject constructor(
     private val githubAPI: GithubAPI,
 ) : GithubRepository {
 
-    override suspend fun getGithubContributors(): Result<List<GithubContributor>?> {
+    override suspend fun getGithubContributors(): Result<List<GithubContributorResponse>?> {
         val response = githubAPI.getGithubContributors()
 
         return if (response.isSuccessful) {

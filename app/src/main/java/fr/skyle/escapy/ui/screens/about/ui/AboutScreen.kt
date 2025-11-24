@@ -23,7 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.skyle.escapy.R
-import fr.skyle.escapy.data.rest.response.GithubContributor
+import fr.skyle.escapy.data.rest.response.GithubContributorResponse
 import fr.skyle.escapy.designsystem.core.iconButton.ProjectIconButtonDefaults
 import fr.skyle.escapy.designsystem.core.topAppBar.ProjectTopAppBar
 import fr.skyle.escapy.designsystem.core.topAppBar.component.ProjectTopAppBarItem
@@ -72,7 +72,7 @@ fun AboutScreen(
 private fun AboutScreenContent(
     innerPadding: PaddingValues,
     isContributorsLoading: Boolean,
-    contributors: List<GithubContributor>,
+    contributors: List<GithubContributorResponse>,
     modifier: Modifier = Modifier,
 ) {
     val defaultContributorPainter = painterResource(R.drawable.avatar_default)
@@ -149,7 +149,7 @@ private fun AboutScreenPreview() {
             aboutState = AboutViewModel.AboutState(
                 isContributorsLoading = false,
                 contributors = listOf(
-                    GithubContributor(
+                    GithubContributorResponse(
                         id = 1,
                         login = "SkyleKayma",
                     )
@@ -168,11 +168,11 @@ private fun AboutScreenContentPreview() {
             innerPadding = PaddingValues(),
             isContributorsLoading = false,
             contributors = listOf(
-                GithubContributor(
+                GithubContributorResponse(
                     id = 1,
                     login = "SkyleKayma",
                 ),
-                GithubContributor(
+                GithubContributorResponse(
                     id = 2,
                     login = "SkyleKayma",
                     personalRepoUrl = ""
@@ -190,7 +190,7 @@ private fun AboutScreenContentContributorsLoadingPreview() {
             innerPadding = PaddingValues(),
             isContributorsLoading = true,
             contributors = listOf(
-                GithubContributor(
+                GithubContributorResponse(
                     id = 1,
                     login = "SkyleKayma",
                     personalRepoUrl = "https://github.com"

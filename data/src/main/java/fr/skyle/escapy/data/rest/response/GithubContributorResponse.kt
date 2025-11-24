@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class GithubContributor(
+data class GithubContributorResponse(
     @SerialName("id") val id: Long,
     @SerialName("login") val login: String? = null,
     @SerialName("avatar_url") val avatarUrl: String? = null,
