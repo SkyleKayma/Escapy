@@ -167,7 +167,14 @@ private fun SignInScreenContent(
             ),
             keyboardActions = KeyboardActions(
                 onDone = {
-                    onSignInClicked(email, password)
+                    when (authType) {
+                        AuthType.SIGN_IN ->
+                            onSignInClicked(email, password)
+
+                        AuthType.SIGN_UP ->
+                            onSignUpClicked(email, password)
+                    }
+                    keyboardController?.hide()
                 }
             ),
             isEnabled = !isButtonLoading

@@ -61,8 +61,7 @@ class SignInViewModel @Inject constructor(
             }
 
             try {
-                // TODO: Replace with actual sign up logic
-//                userRepository.insertUser("fake_token", email)
+                userRepository.signUp(email, password).getOrThrow()
 
                 _signInState.update {
                     it.copy(
@@ -75,7 +74,7 @@ class SignInViewModel @Inject constructor(
                 Timber.e(e)
                 _signInState.update {
                     it.copy(
-                        event = SignInEvent.SignUpError(e.message ?: "An error occurred"),
+                        event = SignInEvent.SignUpError(e.message),
                     )
                 }
             } finally {
@@ -88,31 +87,31 @@ class SignInViewModel @Inject constructor(
 
     fun signInWithGoogle() {
         viewModelScope.launch {
-            _signInState.update {
-                it.copy(isButtonLoading = true)
-            }
-
-            try {
+//            _signInState.update {
+//                it.copy(isButtonLoading = true)
+//            }
+//
+//            try {
 //                userRepository.insertUser("fake_google_token", "Google User name")
-                _signInState.update {
-                    it.copy(
-                        event = SignInEvent.SignInSuccess
-                    )
-                }
-            } catch (e: CancellationException) {
-                throw e
-            } catch (e: Exception) {
-                Timber.e(e)
-                _signInState.update {
-                    it.copy(
-                        event = SignInEvent.SignInError(e.message ?: "An error occurred"),
-                    )
-                }
-            } finally {
-                _signInState.update {
-                    it.copy(isButtonLoading = false)
-                }
-            }
+//                _signInState.update {
+//                    it.copy(
+//                        event = SignInEvent.SignInSuccess
+//                    )
+//                }
+//            } catch (e: CancellationException) {
+//                throw e
+//            } catch (e: Exception) {
+//                Timber.e(e)
+//                _signInState.update {
+//                    it.copy(
+//                        event = SignInEvent.SignInError(e.message),
+//                    )
+//                }
+//            } finally {
+//                _signInState.update {
+//                    it.copy(isButtonLoading = false)
+//                }
+//            }
         }
     }
 

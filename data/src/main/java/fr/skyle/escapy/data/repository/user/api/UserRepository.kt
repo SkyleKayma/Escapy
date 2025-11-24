@@ -12,6 +12,8 @@ interface UserRepository {
 
     suspend fun signInAsGuest(): Result<Unit>
 
+    suspend fun signUp(email: String, password: String): Result<Unit>
+
     suspend fun changePassword(
         currentPassword: String,
         newPassword: String,
@@ -20,5 +22,4 @@ interface UserRepository {
     fun signOut()
 
     fun watchCurrentUser(): Flow<User?>
-
 }

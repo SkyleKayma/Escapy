@@ -11,6 +11,7 @@ import fr.skyle.escapy.data.db.dao.UserDao
 import fr.skyle.escapy.data.enums.AuthProvider
 import fr.skyle.escapy.data.enums.Avatar
 import fr.skyle.escapy.data.ext.awaitWithTimeout
+import fr.skyle.escapy.data.ext.requireUser
 import fr.skyle.escapy.data.ext.toUserPost
 import fr.skyle.escapy.data.repository.user.api.UserRepository
 import fr.skyle.escapy.data.vo.User
@@ -33,12 +34,30 @@ class UserRepositoryImpl @Inject constructor(
         firebaseAuth.currentUser != null
 
     override fun getAuthProvider(): AuthProvider {
-        val providerId = firebaseAuth.currentUser?.providerId
+        val providers = firebaseAuth.currentUser?.providerData ?: emptyList()
 
-        return AuthProvider.fromProviderId(providerId) ?: AuthProvider.ANONYMOUS
+        // Exclude the first element: it is ALWAYS `firebase`
+        val realProvider = providers
+            .map { it.providerId }
+            .firstOrNull { it != "firebase" }
+
+        return AuthProvider.fromProviderId(realProvider) ?: AuthProvider.ANONYMOUS
     }
 
     // Firebase
+
+    private fun createUser(
+        uid: String,
+        userNamePrefix: String,
+        email: String?,
+    ): User =
+        User(
+            uid = uid,
+            name = "${userNamePrefix}_${uid.takeLast(10)}",
+            email = email,
+            avatarType = Avatar.entries.random().type,
+            createdAt = System.currentTimeMillis()
+        )
 
     private suspend fun insertUserFirebase(
         uid: String,
@@ -54,26 +73,57 @@ class UserRepositoryImpl @Inject constructor(
         return try {
             val result = firebaseAuth.signInAnonymously().awaitWithTimeout()
 
-            result?.user?.let { user ->
-                val currentUserUid = user.uid
-                val currentUser = User(
-                    uid = currentUserUid,
-                    name = "Guest_${user.uid.takeLast(10)}",
-                    email = user.email,
-                    avatarType = Avatar.entries.random().type,
-                    createdAt = System.currentTimeMillis()
-                )
+            val user = result.requireUser()
+            val currentUserUid = user.uid
+            val currentUser = createUser(
+                uid = currentUserUid,
+                userNamePrefix = "Guest",
+                email = user.email
+            )
 
-                // Insert in Firebase
-                insertUserFirebase(
-                    uid = currentUserUid,
-                    user = currentUser
-                )
+            // Insert in Firebase
+            insertUserFirebase(
+                uid = currentUserUid,
+                user = currentUser
+            )
 
-                // Insert in DB
-                // This is helpful to have user info on home screen directly after login
-                userDao.insert(currentUser)
-            } ?: throw Exception("No user returned from API")
+            // Insert in DB
+            // This is helpful to have user info on home screen directly after login
+            userDao.insert(currentUser)
+
+            Result.success(Unit)
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun signUp(
+        email: String,
+        password: String
+    ): Result<Unit> {
+        return try {
+            val result =
+                firebaseAuth.createUserWithEmailAndPassword(email, password).awaitWithTimeout()
+
+            val user = result.requireUser()
+            val currentUserUid = user.uid
+            val currentUser = createUser(
+                uid = currentUserUid,
+                userNamePrefix = "Player",
+                email = user.email
+            )
+
+            // Insert in Firebase
+            insertUserFirebase(
+                uid = currentUserUid,
+                user = currentUser
+            )
+
+            // Insert in DB
+            // This is helpful to have user info on home screen directly after login
+            userDao.insert(currentUser)
 
             Result.success(Unit)
         } catch (e: CancellationException) {

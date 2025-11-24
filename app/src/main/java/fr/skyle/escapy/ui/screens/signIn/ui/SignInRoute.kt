@@ -55,7 +55,7 @@ fun SignInRoute(
         projectSnackbarState = projectSnackbarState,
         signInState = signInState,
         onSignInClicked = signInViewModel::signIn,
-        onSignUpClicked = signInViewModel::signIn,
+        onSignUpClicked = signInViewModel::signUp,
         onGoogleSignInClicked = signInViewModel::signInWithGoogle,
         onContinueAsGuestClicked = signInViewModel::signInAsGuest,
         onChangeAuthTypeClicked = signInViewModel::changeAuthType
