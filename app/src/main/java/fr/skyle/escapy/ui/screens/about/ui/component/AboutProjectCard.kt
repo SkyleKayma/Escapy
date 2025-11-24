@@ -35,19 +35,19 @@ fun AboutProjectCard(
     Row(
         modifier = modifier
             .boxCardStyle()
-            .padding(24.dp),
+            .padding(horizontal = 20.dp, vertical = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
             modifier = Modifier
                 .size(60.dp)
                 .boxCardStyle(backgroundColor = ProjectTheme.colors.surfaceContainerLow)
-                .padding(20.dp),
+                .padding(16.dp),
             painter = painterResource(R.drawable.ic_logo),
             contentDescription = null,
         )
 
-        Spacer(modifier = Modifier.width(24.dp))
+        Spacer(modifier = Modifier.width(12.dp))
 
         Column(modifier = Modifier.weight(1f)) {
             Text(
@@ -71,7 +71,7 @@ fun AboutProjectCard(
             )
         }
 
-        Spacer(modifier = Modifier.width(24.dp))
+        Spacer(modifier = Modifier.width(12.dp))
 
         ProjectIconButton(
             icon = painterResource(R.drawable.ic_github),

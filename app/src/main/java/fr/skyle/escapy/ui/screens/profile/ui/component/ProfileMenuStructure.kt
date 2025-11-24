@@ -140,7 +140,7 @@ fun ProfileMenuScope.Group.ProfileMenuStructureItem(
         }
 
         onCellClicked?.let {
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(12.dp))
 
             Icon(
                 modifier = Modifier.size(20.dp),
