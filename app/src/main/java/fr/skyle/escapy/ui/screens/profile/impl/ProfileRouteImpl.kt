@@ -23,7 +23,7 @@ fun NavGraphBuilder.profileRoute(
                 // TODO
             },
             navigateChangePassword = {
-                // TODO
+                navHostController.navigateWithLifecycle(Route.ChangePassword)
             },
             navigateToNotifications = {
                 // TODO

@@ -61,12 +61,14 @@ fun ProfileAccountStructure(
                 )
             }
 
-            item {
-                ProfileMenuStructureItem(
-                    modifier = Modifier.fillMaxWidth(),
-                    title = AnnotatedString(stringResource(R.string.profile_change_password)),
-                    onCellClicked = onChangePasswordClicked
-                )
+            if (authProvider == AuthProvider.EMAIL) {
+                item {
+                    ProfileMenuStructureItem(
+                        modifier = Modifier.fillMaxWidth(),
+                        title = AnnotatedString(stringResource(R.string.profile_change_password)),
+                        onCellClicked = onChangePasswordClicked
+                    )
+                }
             }
         }
     }

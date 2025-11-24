@@ -43,7 +43,7 @@ class SignInViewModel @Inject constructor(
                 Timber.e(e)
                 _signInState.update {
                     it.copy(
-                        event = SignInEvent.SignInError(e.message ?: "An error occurred"),
+                        event = SignInEvent.SignInError(e.message),
                     )
                 }
             } finally {
@@ -123,7 +123,8 @@ class SignInViewModel @Inject constructor(
             }
 
             try {
-                userRepository.signInAsGuest()
+                userRepository.signInAsGuest().getOrThrow()
+
                 _signInState.update {
                     it.copy(
                         event = SignInEvent.SignInSuccess
@@ -135,7 +136,7 @@ class SignInViewModel @Inject constructor(
                 Timber.e(e)
                 _signInState.update {
                     it.copy(
-                        event = SignInEvent.SignInError(e.message ?: "An error occurred"),
+                        event = SignInEvent.SignInError(e.message),
                     )
                 }
             } finally {
@@ -174,8 +175,8 @@ class SignInViewModel @Inject constructor(
     )
 
     sealed interface SignInEvent {
-        data class SignInError(val errorMessage: String) : SignInEvent
-        data class SignUpError(val errorMessage: String) : SignInEvent
+        data class SignInError(val errorMessage: String?) : SignInEvent
+        data class SignUpError(val errorMessage: String?) : SignInEvent
         data object SignInSuccess : SignInEvent
         data object SignUpSuccess : SignInEvent
     }

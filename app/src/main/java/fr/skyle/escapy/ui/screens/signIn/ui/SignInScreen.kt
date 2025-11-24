@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -71,7 +72,7 @@ fun SignInScreen(
     ProjectScreenStructure(
         modifier = Modifier.fillMaxSize(),
         isPatternDisplayed = true,
-        projectSnackbarState = projectSnackbarState
+        snackbarState = projectSnackbarState
     ) { innerPadding ->
         SignInScreenContent(
             modifier = Modifier.fillMaxSize(),
@@ -107,7 +108,8 @@ private fun SignInScreenContent(
     Column(
         modifier = modifier
             .padding(24.dp)
-            .verticalScroll(rememberScrollState()),
+            .verticalScroll(rememberScrollState())
+            .imePadding(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {

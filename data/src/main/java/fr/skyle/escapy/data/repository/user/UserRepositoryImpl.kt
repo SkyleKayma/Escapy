@@ -1,5 +1,6 @@
 package fr.skyle.escapy.data.repository.user
 
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -13,6 +14,7 @@ import fr.skyle.escapy.data.ext.awaitWithTimeout
 import fr.skyle.escapy.data.ext.toUserPost
 import fr.skyle.escapy.data.repository.user.api.UserRepository
 import fr.skyle.escapy.data.vo.User
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -48,29 +50,61 @@ class UserRepositoryImpl @Inject constructor(
             .awaitWithTimeout()
     }
 
-    override suspend fun signInAsGuest() {
-        val result = firebaseAuth.signInAnonymously().awaitWithTimeout()
+    override suspend fun signInAsGuest(): Result<Unit> {
+        return try {
+            val result = firebaseAuth.signInAnonymously().awaitWithTimeout()
 
-        result?.user?.let { user ->
-            val currentUserUid = user.uid
-            val currentUser = User(
-                uid = currentUserUid,
-                name = "Guest_${user.uid.takeLast(10)}",
-                email = user.email,
-                avatarType = Avatar.entries.random().type,
-                createdAt = System.currentTimeMillis()
-            )
+            result?.user?.let { user ->
+                val currentUserUid = user.uid
+                val currentUser = User(
+                    uid = currentUserUid,
+                    name = "Guest_${user.uid.takeLast(10)}",
+                    email = user.email,
+                    avatarType = Avatar.entries.random().type,
+                    createdAt = System.currentTimeMillis()
+                )
 
-            // Insert in Firebase
-            insertUserFirebase(
-                uid = currentUserUid,
-                user = currentUser
-            )
+                // Insert in Firebase
+                insertUserFirebase(
+                    uid = currentUserUid,
+                    user = currentUser
+                )
 
-            // Insert in DB
-            // This is helpful to have user info on home screen directly after login
-            userDao.insert(currentUser)
-        } ?: throw Exception("No user returned from API")
+                // Insert in DB
+                // This is helpful to have user info on home screen directly after login
+                userDao.insert(currentUser)
+            } ?: throw Exception("No user returned from API")
+
+            Result.success(Unit)
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun changePassword(
+        currentPassword: String,
+        newPassword: String
+    ): Result<Unit> {
+        return try {
+            // Create a AuthCredential
+            val user = firebaseAuth.currentUser
+            val email = user?.email ?: ""
+            val credential = EmailAuthProvider.getCredential(email, currentPassword)
+
+            // First reauthenticate to be sure that the user has logged recently
+            user?.reauthenticate(credential)?.awaitWithTimeout()
+
+            // Then update user password
+            user?.updatePassword(newPassword)?.awaitWithTimeout()
+
+            Result.success(Unit)
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
     override fun signOut() {
@@ -100,7 +134,7 @@ class UserRepositoryImpl @Inject constructor(
             }
         }
 
-    // Local
+// Local
 
     override fun watchCurrentUser(): Flow<User?> =
         userDao.watchUser(firebaseAuth.currentUser?.uid ?: "").distinctUntilChanged()

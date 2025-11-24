@@ -27,7 +27,7 @@ fun SignInRoute(
                     projectSnackbarState.showSnackbar(
                         message = context.getString(
                             R.string.sign_in_error_format,
-                            event.errorMessage
+                            event.errorMessage ?: "-"
                         )
                     )
                 }
@@ -41,7 +41,7 @@ fun SignInRoute(
                     projectSnackbarState.showSnackbar(
                         message = context.getString(
                             R.string.sign_up_error_format,
-                            event.errorMessage
+                            event.errorMessage ?: "-"
                         )
                     )
                 }

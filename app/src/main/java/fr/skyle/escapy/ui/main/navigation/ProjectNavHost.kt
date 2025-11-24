@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navigation
 import fr.skyle.escapy.ui.screens.about.impl.aboutRoute
+import fr.skyle.escapy.ui.screens.changePassword.impl.changePasswordRoute
 import fr.skyle.escapy.ui.screens.home.impl.homeRoute
 import fr.skyle.escapy.ui.screens.profile.impl.profileRoute
 import fr.skyle.escapy.ui.screens.signIn.impl.signInRoute
@@ -67,6 +68,10 @@ fun ProjectNavHost(
             )
 
             aboutRoute(
+                navHostController = navHostController
+            )
+
+            changePasswordRoute(
                 navHostController = navHostController
             )
         }

@@ -24,7 +24,7 @@ import fr.skyle.escapy.utils.ProjectScreenPreview
 fun ProjectScreenStructure(
     modifier: Modifier = Modifier,
     isPatternDisplayed: Boolean = false,
-    projectSnackbarState: ProjectSnackbarState? = null,
+    snackbarState: ProjectSnackbarState? = null,
     topContent: (@Composable () -> Unit)? = null,
     bottomContent: (@Composable () -> Unit)? = null,
     floatingActionButton: (@Composable () -> Unit)? = null,
@@ -45,9 +45,9 @@ fun ProjectScreenStructure(
         },
         floatingActionButtonPosition = floatingActionButtonPosition,
         snackbarHost = {
-            projectSnackbarState?.let {
+            snackbarState?.let {
                 ProjectSnackbar(
-                    state = projectSnackbarState
+                    state = snackbarState
                 )
             }
         },

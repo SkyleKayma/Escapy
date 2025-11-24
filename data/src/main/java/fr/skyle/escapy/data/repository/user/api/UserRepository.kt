@@ -10,7 +10,12 @@ interface UserRepository {
 
     fun getAuthProvider(): AuthProvider
 
-    suspend fun signInAsGuest()
+    suspend fun signInAsGuest(): Result<Unit>
+
+    suspend fun changePassword(
+        currentPassword: String,
+        newPassword: String,
+    ): Result<Unit>
 
     fun signOut()
 

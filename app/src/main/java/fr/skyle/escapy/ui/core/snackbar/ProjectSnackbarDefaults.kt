@@ -29,11 +29,11 @@ object ProjectSnackbarDefaults {
 
     val borderColor: Color
         @Composable
-        get() = ProjectTheme.colors.black
+        get() = ProjectTheme.colors.surfaceContainerHigh
 
     val textStyle: TextStyle
         @Composable
-        get() = ProjectTheme.typography.p1
+        get() = ProjectTheme.typography.p3
 
     val snackbarShape: Shape = RoundedCornerShape(
         size = SNACKBAR_RADIUS_DP.dp
