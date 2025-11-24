@@ -24,12 +24,22 @@ fun ChangePasswordRoute(
         changePasswordState.event?.let { event ->
             when (event) {
                 is ChangePasswordViewModel.ChangePasswordEvent.Error -> {
-                    projectSnackbarState.showSnackbar(
-                        message = context.getString(
-                            R.string.change_password_error_format,
-                            event.errorMessage ?: "-"
-                        )
-                    )
+                    when (val error = event.error) {
+                        is ChangePasswordViewModel.ChangePasswordError.Error -> {
+                            projectSnackbarState.showSnackbar(
+                                message = context.getString(
+                                    R.string.generic_error_format,
+                                    error.errorMessage ?: "-"
+                                )
+                            )
+                        }
+
+                        ChangePasswordViewModel.ChangePasswordError.InvalidFields -> {
+                            projectSnackbarState.showSnackbar(
+                                message = context.getString(R.string.generic_error_incorrect_fields)
+                            )
+                        }
+                    }
                 }
 
                 ChangePasswordViewModel.ChangePasswordEvent.Success -> {
@@ -45,6 +55,9 @@ fun ChangePasswordRoute(
         projectSnackbarState = projectSnackbarState,
         changePasswordState = changePasswordState,
         onBackButtonClicked = navigateBack,
+        onCurrentPasswordChange = changePasswordViewModel::setCurrentPassword,
+        onNewPasswordChange = changePasswordViewModel::setNewPassword,
+        onNewPasswordConfirmationChange = changePasswordViewModel::setNewPasswordConfirmation,
         onChangePassword = changePasswordViewModel::changePassword
     )
 }

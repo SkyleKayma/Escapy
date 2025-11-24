@@ -26,7 +26,7 @@ fun SignInRoute(
                 is SignInViewModel.SignInEvent.SignInError -> {
                     projectSnackbarState.showSnackbar(
                         message = context.getString(
-                            R.string.sign_in_error_format,
+                            R.string.generic_error_format,
                             event.errorMessage ?: "-"
                         )
                     )
@@ -40,7 +40,7 @@ fun SignInRoute(
                 is SignInViewModel.SignInEvent.SignUpError -> {
                     projectSnackbarState.showSnackbar(
                         message = context.getString(
-                            R.string.sign_up_error_format,
+                            R.string.generic_error_format,
                             event.errorMessage ?: "-"
                         )
                     )

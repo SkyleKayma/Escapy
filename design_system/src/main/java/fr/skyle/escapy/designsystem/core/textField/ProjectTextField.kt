@@ -157,7 +157,7 @@ fun ProjectTextField(
 }
 
 @Composable
-fun ProjectTextFieldLabel(
+private fun ProjectTextFieldLabel(
     text: String,
     isFocused: Boolean,
     modifier: Modifier = Modifier
@@ -174,7 +174,7 @@ fun ProjectTextFieldLabel(
 }
 
 @Composable
-fun ProjectTextFieldPlaceholder(
+private fun ProjectTextFieldPlaceholder(
     text: String,
     modifier: Modifier = Modifier
 ) {
@@ -186,11 +186,11 @@ fun ProjectTextFieldPlaceholder(
 }
 
 @Stable
-fun TextFieldColors.cursorColor(isError: Boolean): Color =
+private fun TextFieldColors.cursorColor(isError: Boolean): Color =
     if (isError) errorCursorColor else cursorColor
 
 @Stable
-fun TextFieldColors.textColor(
+private fun TextFieldColors.textColor(
     enabled: Boolean,
     isError: Boolean,
     focused: Boolean,

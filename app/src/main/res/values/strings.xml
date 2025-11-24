@@ -6,19 +6,27 @@
     <string name="openium_url" translatable="false">https://www.openium.fr</string>
     <string name="data_privacy_url" translatable="false">https://skylekayma.github.io/Escapy/docs/privacy-policy.html</string>
 
+    <!-- Generic Error -->
+    <string name="generic_error_format">Une erreur est survenue (%s)</string>
+    <string name="generic_error_incorrect_fields">Certains champs sont incorrects</string>
+
+    <!-- Generic Password Rule -->
+    <string name="generic_password_rule_uppercase">Contient une majuscule</string>
+    <string name="generic_password_rule_min_length">Contient au moins 8 caractères</string>
+    <string name="generic_password_rule_digit">Contient au moins 1 chiffre</string>
+    <string name="generic_password_rule_special">Contient au moins 1 caractère spécial</string>
+
     <!-- SignIn -->
     <string name="sign_in_title">Connexion</string>
     <string name="sign_in_action">Se connecter</string>
     <string name="sign_in_no_account">Vous n\'avez pas de compte ?\nInscrivez-vous !</string>
     <string name="sign_in_no_account_highlighted">Inscrivez-vous</string>
-    <string name="sign_in_error_format">Une erreur est survenue lors de la connexion (%s)</string>
 
     <!-- SignUp -->
     <string name="sign_up_title">Inscription</string>
     <string name="sign_up_action">S\'inscrire</string>
     <string name="sign_in_have_account">Vous avez déjà un compte ?\nConnectez-vous !</string>
     <string name="sign_in_have_account_highlighted">Connectez-vous</string>
-    <string name="sign_up_error_format">Une erreur est survenue lors de l\'inscription (%s)</string>
 
     <!-- SignIn SignUp -->
     <string name="sign_in_up_subtitle">Renseignez vos identifiants</string>
@@ -66,8 +74,10 @@
     <string name="change_password_title">Mot de passe</string>
     <string name="change_password_current_password">Mot de passe actuel</string>
     <string name="change_password_new_password">Nouveau mot de passe</string>
-    <string name="change_password_new_password_confirmation">Confirmation</string>
+    <string name="change_password_new_password_confirmation">Confirmation du mot de passe</string>
     <string name="change_password_modify">Modifier</string>
-    <string name="change_password_error_format">Une erreur est survenue lors du changement du mot de passe (%s)</string>
+
+    <!-- EditProfile -->
+    <string name="edit_profile_title">Modifier</string>
 
 </resources>

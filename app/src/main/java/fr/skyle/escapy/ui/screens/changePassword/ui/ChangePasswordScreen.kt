@@ -15,11 +15,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -37,6 +32,7 @@ import fr.skyle.escapy.designsystem.core.textField.ProjectTextField
 import fr.skyle.escapy.designsystem.core.topAppBar.ProjectTopAppBar
 import fr.skyle.escapy.designsystem.core.topAppBar.component.ProjectTopAppBarItem
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
+import fr.skyle.escapy.ui.core.form.PasswordFormValidationRow
 import fr.skyle.escapy.ui.core.snackbar.state.ProjectSnackbarState
 import fr.skyle.escapy.ui.core.snackbar.state.rememberProjectSnackbarState
 import fr.skyle.escapy.ui.core.structure.ProjectScreenStructure
@@ -47,7 +43,10 @@ fun ChangePasswordScreen(
     projectSnackbarState: ProjectSnackbarState,
     changePasswordState: ChangePasswordViewModel.ChangePasswordState,
     onBackButtonClicked: () -> Unit,
-    onChangePassword: (currentPassword: String, newPassword: String) -> Unit,
+    onCurrentPasswordChange: (currentPassword: String) -> Unit,
+    onNewPasswordChange: (newPassword: String) -> Unit,
+    onNewPasswordConfirmationChange: (newPasswordConfirmation: String) -> Unit,
+    onChangePassword: () -> Unit,
 ) {
     ProjectScreenStructure(
         modifier = Modifier.fillMaxSize(),
@@ -71,6 +70,15 @@ fun ChangePasswordScreen(
             modifier = Modifier.fillMaxSize(),
             innerPadding = innerPadding,
             isButtonLoading = changePasswordState.isButtonLoading,
+            currentPassword = changePasswordState.currentPassword,
+            newPassword = changePasswordState.newPassword,
+            newPasswordConfirmation = changePasswordState.newPasswordConfirmation,
+            currentPasswordValidationState = changePasswordState.currentPasswordValidationState,
+            newPasswordValidationState = changePasswordState.newPasswordValidationState,
+            newPasswordConfirmationValidationState = changePasswordState.newPasswordConfirmationValidationState,
+            onCurrentPasswordChange = onCurrentPasswordChange,
+            onNewPasswordChange = onNewPasswordChange,
+            onNewPasswordConfirmationChange = onNewPasswordConfirmationChange,
             onChangePassword = onChangePassword
         )
     }
@@ -80,22 +88,19 @@ fun ChangePasswordScreen(
 private fun ChangePasswordScreenContent(
     innerPadding: PaddingValues,
     isButtonLoading: Boolean,
-    onChangePassword: (currentPassword: String, newPassword: String) -> Unit,
+    currentPassword: String,
+    newPassword: String,
+    newPasswordConfirmation: String,
+    currentPasswordValidationState: ChangePasswordViewModel.CurrentPasswordValidationState,
+    newPasswordValidationState: ChangePasswordViewModel.NewPasswordValidationState,
+    newPasswordConfirmationValidationState: ChangePasswordViewModel.NewPasswordConfirmationValidationState,
+    onCurrentPasswordChange: (currentPassword: String) -> Unit,
+    onNewPasswordChange: (newPassword: String) -> Unit,
+    onNewPasswordConfirmationChange: (newPasswordConfirmation: String) -> Unit,
+    onChangePassword: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
-
-    var currentPassword by remember { mutableStateOf("") }
-    var newPassword by remember { mutableStateOf("") }
-    var newPasswordConfirmation by remember { mutableStateOf("") }
-
-    val isButtonEnabled by remember {
-        derivedStateOf {
-            currentPassword.isNotBlank()
-                    && newPassword.isNotBlank()
-                    && newPassword == newPasswordConfirmation
-        }
-    }
 
     Column(
         modifier = modifier
@@ -107,37 +112,71 @@ private fun ChangePasswordScreenContent(
         ProjectTextField(
             modifier = Modifier.fillMaxWidth(),
             value = currentPassword,
-            onValueChange = { currentPassword = it },
+            onValueChange = onCurrentPasswordChange,
             label = stringResource(id = R.string.change_password_current_password),
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next,
                 keyboardType = KeyboardType.Password
             ),
-            isEnabled = !isButtonLoading
+            isEnabled = !isButtonLoading,
+            isError = !currentPasswordValidationState.isValid && currentPasswordValidationState.hasBeenChecked
         )
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         ProjectTextField(
             modifier = Modifier.fillMaxWidth(),
             value = newPassword,
-            onValueChange = { newPassword = it },
+            onValueChange = onNewPasswordChange,
             label = stringResource(id = R.string.change_password_new_password),
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next,
                 keyboardType = KeyboardType.Password
             ),
-            isEnabled = !isButtonLoading
+            isEnabled = !isButtonLoading,
+            isError = !newPasswordValidationState.isValid && newPasswordValidationState.hasBeenChecked
         )
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(8.dp))
+
+        PasswordFormValidationRow(
+            modifier = Modifier.fillMaxWidth(),
+            isValid = newPasswordValidationState.containsUppercase,
+            text = stringResource(id = R.string.generic_password_rule_uppercase)
+        )
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        PasswordFormValidationRow(
+            modifier = Modifier.fillMaxWidth(),
+            isValid = newPasswordValidationState.isLongEnough,
+            text = stringResource(id = R.string.generic_password_rule_min_length)
+        )
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        PasswordFormValidationRow(
+            modifier = Modifier.fillMaxWidth(),
+            isValid = newPasswordValidationState.containsDigit,
+            text = stringResource(id = R.string.generic_password_rule_digit)
+        )
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        PasswordFormValidationRow(
+            modifier = Modifier.fillMaxWidth(),
+            isValid = newPasswordValidationState.containsSpecialCharacter,
+            text = stringResource(id = R.string.generic_password_rule_special)
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         ProjectTextField(
             modifier = Modifier.fillMaxWidth(),
             value = newPasswordConfirmation,
-            onValueChange = { newPasswordConfirmation = it },
+            onValueChange = onNewPasswordConfirmationChange,
             label = stringResource(id = R.string.change_password_new_password_confirmation),
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(
@@ -146,22 +185,21 @@ private fun ChangePasswordScreenContent(
             ),
             keyboardActions = KeyboardActions(
                 onDone = {
-                    if (isButtonEnabled) {
-                        onChangePassword(currentPassword, newPassword)
-                    }
-
+                    onChangePassword()
                     keyboardController?.hide()
                 }
             ),
-            isEnabled = !isButtonLoading
-        )
+            isEnabled = !isButtonLoading,
+            isError = !newPasswordConfirmationValidationState.isValid && newPasswordConfirmationValidationState.hasBeenChecked,
 
-        Spacer(modifier = Modifier.height(16.dp))
+            )
+
+        Spacer(modifier = Modifier.height(24.dp))
 
         ProjectButton(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-                onChangePassword(currentPassword, newPassword)
+                onChangePassword()
                 keyboardController?.hide()
             },
             text = stringResource(R.string.change_password_modify),
@@ -169,7 +207,6 @@ private fun ChangePasswordScreenContent(
             tint = ProjectButtonDefaults.ButtonTint.PRIMARY,
             size = ProjectButtonDefaults.ButtonSize.LARGE,
             isLoading = isButtonLoading,
-            isEnabled = isButtonEnabled
         )
 
         Spacer(modifier = Modifier.height(innerPadding.calculateBottomPadding()))
@@ -184,7 +221,10 @@ private fun ChangePasswordScreenPreview() {
             projectSnackbarState = rememberProjectSnackbarState(),
             changePasswordState = ChangePasswordViewModel.ChangePasswordState(),
             onBackButtonClicked = {},
-            onChangePassword = { _, _ -> },
+            onCurrentPasswordChange = {},
+            onNewPasswordChange = {},
+            onNewPasswordConfirmationChange = {},
+            onChangePassword = {},
         )
     }
 }
@@ -196,7 +236,16 @@ private fun ChangePasswordScreenContentPreview() {
         ChangePasswordScreenContent(
             innerPadding = PaddingValues(),
             isButtonLoading = false,
-            onChangePassword = { _, _ -> }
+            currentPassword = "",
+            newPassword = "",
+            newPasswordConfirmation = "",
+            currentPasswordValidationState = ChangePasswordViewModel.CurrentPasswordValidationState(),
+            newPasswordValidationState = ChangePasswordViewModel.NewPasswordValidationState(),
+            newPasswordConfirmationValidationState = ChangePasswordViewModel.NewPasswordConfirmationValidationState(),
+            onCurrentPasswordChange = {},
+            onNewPasswordChange = {},
+            onNewPasswordConfirmationChange = {},
+            onChangePassword = {},
         )
     }
 }
@@ -208,7 +257,16 @@ private fun ChangePasswordScreenContentLoadingPreview() {
         ChangePasswordScreenContent(
             innerPadding = PaddingValues(),
             isButtonLoading = true,
-            onChangePassword = { _, _ -> }
+            currentPassword = "",
+            newPassword = "",
+            newPasswordConfirmation = "",
+            currentPasswordValidationState = ChangePasswordViewModel.CurrentPasswordValidationState(),
+            newPasswordValidationState = ChangePasswordViewModel.NewPasswordValidationState(),
+            newPasswordConfirmationValidationState = ChangePasswordViewModel.NewPasswordConfirmationValidationState(),
+            onCurrentPasswordChange = {},
+            onNewPasswordChange = {},
+            onNewPasswordConfirmationChange = {},
+            onChangePassword = {},
         )
     }
 }
