@@ -61,7 +61,7 @@ fun SignInRoute(
                 is SignInViewModel.SignInReasonEvent.FromReason -> {
                     projectSnackbarState.showSnackbar(
                         message = context.getString(event.signInReason.messageId),
-                        type = ProjectSnackbarDefaults.ProjectSnackbarType.ERROR
+                        type = ProjectSnackbarDefaults.ProjectSnackbarType.NEUTRAL
                     )
                 }
             }

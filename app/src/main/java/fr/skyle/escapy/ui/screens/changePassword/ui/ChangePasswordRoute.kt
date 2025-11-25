@@ -39,7 +39,7 @@ fun ChangePasswordRoute(
                         ChangePasswordViewModel.ChangePasswordError.InvalidFields -> {
                             projectSnackbarState.showSnackbar(
                                 message = context.getString(R.string.generic_error_incorrect_fields),
-                                type = ProjectSnackbarDefaults.ProjectSnackbarType.ERROR
+                                type = ProjectSnackbarDefaults.ProjectSnackbarType.NEUTRAL
                             )
                         }
                     }

@@ -79,6 +79,9 @@ private fun ProjectSnackbarContent(
                     },
                     style = ProjectButtonDefaults.ButtonStyle.TEXT,
                     tint = when (type) {
+                        ProjectSnackbarDefaults.ProjectSnackbarType.NEUTRAL ->
+                            ProjectButtonDefaults.ButtonTint.PRIMARY
+
                         ProjectSnackbarDefaults.ProjectSnackbarType.SUCCESS ->
                             ProjectButtonDefaults.ButtonTint.SUCCESS
 

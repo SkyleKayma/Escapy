@@ -15,12 +15,16 @@ object ProjectSnackbarDefaults {
     const val SNACKBAR_BORDER_WIDTH_DP = 1
 
     enum class ProjectSnackbarType {
+        NEUTRAL,
         SUCCESS,
         ERROR;
 
         val containerColor: Color
             @Composable
             get() = when (this) {
+                NEUTRAL ->
+                    ProjectTheme.colors.surfaceContainerHigh
+
                 SUCCESS ->
                     ProjectTheme.colors.successContainer
 
@@ -31,6 +35,9 @@ object ProjectSnackbarDefaults {
         val contentColor: Color
             @Composable
             get() = when (this) {
+                NEUTRAL ->
+                    ProjectTheme.colors.onSurface
+
                 SUCCESS ->
                     ProjectTheme.colors.success
 
@@ -41,6 +48,9 @@ object ProjectSnackbarDefaults {
         val borderColor: Color
             @Composable
             get() = when (this) {
+                NEUTRAL ->
+                    ProjectTheme.colors.black
+
                 SUCCESS ->
                     ProjectTheme.colors.surfaceContainerHigh
 

@@ -3,6 +3,7 @@ package fr.skyle.escapy.ui.core.snackbar.ext
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
@@ -13,6 +14,9 @@ import fr.skyle.escapy.ui.core.snackbar.ProjectSnackbarDefaults
 val ProjectSnackbarDefaults.ProjectSnackbarType.painter: Painter
     @Composable
     get() = when (this) {
+        ProjectSnackbarDefaults.ProjectSnackbarType.NEUTRAL ->
+            rememberVectorPainter(Icons.Default.Info)
+
         ProjectSnackbarDefaults.ProjectSnackbarType.SUCCESS ->
             rememberVectorPainter(Icons.Default.CheckCircle)
 
@@ -23,6 +27,9 @@ val ProjectSnackbarDefaults.ProjectSnackbarType.painter: Painter
 val ProjectSnackbarDefaults.ProjectSnackbarType.iconColor: Color
     @Composable
     get() = when (this) {
+        ProjectSnackbarDefaults.ProjectSnackbarType.NEUTRAL ->
+            ProjectTheme.colors.onSurface
+
         ProjectSnackbarDefaults.ProjectSnackbarType.SUCCESS ->
             ProjectTheme.colors.success
 
