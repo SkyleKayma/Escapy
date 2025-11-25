@@ -7,9 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
@@ -18,11 +15,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import fr.skyle.escapy.designsystem.core.button.ProjectButton
 import fr.skyle.escapy.designsystem.core.button.ProjectButtonDefaults
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
+import fr.skyle.escapy.ui.core.snackbar.ext.iconColor
+import fr.skyle.escapy.ui.core.snackbar.ext.painter
 import fr.skyle.escapy.ui.core.snackbar.state.ProjectSnackbarState
 import fr.skyle.escapy.utils.ProjectComponentPreview
 
@@ -64,11 +64,11 @@ private fun ProjectSnackbarContent(
             .border(
                 width = ProjectSnackbarDefaults.SNACKBAR_BORDER_WIDTH_DP.dp,
                 shape = ProjectSnackbarDefaults.snackbarShape,
-                color = ProjectSnackbarDefaults.borderColor
+                color = type.borderColor
             ),
         shape = ProjectSnackbarDefaults.snackbarShape,
-        containerColor = ProjectSnackbarDefaults.containerColor,
-        contentColor = ProjectSnackbarDefaults.contentColor,
+        containerColor = type.containerColor,
+        contentColor = type.contentColor,
         action = actionLabel?.let {
             {
                 ProjectButton(
@@ -78,7 +78,13 @@ private fun ProjectSnackbarContent(
                         onActionClicked?.invoke()
                     },
                     style = ProjectButtonDefaults.ButtonStyle.TEXT,
-                    tint = ProjectButtonDefaults.ButtonTint.PRIMARY,
+                    tint = when (type) {
+                        ProjectSnackbarDefaults.ProjectSnackbarType.SUCCESS ->
+                            ProjectButtonDefaults.ButtonTint.SUCCESS
+
+                        ProjectSnackbarDefaults.ProjectSnackbarType.ERROR ->
+                            ProjectButtonDefaults.ButtonTint.ERROR
+                    },
                     size = ProjectButtonDefaults.ButtonSize.SMALL
                 )
             }
@@ -88,18 +94,11 @@ private fun ProjectSnackbarContent(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            val painter = when (type) {
-                ProjectSnackbarDefaults.ProjectSnackbarType.SUCCESS ->
-                    rememberVectorPainter(Icons.Default.Check)
-
-                ProjectSnackbarDefaults.ProjectSnackbarType.ERROR ->
-                    rememberVectorPainter(Icons.Default.Warning)
-            }
-
             Icon(
                 modifier = Modifier.size(24.dp),
-                painter = painter,
+                painter = type.painter,
                 contentDescription = null,
+                tint = type.iconColor
             )
 
             Spacer(modifier = Modifier.width(12.dp))
@@ -113,24 +112,45 @@ private fun ProjectSnackbarContent(
     }
 }
 
+private class ProjectSnackbarPreviewDataProvider :
+    CollectionPreviewParameterProvider<ProjectSnackbarPreviewData>(
+        collection = buildList {
+            ProjectSnackbarDefaults.ProjectSnackbarType.entries.forEach { type ->
+                add(
+                    ProjectSnackbarPreviewData(
+                        type = type,
+                    )
+                )
+            }
+        }
+    )
+
+private data class ProjectSnackbarPreviewData(
+    val type: ProjectSnackbarDefaults.ProjectSnackbarType
+)
+
 @ProjectComponentPreview
 @Composable
-private fun ProjectSnackbarPreview() {
+private fun ProjectSnackbarPreview(
+    @PreviewParameter(ProjectSnackbarPreviewDataProvider::class) data: ProjectSnackbarPreviewData
+) {
     ProjectTheme {
         ProjectSnackbarContent(
             message = "message",
-            type = ProjectSnackbarDefaults.ProjectSnackbarType.SUCCESS
+            type = data.type,
         )
     }
 }
 
 @ProjectComponentPreview
 @Composable
-private fun ProjectSnackbarWithActionPreview() {
+private fun ProjectSnackbarWithActionPreview(
+    @PreviewParameter(ProjectSnackbarPreviewDataProvider::class) data: ProjectSnackbarPreviewData
+) {
     ProjectTheme {
         ProjectSnackbarContent(
             message = "message",
-            type = ProjectSnackbarDefaults.ProjectSnackbarType.ERROR,
+            type = data.type,
             actionLabel = "action",
             onActionClicked = {}
         )

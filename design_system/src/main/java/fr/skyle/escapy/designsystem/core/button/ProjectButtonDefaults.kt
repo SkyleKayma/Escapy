@@ -38,7 +38,8 @@ object ProjectButtonDefaults {
     enum class ButtonTint {
         PRIMARY,
         SECONDARY,
-        ERROR;
+        ERROR,
+        SUCCESS;
 
         val containerColor: Color
             @Composable
@@ -46,6 +47,7 @@ object ProjectButtonDefaults {
                 PRIMARY -> ProjectTheme.colors.primary
                 SECONDARY -> ProjectTheme.colors.secondary
                 ERROR -> ProjectTheme.colors.errorContainer
+                SUCCESS -> ProjectTheme.colors.successContainer
             }
 
         val contentColor: Color
@@ -54,6 +56,7 @@ object ProjectButtonDefaults {
                 PRIMARY -> ProjectTheme.colors.onPrimary
                 SECONDARY -> ProjectTheme.colors.onSecondary
                 ERROR -> ProjectTheme.colors.error
+                SUCCESS -> ProjectTheme.colors.success
             }
 
         val outlineContentColor: Color
@@ -62,6 +65,7 @@ object ProjectButtonDefaults {
                 PRIMARY -> ProjectTheme.colors.primary
                 SECONDARY -> ProjectTheme.colors.onSecondary
                 ERROR -> ProjectTheme.colors.error
+                SUCCESS -> ProjectTheme.colors.success
             }
 
         val textContentColor: Color
@@ -70,6 +74,7 @@ object ProjectButtonDefaults {
                 PRIMARY -> ProjectTheme.colors.primary
                 SECONDARY -> ProjectTheme.colors.onSecondary
                 ERROR -> ProjectTheme.colors.error
+                SUCCESS -> ProjectTheme.colors.success
             }
 
         val outlineColor: Color
@@ -78,6 +83,7 @@ object ProjectButtonDefaults {
                 PRIMARY -> ProjectTheme.colors.primary
                 SECONDARY -> ProjectTheme.colors.secondary
                 ERROR -> ProjectTheme.colors.error
+                SUCCESS -> ProjectTheme.colors.success
             }
     }
 

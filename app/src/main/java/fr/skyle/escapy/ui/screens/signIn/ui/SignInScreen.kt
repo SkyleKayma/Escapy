@@ -323,7 +323,6 @@ private data class SignInScreenContentPreviewData(
 @Composable
 private fun SignInScreenContentPreview(
     @PreviewParameter(SignInScreenContentPreviewDataProvider::class) data: SignInScreenContentPreviewData
-
 ) {
     ProjectTheme {
         SignInScreenContent(

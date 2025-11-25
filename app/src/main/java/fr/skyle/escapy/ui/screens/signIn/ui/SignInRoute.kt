@@ -7,6 +7,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fr.skyle.escapy.R
+import fr.skyle.escapy.ui.core.snackbar.ProjectSnackbarDefaults
 import fr.skyle.escapy.ui.core.snackbar.state.rememberProjectSnackbarState
 import fr.skyle.escapy.ui.screens.signIn.ui.ext.messageId
 
@@ -29,7 +30,8 @@ fun SignInRoute(
                         message = context.getString(
                             R.string.generic_error_format,
                             event.errorMessage ?: "-"
-                        )
+                        ),
+                        type = ProjectSnackbarDefaults.ProjectSnackbarType.ERROR
                     )
                 }
 
@@ -43,7 +45,8 @@ fun SignInRoute(
                         message = context.getString(
                             R.string.generic_error_format,
                             event.errorMessage ?: "-"
-                        )
+                        ),
+                        type = ProjectSnackbarDefaults.ProjectSnackbarType.ERROR
                     )
                 }
             }
@@ -57,7 +60,8 @@ fun SignInRoute(
             when (event) {
                 is SignInViewModel.SignInReasonEvent.FromReason -> {
                     projectSnackbarState.showSnackbar(
-                        message = context.getString(event.signInReason.messageId)
+                        message = context.getString(event.signInReason.messageId),
+                        type = ProjectSnackbarDefaults.ProjectSnackbarType.ERROR
                     )
                 }
             }

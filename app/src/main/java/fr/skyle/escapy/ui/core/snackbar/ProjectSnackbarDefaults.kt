@@ -16,20 +16,38 @@ object ProjectSnackbarDefaults {
 
     enum class ProjectSnackbarType {
         SUCCESS,
-        ERROR
+        ERROR;
+
+        val containerColor: Color
+            @Composable
+            get() = when (this) {
+                SUCCESS ->
+                    ProjectTheme.colors.successContainer
+
+                ERROR ->
+                    ProjectTheme.colors.errorContainer
+            }
+
+        val contentColor: Color
+            @Composable
+            get() = when (this) {
+                SUCCESS ->
+                    ProjectTheme.colors.success
+
+                ERROR ->
+                    ProjectTheme.colors.error
+            }
+
+        val borderColor: Color
+            @Composable
+            get() = when (this) {
+                SUCCESS ->
+                    ProjectTheme.colors.surfaceContainerHigh
+
+                ERROR ->
+                    ProjectTheme.colors.surfaceContainerHigh
+            }
     }
-
-    val containerColor: Color
-        @Composable
-        get() = ProjectTheme.colors.surfaceContainerHigh
-
-    val contentColor: Color
-        @Composable
-        get() = ProjectTheme.colors.onSurface
-
-    val borderColor: Color
-        @Composable
-        get() = ProjectTheme.colors.surfaceContainerHigh
 
     val textStyle: TextStyle
         @Composable

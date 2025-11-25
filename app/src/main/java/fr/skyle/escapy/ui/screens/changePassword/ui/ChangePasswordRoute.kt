@@ -7,6 +7,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fr.skyle.escapy.R
+import fr.skyle.escapy.ui.core.snackbar.ProjectSnackbarDefaults
 import fr.skyle.escapy.ui.core.snackbar.state.rememberProjectSnackbarState
 
 @Composable
@@ -30,20 +31,25 @@ fun ChangePasswordRoute(
                                 message = context.getString(
                                     R.string.generic_error_format,
                                     error.errorMessage ?: "-"
-                                )
+                                ),
+                                type = ProjectSnackbarDefaults.ProjectSnackbarType.ERROR
                             )
                         }
 
                         ChangePasswordViewModel.ChangePasswordError.InvalidFields -> {
                             projectSnackbarState.showSnackbar(
-                                message = context.getString(R.string.generic_error_incorrect_fields)
+                                message = context.getString(R.string.generic_error_incorrect_fields),
+                                type = ProjectSnackbarDefaults.ProjectSnackbarType.ERROR
                             )
                         }
                     }
                 }
 
                 ChangePasswordViewModel.ChangePasswordEvent.Success -> {
-                    navigateBack()
+                    projectSnackbarState.showSnackbar(
+                        message = context.getString(R.string.change_password_success),
+                        type = ProjectSnackbarDefaults.ProjectSnackbarType.SUCCESS
+                    )
                 }
             }
 

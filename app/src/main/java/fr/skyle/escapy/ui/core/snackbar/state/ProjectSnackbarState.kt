@@ -46,7 +46,7 @@ class ProjectSnackbarState(
 
     suspend fun showSnackbar(
         message: String,
-        type: ProjectSnackbarDefaults.ProjectSnackbarType = ProjectSnackbarDefaults.ProjectSnackbarType.ERROR,
+        type: ProjectSnackbarDefaults.ProjectSnackbarType,
         actionLabel: String? = null,
     ): SnackbarResult {
         mutex.withLock {

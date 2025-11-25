@@ -12,7 +12,7 @@ fun NavGraphBuilder.changePasswordRoute(
 ) {
     composable<Route.ChangePassword> {
         ChangePasswordRoute(
-            navigateBack = navHostController::popBackStackWithLifecycle
+            navigateBack = navHostController::popBackStackWithLifecycle,
         )
     }
 }
