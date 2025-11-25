@@ -7,6 +7,7 @@ import fr.skyle.escapy.data.repository.user.api.UserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -18,19 +19,21 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _homeState = MutableStateFlow<HomeState>(HomeState())
-    val homeState: StateFlow<HomeState> = _homeState.asStateFlow()
+    val homeState: StateFlow<HomeState> by lazy { _homeState.asStateFlow() }
 
     init {
         viewModelScope.launch {
-            userRepository.watchCurrentUser().filterNotNull().collect { currentUser ->
-                _homeState.update {
-                    it.copy(userName = currentUser.name)
+            userRepository.watchCurrentUser()
+                .filterNotNull()
+                .collectLatest { currentUser ->
+                    _homeState.update {
+                        it.copy(username = currentUser.username)
+                    }
                 }
-            }
         }
     }
 
     data class HomeState(
-        val userName: String? = null
+        val username: String? = null
     )
 }

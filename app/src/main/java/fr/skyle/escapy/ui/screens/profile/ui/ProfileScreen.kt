@@ -47,7 +47,7 @@ fun ProfileScreen(
     profileState: ProfileViewModel.ProfileState,
     onBackButtonClicked: () -> Unit,
     onLinkAccountClicked: () -> Unit,
-    onEditProfileClicked: () -> Unit,
+    onChangeEmailClicked: () -> Unit,
     onChangePasswordClicked: () -> Unit,
     onNotificationsClicked: () -> Unit,
     onAboutAppClicked: () -> Unit,
@@ -73,12 +73,13 @@ fun ProfileScreen(
         ProfileScreenContent(
             modifier = Modifier.fillMaxSize(),
             innerPadding = innerPadding,
-            username = profileState.userName,
+            username = profileState.username,
+            email = profileState.email,
             createdAt = profileState.createdAt,
             avatar = profileState.avatar,
             authProvider = profileState.authProvider,
             onLinkAccountClicked = onLinkAccountClicked,
-            onEditProfileClicked = onEditProfileClicked,
+            onChangeEmailClicked = onChangeEmailClicked,
             onChangePasswordClicked = onChangePasswordClicked,
             onNotificationsClicked = onNotificationsClicked,
             onAboutAppClicked = onAboutAppClicked,
@@ -91,11 +92,12 @@ fun ProfileScreen(
 private fun ProfileScreenContent(
     innerPadding: PaddingValues,
     username: String?,
+    email: String?,
     createdAt: Long?,
     avatar: Avatar?,
     authProvider: AuthProvider,
     onLinkAccountClicked: () -> Unit,
-    onEditProfileClicked: () -> Unit,
+    onChangeEmailClicked: () -> Unit,
     onChangePasswordClicked: () -> Unit,
     onNotificationsClicked: () -> Unit,
     onAboutAppClicked: () -> Unit,
@@ -131,6 +133,20 @@ private fun ProfileScreenContent(
                     maxLines = 1
                 )
 
+                email?.let { email ->
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        modifier = Modifier.wrapContentWidth(),
+                        text = email,
+                        style = ProjectTheme.typography.p3,
+                        color = ProjectTheme.colors.onSurface,
+                        textAlign = TextAlign.Center,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1
+                    )
+                }
+
                 createdAt?.format(DateFormat.LONG_DATE)?.let { date ->
                     Spacer(modifier = Modifier.height(8.dp))
 
@@ -139,7 +155,7 @@ private fun ProfileScreenContent(
                         text = stringResource(R.string.profile_created_at_format, date),
                         style = ProjectTheme.typography.p3,
                         color = ProjectTheme.colors.onSurface,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
                     )
                 }
             }
@@ -151,7 +167,7 @@ private fun ProfileScreenContent(
             modifier = Modifier.fillMaxWidth(),
             authProvider = authProvider,
             onLinkAccountClicked = onLinkAccountClicked,
-            onEditProfileClicked = onEditProfileClicked,
+            onChangeEmailClicked = onChangeEmailClicked,
             onChangePasswordClicked = onChangePasswordClicked,
         )
 
@@ -188,12 +204,12 @@ private fun ProfileScreenPreview() {
     ProjectTheme {
         ProfileScreen(
             profileState = ProfileViewModel.ProfileState(
-                userName = "John Doe",
+                username = "John Doe",
                 avatar = Avatar.AVATAR_01,
             ),
             onBackButtonClicked = {},
             onLinkAccountClicked = {},
-            onEditProfileClicked = {},
+            onChangeEmailClicked = {},
             onChangePasswordClicked = {},
             onNotificationsClicked = {},
             onAboutAppClicked = {},
@@ -209,11 +225,12 @@ private fun ProfileScreenContentPreview() {
         ProfileScreenContent(
             innerPadding = PaddingValues(),
             username = "John Doe",
+            email = "john.doe@test.fr",
             createdAt = System.currentTimeMillis(),
             avatar = null,
             authProvider = AuthProvider.ANONYMOUS,
             onLinkAccountClicked = {},
-            onEditProfileClicked = {},
+            onChangeEmailClicked = {},
             onChangePasswordClicked = {},
             onNotificationsClicked = {},
             onAboutAppClicked = {},

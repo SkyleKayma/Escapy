@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.skyle.escapy.PASSWORD_VALID_LENGTH
-import fr.skyle.escapy.data.repository.user.api.UserRepository
+import fr.skyle.escapy.data.repository.auth.api.AuthRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,11 +16,11 @@ import kotlin.coroutines.cancellation.CancellationException
 
 @HiltViewModel
 class ChangePasswordViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val authRepository: AuthRepository,
 ) : ViewModel() {
 
     private val _changePasswordState = MutableStateFlow<ChangePasswordState>(ChangePasswordState())
-    val changePasswordState: StateFlow<ChangePasswordState> = _changePasswordState.asStateFlow()
+    val changePasswordState: StateFlow<ChangePasswordState> by lazy { _changePasswordState.asStateFlow() }
 
     fun changePassword() {
         viewModelScope.launch {
@@ -65,7 +65,7 @@ class ChangePasswordViewModel @Inject constructor(
             }
 
             try {
-                userRepository.changePassword(
+                authRepository.changePasswordForEmailPasswordProvider(
                     currentPassword = _changePasswordState.value.currentPassword,
                     newPassword = _changePasswordState.value.newPassword
                 ).getOrThrow()

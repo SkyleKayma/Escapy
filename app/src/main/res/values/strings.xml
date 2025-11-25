@@ -21,6 +21,7 @@
     <string name="sign_in_action">Se connecter</string>
     <string name="sign_in_no_account">Vous n\'avez pas de compte ?\nInscrivez-vous !</string>
     <string name="sign_in_no_account_highlighted">Inscrivez-vous</string>
+    <string name="sign_in_error_session_expired">La session a expirée, veuillez vous reconnecter</string>
 
     <!-- SignUp -->
     <string name="sign_up_title">Inscription</string>
@@ -56,7 +57,7 @@
     <string name="profile_auth_provider_format">Authentifié: %s</string>
     <string name="profile_warning_guest">Vous utilisez actuellement un compte \"invité\". Sans lier votre compte, vous risquez une perte de données (historique, stats, etc.).</string>
     <string name="profile_account">Compte</string>
-    <string name="profile_edit_profile">Modifier mon profil</string>
+    <string name="profile_change_email">Modifier mon email</string>
     <string name="profile_change_password">Modifier mon mot de passe</string>
     <string name="profile_general">Général</string>
     <string name="profile_notifications">Notifications</string>
@@ -70,14 +71,17 @@
     <string name="about_title">À propos</string>
     <string name="about_contributors">Contributeurs</string>
 
-    <!-- ChangePassword -->
+    <!-- Change Password -->
     <string name="change_password_title">Mot de passe</string>
     <string name="change_password_current_password">Mot de passe actuel</string>
     <string name="change_password_new_password">Nouveau mot de passe</string>
     <string name="change_password_new_password_confirmation">Confirmation du mot de passe</string>
     <string name="change_password_modify">Modifier</string>
 
-    <!-- EditProfile -->
-    <string name="edit_profile_title">Modifier</string>
+    <!-- Change Email -->
+    <string name="change_email_title">Email</string>
+    <string name="change_email_current_password">Mot de passe actuel</string>
+    <string name="change_email_new_email">Nouvel email</string>
+    <string name="change_email_modify">Modifier</string>
 
 </resources>

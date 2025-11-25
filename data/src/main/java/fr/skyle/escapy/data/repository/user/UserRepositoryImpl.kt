@@ -1,228 +1,58 @@
 package fr.skyle.escapy.data.repository.user
 
-import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
 import fr.skyle.escapy.data.FirebaseNode
 import fr.skyle.escapy.data.db.dao.UserDao
-import fr.skyle.escapy.data.enums.AuthProvider
-import fr.skyle.escapy.data.enums.Avatar
-import fr.skyle.escapy.data.ext.awaitWithTimeout
-import fr.skyle.escapy.data.ext.readOnce
-import fr.skyle.escapy.data.ext.requireUser
-import fr.skyle.escapy.data.vo.adapter.toUser
-import fr.skyle.escapy.data.vo.adapter.toUserFirebase
 import fr.skyle.escapy.data.repository.user.api.UserRepository
-import fr.skyle.escapy.data.rest.firebase.UserFirebase
+import fr.skyle.escapy.data.rest.firebase.UserRequestDTO
+import fr.skyle.escapy.data.utils.readOnce
 import fr.skyle.escapy.data.vo.User
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.channels.awaitClose
+import fr.skyle.escapy.data.vo.adapter.toUser
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class UserRepositoryImpl @Inject constructor(
     private val dbRef: DatabaseReference,
     private val firebaseAuth: FirebaseAuth,
     private val userDao: UserDao,
 ) : UserRepository {
 
-    // Helpful methods
+    // Remote
 
-    override fun isUserLoggedIn(): Boolean =
-        firebaseAuth.currentUser != null
-
-    override fun getAuthProvider(): AuthProvider {
-        val providers = firebaseAuth.currentUser?.providerData ?: emptyList()
-
-        // Exclude the first element: it is ALWAYS `firebase`
-        val realProvider = providers
-            .map { it.providerId }
-            .firstOrNull { it != "firebase" }
-
-        return AuthProvider.fromProviderId(realProvider) ?: AuthProvider.ANONYMOUS
+    override suspend fun fetchCurrentUser() {
+        val userId = firebaseAuth.currentUser?.uid ?: ""
+        fetchUser(userId)
     }
 
-    // Firebase
+    override suspend fun fetchUser(userId: String): Result<Unit> {
+        val response = dbRef
+            .child(FirebaseNode.Users.path)
+            .child(userId)
+            .readOnce(UserRequestDTO::class.java)
 
-    private fun createUser(
-        uid: String,
-        userNamePrefix: String,
-        email: String?,
-    ): User =
-        User(
-            uid = uid,
-            name = "${userNamePrefix}_${uid.takeLast(10)}",
-            email = email,
-            avatarType = Avatar.entries.random().type,
-            createdAt = System.currentTimeMillis()
-        )
+        val user = response.body?.toUser(userId)
 
-    private suspend fun insertUserFirebase(
-        uid: String,
-        user: User
-    ) {
-        dbRef.child(FirebaseNode.Users.path)
-            .child(uid)
-            .setValue(user.toUserFirebase())
-            .awaitWithTimeout()
-    }
-
-    override suspend fun signInAsGuest(): Result<Unit> {
-        return try {
-            val result = firebaseAuth.signInAnonymously().awaitWithTimeout()
-
-            val user = result.requireUser()
-            val currentUserUid = user.uid
-            val currentUser = createUser(
-                uid = currentUserUid,
-                userNamePrefix = "Guest",
-                email = user.email
-            )
-
-            // Insert in Firebase
-            insertUserFirebase(
-                uid = currentUserUid,
-                user = currentUser
-            )
-
-            // Insert in DB
-            // This is helpful to have user info on home screen directly after login
-            userDao.insert(currentUser)
+        return if (response.isSuccessful && user != null) {
+            // Insert
+            userDao.insert(user)
 
             Result.success(Unit)
-        } catch (e: CancellationException) {
-            throw e
-        } catch (e: Exception) {
-            Result.failure(e)
+        } else {
+            Result.failure(Exception(response.message()))
         }
     }
-
-    override suspend fun signUp(
-        email: String,
-        password: String
-    ): Result<Unit> {
-        return try {
-            val result =
-                firebaseAuth.createUserWithEmailAndPassword(email, password).awaitWithTimeout()
-
-            val user = result.requireUser()
-            val currentUserUid = user.uid
-            val currentUser = createUser(
-                uid = currentUserUid,
-                userNamePrefix = "Player",
-                email = user.email
-            )
-
-            // Insert in Firebase
-            insertUserFirebase(
-                uid = currentUserUid,
-                user = currentUser
-            )
-
-            // Insert in DB
-            // This is helpful to have user info on home screen directly after login
-            userDao.insert(currentUser)
-
-            Result.success(Unit)
-        } catch (e: CancellationException) {
-            throw e
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
-    override suspend fun signIn(
-        email: String,
-        password: String
-    ): Result<Unit> {
-        return try {
-            val result =
-                firebaseAuth.signInWithEmailAndPassword(email, password).awaitWithTimeout()
-
-            val user = result.requireUser()
-            val currentUserUid = user.uid
-
-            // Read once from Realtime Database
-            val currentUser = dbRef
-                .child(FirebaseNode.Users.path)
-                .child(currentUserUid)
-                .readOnce(UserFirebase::class.java)
-
-            // Insert in DB
-            // This is helpful to have user info on home screen directly after login
-            // TODO What should we do if user is null ?? Has been manually deleted ??
-            currentUser?.toUser(currentUserUid)?.let { userDao.insert(it) }
-
-            Result.success(Unit)
-        } catch (e: CancellationException) {
-            throw e
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
-    override suspend fun changePassword(
-        currentPassword: String,
-        newPassword: String
-    ): Result<Unit> {
-        return try {
-            // Create a AuthCredential
-            val user = firebaseAuth.currentUser
-            val email = user?.email ?: ""
-            val credential = EmailAuthProvider.getCredential(email, currentPassword)
-
-            // First reauthenticate to be sure that the user has logged recently
-            user?.reauthenticate(credential)?.awaitWithTimeout()
-
-            // Then update user password
-            user?.updatePassword(newPassword)?.awaitWithTimeout()
-
-            Result.success(Unit)
-        } catch (e: CancellationException) {
-            throw e
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
-    override suspend fun signOut() {
-        FirebaseAuth.getInstance().signOut()
-
-        userDao.deleteAll()
-    }
-
-    fun fetchCurrentUser(): Flow<User?> =
-        callbackFlow {
-            val userId = firebaseAuth.currentUser?.uid ?: ""
-
-            val listener = object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    trySend(snapshot.getValue(User::class.java))
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    close(error.toException())
-                }
-            }
-
-            dbRef.child(FirebaseNode.Users.path)
-                .child(userId)
-                .addValueEventListener(listener)
-
-            awaitClose {
-                dbRef.child(FirebaseNode.Users.path)
-                    .child(userId)
-                    .removeEventListener(listener)
-            }
-        }
 
     // Local
 
-    override fun watchCurrentUser(): Flow<User?> =
-        userDao.watchUser(firebaseAuth.currentUser?.uid ?: "").distinctUntilChanged()
+    override fun watchCurrentUser(): Flow<User?> {
+        val userId = firebaseAuth.currentUser?.uid ?: ""
+        return watchUser(userId)
+    }
+
+    override fun watchUser(userId: String): Flow<User?> =
+        userDao.watchUser(userId).distinctUntilChanged()
 }

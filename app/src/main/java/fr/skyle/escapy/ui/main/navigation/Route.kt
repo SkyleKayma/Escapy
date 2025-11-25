@@ -1,12 +1,13 @@
 package fr.skyle.escapy.ui.main.navigation
 
+import fr.skyle.escapy.ui.screens.signIn.ui.enums.SignInReason
 import kotlinx.serialization.Serializable
 
 @Serializable
 sealed interface Route {
 
     @Serializable
-    data object SignIn : Route
+    data class SignIn(val reason: SignInReason? = null) : Route
 
     @Serializable
     data object Home : Route
@@ -19,6 +20,9 @@ sealed interface Route {
 
     @Serializable
     data object ChangePassword : Route
+
+    @Serializable
+    data object ChangeEmail : Route
 }
 
 @Serializable

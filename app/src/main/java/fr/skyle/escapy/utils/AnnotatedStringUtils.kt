@@ -9,7 +9,6 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
 
 data class AnnotatedData(
@@ -62,7 +61,7 @@ fun buildAnnotatedString(
         }
     }
 
-@Preview
+@ProjectComponentPreview
 @Composable
 private fun BuildAnnotatedStringPreview() {
     ProjectTheme {

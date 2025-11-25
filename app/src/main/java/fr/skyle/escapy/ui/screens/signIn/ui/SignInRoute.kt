@@ -8,6 +8,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fr.skyle.escapy.R
 import fr.skyle.escapy.ui.core.snackbar.state.rememberProjectSnackbarState
+import fr.skyle.escapy.ui.screens.signIn.ui.ext.messageId
 
 @Composable
 fun SignInRoute(
@@ -48,6 +49,20 @@ fun SignInRoute(
             }
 
             signInViewModel.eventDelivered()
+        }
+    }
+
+    LaunchedEffect(signInState.signInReasonEvent) {
+        signInState.signInReasonEvent?.let { event ->
+            when (event) {
+                is SignInViewModel.SignInReasonEvent.FromReason -> {
+                    projectSnackbarState.showSnackbar(
+                        message = context.getString(event.signInReason.messageId)
+                    )
+                }
+            }
+
+            signInViewModel.signInReasonEventDelivered()
         }
     }
 

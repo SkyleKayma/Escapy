@@ -1,33 +1,15 @@
 package fr.skyle.escapy.data.repository.user.api
 
-import fr.skyle.escapy.data.enums.AuthProvider
 import fr.skyle.escapy.data.vo.User
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
 
-    fun isUserLoggedIn(): Boolean
+    suspend fun fetchCurrentUser()
 
-    fun getAuthProvider(): AuthProvider
-
-    suspend fun signInAsGuest(): Result<Unit>
-
-    suspend fun signUp(
-        email: String,
-        password: String
-    ): Result<Unit>
-
-    suspend fun signIn(
-        email: String,
-        password: String
-    ): Result<Unit>
-
-    suspend fun changePassword(
-        currentPassword: String,
-        newPassword: String,
-    ): Result<Unit>
-
-    suspend fun signOut()
+    suspend fun fetchUser(userId: String): Result<Unit>
 
     fun watchCurrentUser(): Flow<User?>
+
+    fun watchUser(userId: String): Flow<User?>
 }

@@ -1,10 +1,14 @@
 package fr.skyle.escapy.ui.screens.signIn.ui
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fr.skyle.escapy.data.repository.user.api.UserRepository
+import fr.skyle.escapy.data.repository.auth.api.AuthRepository
+import fr.skyle.escapy.ui.main.navigation.Route
 import fr.skyle.escapy.ui.screens.signIn.ui.enums.AuthType
+import fr.skyle.escapy.ui.screens.signIn.ui.enums.SignInReason
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,11 +20,18 @@ import kotlin.coroutines.cancellation.CancellationException
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val authRepository: AuthRepository,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _signInState = MutableStateFlow<SignInState>(SignInState())
-    val signInState: StateFlow<SignInState> = _signInState.asStateFlow()
+    private val route = savedStateHandle.toRoute<Route.SignIn>()
+
+    private val _signInState = MutableStateFlow<SignInState>(
+        SignInState(
+            signInReasonEvent = route.reason?.let { SignInReasonEvent.FromReason(it) }
+        )
+    )
+    val signInState: StateFlow<SignInState> by lazy { _signInState.asStateFlow() }
 
     fun signIn(email: String, password: String) {
         viewModelScope.launch {
@@ -29,7 +40,10 @@ class SignInViewModel @Inject constructor(
             }
 
             try {
-                userRepository.signIn(email, password).getOrThrow()
+                authRepository.signIn(
+                    email = email,
+                    password = password
+                ).getOrThrow()
 
                 _signInState.update {
                     it.copy(
@@ -60,7 +74,10 @@ class SignInViewModel @Inject constructor(
             }
 
             try {
-                userRepository.signUp(email, password).getOrThrow()
+                authRepository.signUp(
+                    email = email,
+                    password = password
+                ).getOrThrow()
 
                 _signInState.update {
                     it.copy(
@@ -121,7 +138,7 @@ class SignInViewModel @Inject constructor(
             }
 
             try {
-                userRepository.signInAsGuest().getOrThrow()
+                authRepository.signInAsGuest().getOrThrow()
 
                 _signInState.update {
                     it.copy(
@@ -166,10 +183,19 @@ class SignInViewModel @Inject constructor(
         }
     }
 
+    fun signInReasonEventDelivered() {
+        viewModelScope.launch {
+            _signInState.update {
+                it.copy(signInReasonEvent = null)
+            }
+        }
+    }
+
     data class SignInState(
         val authType: AuthType = AuthType.SIGN_IN,
         val isButtonLoading: Boolean = false,
-        val event: SignInEvent? = null
+        val event: SignInEvent? = null,
+        val signInReasonEvent: SignInReasonEvent? = null
     )
 
     sealed interface SignInEvent {
@@ -177,5 +203,9 @@ class SignInViewModel @Inject constructor(
         data class SignUpError(val errorMessage: String?) : SignInEvent
         data object SignInSuccess : SignInEvent
         data object SignUpSuccess : SignInEvent
+    }
+
+    sealed interface SignInReasonEvent {
+        data class FromReason(val signInReason: SignInReason) : SignInReasonEvent
     }
 }

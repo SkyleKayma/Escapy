@@ -10,7 +10,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 fun ProfileRoute(
     navigateBack: () -> Unit,
     navigateLinkAccount: () -> Unit,
-    navigateEditProfile: () -> Unit,
+    navigateChangeEmail: () -> Unit,
     navigateChangePassword: () -> Unit,
     navigateToNotifications: () -> Unit,
     navigateToAboutApp: () -> Unit,
@@ -35,7 +35,7 @@ fun ProfileRoute(
         profileState = profileState,
         onBackButtonClicked = navigateBack,
         onLinkAccountClicked = navigateLinkAccount,
-        onEditProfileClicked = navigateEditProfile,
+        onChangeEmailClicked = navigateChangeEmail,
         onChangePasswordClicked = navigateChangePassword,
         onNotificationsClicked = navigateToNotifications,
         onAboutAppClicked = navigateToAboutApp,

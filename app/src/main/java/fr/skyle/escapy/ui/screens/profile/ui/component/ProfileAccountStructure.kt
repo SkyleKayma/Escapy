@@ -20,7 +20,7 @@ import fr.skyle.escapy.utils.buildAnnotatedString
 fun ProfileAccountStructure(
     authProvider: AuthProvider,
     onLinkAccountClicked: (() -> Unit),
-    onEditProfileClicked: (() -> Unit),
+    onChangeEmailClicked: (() -> Unit),
     onChangePasswordClicked: (() -> Unit),
     modifier: Modifier = Modifier
 ) {
@@ -52,16 +52,16 @@ fun ProfileAccountStructure(
             }
         }
 
-        group {
-            item {
-                ProfileMenuStructureItem(
-                    modifier = Modifier.fillMaxWidth(),
-                    title = AnnotatedString(stringResource(R.string.profile_edit_profile)),
-                    onCellClicked = onEditProfileClicked
-                )
-            }
+        if (authProvider == AuthProvider.EMAIL) {
+            group {
+                item {
+                    ProfileMenuStructureItem(
+                        modifier = Modifier.fillMaxWidth(),
+                        title = AnnotatedString(stringResource(R.string.profile_change_email)),
+                        onCellClicked = onChangeEmailClicked
+                    )
+                }
 
-            if (authProvider == AuthProvider.EMAIL) {
                 item {
                     ProfileMenuStructureItem(
                         modifier = Modifier.fillMaxWidth(),
@@ -100,7 +100,7 @@ private fun ProfileAccountStructurePreview(
         ProfileAccountStructure(
             authProvider = data.authProvider,
             onLinkAccountClicked = {},
-            onEditProfileClicked = {},
+            onChangeEmailClicked = {},
             onChangePasswordClicked = {}
         )
     }

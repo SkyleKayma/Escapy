@@ -19,8 +19,8 @@ fun NavGraphBuilder.profileRoute(
             navigateLinkAccount = {
                 // TODO
             },
-            navigateEditProfile = {
-                // TODO
+            navigateChangeEmail = {
+                navHostController.navigateWithLifecycle(Route.ChangeEmail)
             },
             navigateChangePassword = {
                 navHostController.navigateWithLifecycle(Route.ChangePassword)
@@ -32,7 +32,7 @@ fun NavGraphBuilder.profileRoute(
                 navHostController.navigateWithLifecycle(Route.About)
             },
             navigateToSignIn = {
-                navHostController.navigateToDestinationAndPopUpTo<Graph.Main>(Route.SignIn)
+                navHostController.navigateToDestinationAndPopUpTo<Graph.Main>(Route.SignIn())
             },
         )
     }

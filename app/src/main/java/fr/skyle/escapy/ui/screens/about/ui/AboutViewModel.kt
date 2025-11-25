@@ -22,7 +22,7 @@ class AboutViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _aboutState = MutableStateFlow<AboutState>(AboutState())
-    val aboutState: StateFlow<AboutState> = _aboutState.asStateFlow()
+    val aboutState: StateFlow<AboutState> by lazy { _aboutState.asStateFlow() }
 
     init {
         fetchContributors()

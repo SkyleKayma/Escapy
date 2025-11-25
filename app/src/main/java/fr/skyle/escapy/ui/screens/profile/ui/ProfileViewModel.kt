@@ -5,10 +5,12 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.skyle.escapy.data.enums.AuthProvider
 import fr.skyle.escapy.data.enums.Avatar
+import fr.skyle.escapy.data.repository.auth.api.AuthRepository
 import fr.skyle.escapy.data.repository.user.api.UserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -16,30 +18,34 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val authRepository: AuthRepository
 ) : ViewModel() {
 
     private val _profileState = MutableStateFlow<ProfileState>(ProfileState())
-    val profileState: StateFlow<ProfileState> = _profileState.asStateFlow()
+    val profileState: StateFlow<ProfileState> by lazy { _profileState.asStateFlow() }
 
     init {
         viewModelScope.launch {
-            userRepository.watchCurrentUser().filterNotNull().collect { currentUser ->
-                _profileState.update {
-                    it.copy(
-                        userName = currentUser.name,
-                        createdAt = currentUser.createdAt,
-                        avatar = Avatar.fromType(currentUser.avatarType),
-                        authProvider = userRepository.getAuthProvider()
-                    )
+            userRepository.watchCurrentUser()
+                .filterNotNull()
+                .collectLatest { currentUser ->
+                    _profileState.update {
+                        it.copy(
+                            username = currentUser.username,
+                            email = authRepository.getAccountEmail(),
+                            createdAt = currentUser.createdAt,
+                            avatar = Avatar.fromType(currentUser.avatarType),
+                            authProvider = authRepository.getAccountAuthProvider()
+                        )
+                    }
                 }
-            }
         }
     }
 
     fun signOut() {
         viewModelScope.launch {
-            userRepository.signOut()
+            authRepository.signOut()
 
             _profileState.update {
                 it.copy(
@@ -58,7 +64,8 @@ class ProfileViewModel @Inject constructor(
     }
 
     data class ProfileState(
-        val userName: String? = null,
+        val username: String? = null,
+        val email: String? = null,
         val createdAt: Long? = null,
         val avatar: Avatar? = null,
         val authProvider: AuthProvider = AuthProvider.ANONYMOUS,

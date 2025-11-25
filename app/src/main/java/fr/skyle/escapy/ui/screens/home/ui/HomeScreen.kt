@@ -83,7 +83,7 @@ fun HomeScreen(
         HomeScreenContent(
             modifier = Modifier.fillMaxSize(),
             innerPadding = innerPadding,
-            userName = homeState.userName,
+            username = homeState.username,
         )
     }
 }
@@ -91,7 +91,7 @@ fun HomeScreen(
 @Composable
 private fun HomeScreenContent(
     innerPadding: PaddingValues,
-    userName: String?,
+    username: String?,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -100,11 +100,11 @@ private fun HomeScreenContent(
             .verticalScroll(rememberScrollState())
             .padding(start = 24.dp, end = 24.dp, bottom = 24.dp)
     ) {
-        val welcomeTitle = userName?.let {
+        val welcomeTitle = username?.let {
             buildAnnotatedString(
-                fullText = stringResource(R.string.home_welcome_format, userName),
+                fullText = stringResource(R.string.home_welcome_format, username),
                 AnnotatedData(
-                    text = userName,
+                    text = username,
                     spanStyle = SpanStyle(
                         color = ProjectTheme.colors.primary
                     )
@@ -211,7 +211,7 @@ private fun HomeScreenPreview() {
     ProjectTheme {
         HomeScreen(
             homeState = HomeViewModel.HomeState(
-                userName = "John Doe"
+                username = "John Doe"
             ),
             onProfileClicked = {}
         )
@@ -224,7 +224,7 @@ private fun HomeScreenContentPreview() {
     ProjectTheme {
         HomeScreenContent(
             innerPadding = PaddingValues(),
-            userName = "John Doe",
+            username = "John Doe",
             modifier = Modifier.fillMaxSize(),
         )
     }

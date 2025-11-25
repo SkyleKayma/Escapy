@@ -5,7 +5,9 @@ import fr.skyle.escapy.data.rest.github.GithubAPI
 import fr.skyle.escapy.data.vo.GithubContributor
 import fr.skyle.escapy.data.vo.adapter.toGithubContributor
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class GithubRepositoryImpl @Inject constructor(
     private val githubAPI: GithubAPI,
 ) : GithubRepository {
