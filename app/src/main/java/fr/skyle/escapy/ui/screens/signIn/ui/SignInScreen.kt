@@ -35,7 +35,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
 import androidx.compose.ui.unit.dp
@@ -56,6 +55,7 @@ import fr.skyle.escapy.ui.screens.signIn.ui.ext.otherAuthTypeText
 import fr.skyle.escapy.ui.screens.signIn.ui.ext.otherAuthTypeTextHighlighted
 import fr.skyle.escapy.ui.screens.signIn.ui.ext.title
 import fr.skyle.escapy.utils.AnnotatedData
+import fr.skyle.escapy.utils.ProjectComponentPreview
 import fr.skyle.escapy.utils.ProjectScreenPreview
 import fr.skyle.escapy.utils.buildAnnotatedString
 
@@ -319,7 +319,7 @@ private data class SignInScreenContentPreviewData(
     val isButtonLoading: Boolean,
 )
 
-@Preview
+@ProjectComponentPreview
 @Composable
 private fun SignInScreenContentPreview(
     @PreviewParameter(SignInScreenContentPreviewDataProvider::class) data: SignInScreenContentPreviewData

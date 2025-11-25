@@ -6,7 +6,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
 import fr.skyle.escapy.R
@@ -14,6 +13,7 @@ import fr.skyle.escapy.data.enums.AuthProvider
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
 import fr.skyle.escapy.ext.displayText
 import fr.skyle.escapy.utils.AnnotatedData
+import fr.skyle.escapy.utils.ProjectComponentPreview
 import fr.skyle.escapy.utils.buildAnnotatedString
 
 @Composable
@@ -91,7 +91,7 @@ private data class ProfileAccountStructurePreviewData(
     val authProvider: AuthProvider,
 )
 
-@Preview
+@ProjectComponentPreview
 @Composable
 private fun ProfileAccountStructurePreview(
     @PreviewParameter(ProfileAccountStructurePreviewDataProvider::class) data: ProfileAccountStructurePreviewData

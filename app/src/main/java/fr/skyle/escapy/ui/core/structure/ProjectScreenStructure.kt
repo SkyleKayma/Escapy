@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
 import androidx.compose.ui.unit.dp
@@ -18,6 +17,7 @@ import fr.skyle.escapy.designsystem.ext.values
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
 import fr.skyle.escapy.ui.core.snackbar.ProjectSnackbar
 import fr.skyle.escapy.ui.core.snackbar.state.ProjectSnackbarState
+import fr.skyle.escapy.utils.ProjectComponentPreview
 import fr.skyle.escapy.utils.ProjectScreenPreview
 
 @Composable
@@ -101,7 +101,7 @@ private fun ProjectScreenStructurePreview(
     }
 }
 
-@Preview
+@ProjectComponentPreview
 @Composable
 private fun ProjectScreenStructurePatternPreview() {
     ProjectTheme {

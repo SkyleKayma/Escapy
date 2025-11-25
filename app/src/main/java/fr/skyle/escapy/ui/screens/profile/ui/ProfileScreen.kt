@@ -24,7 +24,6 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.skyle.escapy.BuildConfig
 import fr.skyle.escapy.R
@@ -39,6 +38,7 @@ import fr.skyle.escapy.ui.screens.profile.ui.component.ProfileAccountStructure
 import fr.skyle.escapy.ui.screens.profile.ui.component.ProfileAvatar
 import fr.skyle.escapy.ui.screens.profile.ui.component.ProfileGeneralStructure
 import fr.skyle.escapy.utils.DateFormat
+import fr.skyle.escapy.utils.ProjectComponentPreview
 import fr.skyle.escapy.utils.ProjectScreenPreview
 import fr.skyle.escapy.utils.format
 
@@ -202,7 +202,7 @@ private fun ProfileScreenPreview() {
     }
 }
 
-@Preview
+@ProjectComponentPreview
 @Composable
 private fun ProfileScreenContentPreview() {
     ProjectTheme {

@@ -22,11 +22,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.skyle.escapy.R
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
 import fr.skyle.escapy.ext.boxCardStyle
+import fr.skyle.escapy.utils.ProjectComponentPreview
 
 @Composable
 fun HomeActionCell(
@@ -74,7 +74,7 @@ fun HomeActionCell(
     }
 }
 
-@Preview
+@ProjectComponentPreview
 @Composable
 private fun HomeActionCellPreview() {
     ProjectTheme {

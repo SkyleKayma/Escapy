@@ -7,7 +7,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
@@ -17,6 +16,7 @@ import fr.skyle.escapy.data.enums.Avatar
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
 import fr.skyle.escapy.ext.boxCardStyle
 import fr.skyle.escapy.ext.iconId
+import fr.skyle.escapy.utils.ProjectComponentPreview
 
 @Composable
 fun ProfileAvatar(
@@ -37,7 +37,7 @@ fun ProfileAvatar(
     )
 }
 
-@Preview
+@ProjectComponentPreview
 @Composable
 private fun ProfileAvatarPreview() {
     ProjectTheme {
@@ -48,7 +48,7 @@ private fun ProfileAvatarPreview() {
     }
 }
 
-@Preview
+@ProjectComponentPreview
 @Composable
 private fun ProfileAvatarWithAvatarPreview() {
     ProjectTheme {

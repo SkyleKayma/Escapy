@@ -7,12 +7,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.tooling.preview.Preview
 import fr.skyle.escapy.R
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
 import fr.skyle.escapy.ext.navigateToDataPrivacy
 import fr.skyle.escapy.ext.navigateToOpenium
 import fr.skyle.escapy.utils.AnnotatedData
+import fr.skyle.escapy.utils.ProjectComponentPreview
 import fr.skyle.escapy.utils.buildAnnotatedString
 
 @Composable
@@ -82,7 +82,7 @@ fun ProfileGeneralStructure(
     }
 }
 
-@Preview
+@ProjectComponentPreview
 @Composable
 private fun ProfileGeneralStructurePreview() {
     ProjectTheme {

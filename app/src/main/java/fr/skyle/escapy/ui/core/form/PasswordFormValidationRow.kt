@@ -16,10 +16,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.skyle.escapy.R
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
+import fr.skyle.escapy.utils.ProjectComponentPreview
 
 @Composable
 fun PasswordFormValidationRow(
@@ -57,7 +57,7 @@ fun PasswordFormValidationRow(
     }
 }
 
-@Preview
+@ProjectComponentPreview
 @Composable
 private fun PasswordFormValidationRowPreview() {
     ProjectTheme {
@@ -68,7 +68,7 @@ private fun PasswordFormValidationRowPreview() {
     }
 }
 
-@Preview
+@ProjectComponentPreview
 @Composable
 private fun PasswordFormValidationRowValidPreview() {
     ProjectTheme {

@@ -19,12 +19,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.skyle.escapy.designsystem.core.button.ProjectButton
 import fr.skyle.escapy.designsystem.core.button.ProjectButtonDefaults
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
 import fr.skyle.escapy.ui.core.snackbar.state.ProjectSnackbarState
+import fr.skyle.escapy.utils.ProjectComponentPreview
 
 @Composable
 fun ProjectSnackbar(
@@ -113,7 +113,7 @@ private fun ProjectSnackbarContent(
     }
 }
 
-@Preview
+@ProjectComponentPreview
 @Composable
 private fun ProjectSnackbarPreview() {
     ProjectTheme {
@@ -124,8 +124,8 @@ private fun ProjectSnackbarPreview() {
     }
 }
 
+@ProjectComponentPreview
 @Composable
-@Preview
 private fun ProjectSnackbarWithActionPreview() {
     ProjectTheme {
         ProjectSnackbarContent(

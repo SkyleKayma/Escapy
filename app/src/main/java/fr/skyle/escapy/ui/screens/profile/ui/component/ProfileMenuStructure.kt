@@ -22,7 +22,6 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.skyle.escapy.R
 import fr.skyle.escapy.data.enums.AuthProvider
@@ -30,6 +29,7 @@ import fr.skyle.escapy.designsystem.theme.ProjectTheme
 import fr.skyle.escapy.ext.boxCardStyle
 import fr.skyle.escapy.ext.displayText
 import fr.skyle.escapy.utils.AnnotatedData
+import fr.skyle.escapy.utils.ProjectComponentPreview
 import fr.skyle.escapy.utils.buildAnnotatedString
 
 class ProfileMenuScope {
@@ -152,7 +152,7 @@ fun ProfileMenuScope.Group.ProfileMenuStructureItem(
     }
 }
 
-@Preview
+@ProjectComponentPreview
 @Composable
 private fun ProfileMenuStructureEmptyPreview() {
     ProjectTheme {
@@ -162,7 +162,7 @@ private fun ProfileMenuStructureEmptyPreview() {
     }
 }
 
-@Preview
+@ProjectComponentPreview
 @Composable
 private fun ProfileMenuStructureOneEntryPreview() {
     ProjectTheme {
@@ -172,7 +172,7 @@ private fun ProfileMenuStructureOneEntryPreview() {
             group {
                 item {
                     ProfileMenuStructureItem(
-                        title = AnnotatedString(stringResource(R.string.profile_edit_profile))
+                        title = AnnotatedString(stringResource(R.string.profile_change_email))
                     )
                 }
             }
@@ -180,7 +180,7 @@ private fun ProfileMenuStructureOneEntryPreview() {
     }
 }
 
-@Preview
+@ProjectComponentPreview
 @Composable
 private fun ProfileMenuStructurePreview() {
     ProjectTheme {
@@ -190,7 +190,7 @@ private fun ProfileMenuStructurePreview() {
             group {
                 item {
                     ProfileMenuStructureItem(
-                        title = AnnotatedString(stringResource(R.string.profile_edit_profile))
+                        title = AnnotatedString(stringResource(R.string.profile_change_email))
                     )
                 }
 
@@ -204,7 +204,7 @@ private fun ProfileMenuStructurePreview() {
     }
 }
 
-@Preview
+@ProjectComponentPreview
 @Composable
 private fun ProfileMenuStructureItemPreview() {
     ProjectTheme {
@@ -217,7 +217,7 @@ private fun ProfileMenuStructureItemPreview() {
     }
 }
 
-@Preview
+@ProjectComponentPreview
 @Composable
 private fun ProfileMenuStructureItemNoActionPreview() {
     ProjectTheme {
@@ -229,7 +229,7 @@ private fun ProfileMenuStructureItemNoActionPreview() {
     }
 }
 
-@Preview
+@ProjectComponentPreview
 @Composable
 private fun ProfileMenuStructureItemWithSubtitleAndActionPreview() {
     ProjectTheme {

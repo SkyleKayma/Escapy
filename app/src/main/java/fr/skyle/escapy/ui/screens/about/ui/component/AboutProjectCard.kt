@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.skyle.escapy.BuildConfig
 import fr.skyle.escapy.R
@@ -25,6 +24,7 @@ import fr.skyle.escapy.designsystem.core.iconButton.ProjectIconButtonDefaults
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
 import fr.skyle.escapy.ext.boxCardStyle
 import fr.skyle.escapy.ext.navigateToProjectRepository
+import fr.skyle.escapy.utils.ProjectComponentPreview
 
 @Composable
 fun AboutProjectCard(
@@ -82,7 +82,7 @@ fun AboutProjectCard(
     }
 }
 
-@Preview
+@ProjectComponentPreview
 @Composable
 private fun AboutProjectCardPreview() {
     ProjectTheme {

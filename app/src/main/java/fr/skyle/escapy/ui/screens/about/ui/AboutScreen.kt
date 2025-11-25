@@ -20,10 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.skyle.escapy.R
-import fr.skyle.escapy.data.rest.github.response.GithubContributorResponse
 import fr.skyle.escapy.data.vo.GithubContributor
 import fr.skyle.escapy.designsystem.core.iconButton.ProjectIconButtonDefaults
 import fr.skyle.escapy.designsystem.core.topAppBar.ProjectTopAppBar
@@ -32,6 +30,7 @@ import fr.skyle.escapy.designsystem.theme.ProjectTheme
 import fr.skyle.escapy.ui.core.structure.ProjectScreenStructure
 import fr.skyle.escapy.ui.screens.about.ui.component.AboutContributorCell
 import fr.skyle.escapy.ui.screens.about.ui.component.AboutProjectCard
+import fr.skyle.escapy.utils.ProjectComponentPreview
 import fr.skyle.escapy.utils.ProjectScreenPreview
 
 private const val KEY_VIEW_TYPE_PROJECT_CARD = "ProjectCard"
@@ -161,7 +160,7 @@ private fun AboutScreenPreview() {
     }
 }
 
-@Preview
+@ProjectComponentPreview
 @Composable
 private fun AboutScreenContentPreview() {
     ProjectTheme {
@@ -183,7 +182,7 @@ private fun AboutScreenContentPreview() {
     }
 }
 
-@Preview
+@ProjectComponentPreview
 @Composable
 private fun AboutScreenContentContributorsLoadingPreview() {
     ProjectTheme {
