@@ -6,6 +6,10 @@
     <string name="openium_url" translatable="false">https://www.openium.fr</string>
     <string name="data_privacy_url" translatable="false">https://skylekayma.github.io/Escapy/docs/privacy-policy.html</string>
 
+    <!-- Generic Action -->
+    <string name="generic_action_ok">OK</string>
+    <string name="generic_action_modify">Modifier</string>
+
     <!-- Generic Error -->
     <string name="generic_error_format">Une erreur est survenue (%s)</string>
     <string name="generic_error_incorrect_fields">Certains champs sont incorrects</string>
@@ -46,7 +50,7 @@
     <string name="home_game_in_progress">Parties en cours</string>
     <string name="home_no_game_in_progress">Aucune partie en cours</string>
 
-    <!-- AuthProvider -->
+    <!-- Auth Provider -->
     <string name="auth_provider_email">Email</string>
     <string name="auth_provider_google">Google</string>
     <string name="auth_provider_anonymous">Anonyme</string>
@@ -76,13 +80,13 @@
     <string name="change_password_current_password">Mot de passe actuel</string>
     <string name="change_password_new_password">Nouveau mot de passe</string>
     <string name="change_password_new_password_confirmation">Confirmation du mot de passe</string>
-    <string name="change_password_modify">Modifier</string>
-    <string name="change_password_success">Votre mot de passe a été modifié avec succès</string>
+
+    <!-- Password Changed Dialog -->
+    <string name="password_changed_dialog_title">Votre mot de passe a été modifié avec succès</string>
 
     <!-- Change Email -->
     <string name="change_email_title">Email</string>
     <string name="change_email_current_password">Mot de passe actuel</string>
     <string name="change_email_new_email">Nouvel email</string>
-    <string name="change_email_modify">Modifier</string>
 
 </resources>

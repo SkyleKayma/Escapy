@@ -3,12 +3,16 @@ package fr.skyle.escapy.ui.screens.changePassword.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fr.skyle.escapy.R
 import fr.skyle.escapy.ui.core.snackbar.ProjectSnackbarDefaults
 import fr.skyle.escapy.ui.core.snackbar.state.rememberProjectSnackbarState
+import fr.skyle.escapy.ui.screens.changePassword.ui.component.PasswordChangedDialog
 
 @Composable
 fun ChangePasswordRoute(
@@ -20,6 +24,8 @@ fun ChangePasswordRoute(
     val changePasswordState by changePasswordViewModel.changePasswordState.collectAsStateWithLifecycle()
 
     val projectSnackbarState = rememberProjectSnackbarState()
+
+    var isPasswordChangedDialogDisplayed by remember { mutableStateOf(false) }
 
     LaunchedEffect(changePasswordState.event) {
         changePasswordState.event?.let { event ->
@@ -46,10 +52,7 @@ fun ChangePasswordRoute(
                 }
 
                 ChangePasswordViewModel.ChangePasswordEvent.Success -> {
-                    projectSnackbarState.showSnackbar(
-                        message = context.getString(R.string.change_password_success),
-                        type = ProjectSnackbarDefaults.ProjectSnackbarType.SUCCESS
-                    )
+                    isPasswordChangedDialogDisplayed = true
                 }
             }
 
@@ -66,4 +69,13 @@ fun ChangePasswordRoute(
         onNewPasswordConfirmationChange = changePasswordViewModel::setNewPasswordConfirmation,
         onChangePassword = changePasswordViewModel::changePassword
     )
+
+    if (isPasswordChangedDialogDisplayed) {
+        PasswordChangedDialog(
+            onDismissRequest = {
+                isPasswordChangedDialogDisplayed = false
+                navigateBack()
+            }
+        )
+    }
 }

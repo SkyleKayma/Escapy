@@ -72,12 +72,6 @@ class ChangePasswordViewModel @Inject constructor(
 
                 _changePasswordState.update {
                     it.copy(
-                        currentPassword = "",
-                        newPassword = "",
-                        newPasswordConfirmation = "",
-                        currentPasswordValidationState = CurrentPasswordValidationState(),
-                        newPasswordValidationState = NewPasswordValidationState(),
-                        newPasswordConfirmationValidationState = NewPasswordConfirmationValidationState(),
                         event = ChangePasswordEvent.Success,
                     )
                 }

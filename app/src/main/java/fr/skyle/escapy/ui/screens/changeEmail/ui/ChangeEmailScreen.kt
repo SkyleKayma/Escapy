@@ -144,7 +144,7 @@ private fun ChangeEmailScreenContent(
                 onChangeEmail()
                 keyboardController?.hide()
             },
-            text = stringResource(R.string.change_email_modify),
+            text = stringResource(R.string.generic_action_modify),
             style = ProjectButtonDefaults.ButtonStyle.FILLED,
             tint = ProjectButtonDefaults.ButtonTint.PRIMARY,
             size = ProjectButtonDefaults.ButtonSize.LARGE,

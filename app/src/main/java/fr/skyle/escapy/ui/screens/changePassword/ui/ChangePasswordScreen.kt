@@ -201,7 +201,7 @@ private fun ChangePasswordScreenContent(
                 onChangePassword()
                 keyboardController?.hide()
             },
-            text = stringResource(R.string.change_password_modify),
+            text = stringResource(R.string.generic_action_modify),
             style = ProjectButtonDefaults.ButtonStyle.FILLED,
             tint = ProjectButtonDefaults.ButtonTint.PRIMARY,
             size = ProjectButtonDefaults.ButtonSize.LARGE,
