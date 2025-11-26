@@ -64,7 +64,7 @@ class ChangeEmailViewModel @Inject constructor(
 
                 _changeEmailState.update {
                     it.copy(
-                        event = ChangeEmailEvent.Success
+                        event = ChangeEmailEvent.EmailVerificationSent
                     )
                 }
             } catch (e: CancellationException) {
@@ -166,7 +166,7 @@ class ChangeEmailViewModel @Inject constructor(
     }
 
     sealed interface ChangeEmailEvent {
-        data object Success : ChangeEmailEvent
+        data object EmailVerificationSent : ChangeEmailEvent
         data class Error(val error: ChangeEmailError) : ChangeEmailEvent
     }
 

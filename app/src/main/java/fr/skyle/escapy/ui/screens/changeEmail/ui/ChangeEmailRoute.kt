@@ -3,12 +3,16 @@ package fr.skyle.escapy.ui.screens.changeEmail.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fr.skyle.escapy.R
 import fr.skyle.escapy.ui.core.snackbar.ProjectSnackbarDefaults
 import fr.skyle.escapy.ui.core.snackbar.state.rememberProjectSnackbarState
+import fr.skyle.escapy.ui.screens.changeEmail.ui.component.EmailVerificationSentDialog
 
 @Composable
 fun ChangeEmailRoute(
@@ -20,6 +24,8 @@ fun ChangeEmailRoute(
     val changeEmailState by changeEmailViewModel.changeEmailState.collectAsStateWithLifecycle()
 
     val projectSnackbarState = rememberProjectSnackbarState()
+
+    var isEmailVerificationSentDialogDisplayed by remember { mutableStateOf(false) }
 
     LaunchedEffect(changeEmailState.event) {
         changeEmailState.event?.let { event ->
@@ -45,8 +51,8 @@ fun ChangeEmailRoute(
                     }
                 }
 
-                ChangeEmailViewModel.ChangeEmailEvent.Success -> {
-                    navigateBack()
+                ChangeEmailViewModel.ChangeEmailEvent.EmailVerificationSent -> {
+                    isEmailVerificationSentDialogDisplayed = true
                 }
             }
 
@@ -62,4 +68,13 @@ fun ChangeEmailRoute(
         onNewEmailChanged = changeEmailViewModel::setNewEmail,
         onSaveProfile = changeEmailViewModel::saveProfile,
     )
+
+    if (isEmailVerificationSentDialogDisplayed) {
+        EmailVerificationSentDialog(
+            onDismissRequest = {
+                isEmailVerificationSentDialogDisplayed = false
+                navigateBack()
+            }
+        )
+    }
 }

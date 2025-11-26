@@ -89,4 +89,8 @@
     <string name="change_email_current_password">Mot de passe actuel</string>
     <string name="change_email_new_email">Nouvel email</string>
 
+    <!-- Email Verification Sent Dialog -->
+    <string name="email_verification_sent_dialog_title">Un mail de vérification a été envoyé</string>
+    <string name="email_verification_sent_dialog_subtitle">Veuillez cliquer sur le lien reçu par mail pour valider le changement de votre adresse email.</string>
+
 </resources>
