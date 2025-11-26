@@ -45,6 +45,7 @@ fun ProjectTheme(
     CompositionLocalProvider(
         LocalColors provides colorScheme,
         LocalTypography provides CustomTypography,
+        LocalShapes provides CustomShapes,
         LocalIndication provides ripple(),
         LocalRippleConfiguration provides rippleConfiguration,
         content = content
@@ -61,4 +62,9 @@ object ProjectTheme {
         @Composable
         @ReadOnlyComposable
         get() = LocalTypography.current
+
+    val shape: ProjectShapes
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalShapes.current
 }

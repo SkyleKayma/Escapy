@@ -1,7 +1,6 @@
 package fr.skyle.escapy.designsystem.core.textField
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
@@ -9,6 +8,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import fr.skyle.escapy.designsystem.theme.MediumShapeToken
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
 
 object ProjectTextFieldDefaults {
@@ -86,7 +86,7 @@ object ProjectTextFieldDefaults {
         val shape: Shape
             get() {
                 return when (this) {
-                    RECTANGLE -> RoundedCornerShape(12.dp)
+                    RECTANGLE -> MediumShapeToken
                 }
             }
 

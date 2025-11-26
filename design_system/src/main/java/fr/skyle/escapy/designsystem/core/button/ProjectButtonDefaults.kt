@@ -9,6 +9,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import fr.skyle.escapy.designsystem.theme.MediumShapeToken
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
 
 object ProjectButtonDefaults {
@@ -145,7 +146,7 @@ object ProjectButtonDefaults {
         }
     }
 
-    val buttonShape: Shape = RoundedCornerShape(12.dp)
+    val buttonShape: Shape = MediumShapeToken
 
     val disabledContainerColor: Color
         @Composable

@@ -1,16 +1,15 @@
 package fr.skyle.escapy.ui.core.snackbar
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
+import fr.skyle.escapy.designsystem.theme.SmallShapeToken
 
 object ProjectSnackbarDefaults {
-    private const val SNACKBAR_RADIUS_DP = 8
     private const val SNACKBAR_PADDING_DP = 20
     const val SNACKBAR_BORDER_WIDTH_DP = 1
 
@@ -63,9 +62,9 @@ object ProjectSnackbarDefaults {
         @Composable
         get() = ProjectTheme.typography.p3
 
-    val snackbarShape: Shape = RoundedCornerShape(
-        size = SNACKBAR_RADIUS_DP.dp
-    )
+    val snackbarShape: Shape =
+        SmallShapeToken
 
-    val snackbarPadding: PaddingValues = PaddingValues(all = SNACKBAR_PADDING_DP.dp)
+    val snackbarPadding: PaddingValues =
+        PaddingValues(all = SNACKBAR_PADDING_DP.dp)
 }
