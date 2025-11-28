@@ -7,6 +7,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.font.FontWeight
 import fr.skyle.escapy.R
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
 import fr.skyle.escapy.ext.navigateToDataPrivacy
@@ -71,6 +72,7 @@ fun ProfileGeneralStructure(
                         AnnotatedData(
                             text = stringResource(R.string.profile_sign_out),
                             spanStyle = SpanStyle(
+                                fontWeight = FontWeight.Bold,
                                 color = ProjectTheme.colors.error,
                             )
                         )

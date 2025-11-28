@@ -3,9 +3,11 @@ package fr.skyle.escapy.ui.screens.bottomsheets.editAvatar
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fr.skyle.escapy.MIN_DELAY_BEFORE_SHOWING_LOADER
 import fr.skyle.escapy.data.enums.Avatar
 import fr.skyle.escapy.data.repository.user.api.UserRepository
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -41,12 +43,22 @@ class EditAvatarViewModel @Inject constructor(
     fun updateAvatar(avatar: Avatar) {
         viewModelScope.launch {
             _editAvatarState.update {
-                it.copy(isLoading = true)
+                it.copy(isAvatarUpdating = true)
+            }
+
+            // Start a delayed job to show the loading state only if api call is slow
+            val showLoadingJob = launch {
+                delay(MIN_DELAY_BEFORE_SHOWING_LOADER)
+                _editAvatarState.update {
+                    it.copy(isLoadingShown = true)
+                }
             }
 
             try {
                 userRepository.updateAvatar(avatar).getOrThrow()
                 userRepository.fetchCurrentUser().getOrThrow()
+
+                showLoadingJob.cancel()
 
                 _editAvatarState.update {
                     it.copy(event = EditAvatarEvent.Success)
@@ -60,7 +72,10 @@ class EditAvatarViewModel @Inject constructor(
                 }
             } finally {
                 _editAvatarState.update {
-                    it.copy(isLoading = false)
+                    it.copy(
+                        isAvatarUpdating = false,
+                        isLoadingShown = false
+                    )
                 }
             }
         }
@@ -75,8 +90,9 @@ class EditAvatarViewModel @Inject constructor(
     }
 
     data class EditAvatarState(
-        val isLoading: Boolean? = null,
         val currentAvatar: Avatar? = null,
+        val isAvatarUpdating: Boolean = false,
+        val isLoadingShown: Boolean = false,
         val event: EditAvatarEvent? = null
     )
 

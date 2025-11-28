@@ -28,7 +28,8 @@ fun EditAvatarItem(
     avatar: Avatar,
     isSelected: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isEnabled: Boolean = true
 ) {
     val context = LocalContext.current
 
@@ -46,7 +47,7 @@ fun EditAvatarItem(
                 }
             )
             .boxCardStyle(shape = CircleShape)
-            .clickable(onClick = onClick),
+            .clickable(enabled = isEnabled, onClick = onClick),
         model = ImageRequest.Builder(context)
             .data(avatar.iconId)
             .crossfade(true)
@@ -57,22 +58,25 @@ fun EditAvatarItem(
     )
 }
 
-
 private class EditAvatarItemPreviewDataProvider :
     CollectionPreviewParameterProvider<EditAvatarItemPreviewData>(
         collection = buildList {
             Boolean.values.forEach { isSelected ->
-                add(
-                    EditAvatarItemPreviewData(
-                        isSelected = isSelected,
+                Boolean.values.forEach { isEnabled ->
+                    add(
+                        EditAvatarItemPreviewData(
+                            isSelected = isSelected,
+                            isEnabled = isEnabled,
+                        )
                     )
-                )
+                }
             }
         }
     )
 
 private data class EditAvatarItemPreviewData(
     val isSelected: Boolean,
+    val isEnabled: Boolean,
 )
 
 @Preview
@@ -85,6 +89,7 @@ private fun EditAvatarItemPreview(
             modifier = Modifier.size(100.dp),
             avatar = Avatar.AVATAR_01,
             isSelected = data.isSelected,
+            isEnabled = data.isEnabled,
             onClick = {}
         )
     }

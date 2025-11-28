@@ -17,9 +17,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -28,9 +31,12 @@ import fr.skyle.escapy.data.enums.Avatar
 import fr.skyle.escapy.designsystem.core.bottomsheet.ProjectBottomSheet
 import fr.skyle.escapy.designsystem.core.snackbar.ProjectSnackbarDefaults
 import fr.skyle.escapy.designsystem.core.snackbar.state.rememberProjectSnackbarState
+import fr.skyle.escapy.designsystem.ext.values
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
+import fr.skyle.escapy.ui.core.dialog.ProjectLoadingDialog
 import fr.skyle.escapy.ui.screens.bottomsheets.editAvatar.component.EditAvatarItem
 import fr.skyle.escapy.utils.ProjectComponentPreview
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,10 +46,19 @@ fun EditAvatarBottomSheet(
     editAvatarViewModel: EditAvatarViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     val state by editAvatarViewModel.editAvatarState.collectAsStateWithLifecycle()
 
     val projectSnackbarState = rememberProjectSnackbarState()
+
+    val animateToDismiss: () -> Unit = {
+        scope.launch { sheetState.hide() }.invokeOnCompletion {
+            if (!sheetState.isVisible) {
+                onDismissRequest()
+            }
+        }
+    }
 
     LaunchedEffect(state.event) {
         state.event?.let { event ->
@@ -56,7 +71,7 @@ fun EditAvatarBottomSheet(
                 }
 
                 EditAvatarViewModel.EditAvatarEvent.Success -> {
-                    onDismissRequest()
+                    animateToDismiss()
                 }
             }
 
@@ -68,11 +83,18 @@ fun EditAvatarBottomSheet(
         modifier = Modifier.fillMaxSize(),
         sheetState = sheetState,
         snackbarState = projectSnackbarState,
-        onDismissRequest = onDismissRequest,
+        onDismissRequest = animateToDismiss,
     ) {
         EditAvatarBottomSheetContent(
             currentAvatar = state.currentAvatar,
+            isAvatarUpdating = state.isAvatarUpdating,
             onAvatarClicked = editAvatarViewModel::updateAvatar,
+        )
+    }
+
+    if (state.isLoadingShown) {
+        ProjectLoadingDialog(
+            title = stringResource(R.string.edit_avatar_loading_dialog_title),
         )
     }
 }
@@ -80,6 +102,7 @@ fun EditAvatarBottomSheet(
 @Composable
 private fun EditAvatarBottomSheetContent(
     currentAvatar: Avatar?,
+    isAvatarUpdating: Boolean,
     onAvatarClicked: (avatar: Avatar) -> Unit,
 ) {
     Column(
@@ -107,6 +130,7 @@ private fun EditAvatarBottomSheetContent(
                 EditAvatarItem(
                     avatar = avatar,
                     isSelected = avatar == currentAvatar,
+                    isEnabled = !isAvatarUpdating,
                     onClick = {
                         onAvatarClicked(avatar)
                     }
@@ -116,12 +140,32 @@ private fun EditAvatarBottomSheetContent(
     }
 }
 
+private class EditAvatarBottomSheetContentPreviewDataProvider :
+    CollectionPreviewParameterProvider<EditAvatarBottomSheetContentPreviewData>(
+        collection = buildList {
+            Boolean.values.forEach { isUpdatingAvatar ->
+                add(
+                    EditAvatarBottomSheetContentPreviewData(
+                        isUpdatingAvatar = isUpdatingAvatar,
+                    )
+                )
+            }
+        }
+    )
+
+private data class EditAvatarBottomSheetContentPreviewData(
+    val isUpdatingAvatar: Boolean,
+)
+
 @ProjectComponentPreview
 @Composable
-private fun EditAvatarBottomSheetContentPreview() {
+private fun EditAvatarBottomSheetContentPreview(
+    @PreviewParameter(EditAvatarBottomSheetContentPreviewDataProvider::class) data: EditAvatarBottomSheetContentPreviewData
+) {
     ProjectTheme {
         EditAvatarBottomSheetContent(
             currentAvatar = Avatar.AVATAR_01,
+            isAvatarUpdating = data.isUpdatingAvatar,
             onAvatarClicked = {},
         )
     }

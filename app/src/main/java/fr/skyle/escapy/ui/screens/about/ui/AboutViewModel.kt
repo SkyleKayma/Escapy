@@ -3,6 +3,7 @@ package fr.skyle.escapy.ui.screens.about.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fr.skyle.escapy.MIN_DELAY_BEFORE_SHOWING_SCREEN_LOADER
 import fr.skyle.escapy.data.repository.github.api.GithubRepository
 import fr.skyle.escapy.data.vo.GithubContributor
 import kotlinx.coroutines.delay
@@ -14,7 +15,6 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.coroutines.cancellation.CancellationException
-import kotlin.time.Duration.Companion.milliseconds
 
 @HiltViewModel
 class AboutViewModel @Inject constructor(
@@ -32,7 +32,7 @@ class AboutViewModel @Inject constructor(
         viewModelScope.launch {
             // Start a delayed job to show the loading state only if api call is slow
             val showLoadingJob = launch {
-                delay(300.milliseconds)
+                delay(MIN_DELAY_BEFORE_SHOWING_SCREEN_LOADER)
                 _aboutState.update {
                     it.copy(isContributorsLoading = true)
                 }

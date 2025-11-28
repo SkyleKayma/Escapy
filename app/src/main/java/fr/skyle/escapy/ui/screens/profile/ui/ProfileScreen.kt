@@ -27,6 +27,8 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import fr.skyle.escapy.BuildConfig
 import fr.skyle.escapy.R
@@ -238,9 +240,28 @@ private fun ProfileScreenPreview() {
     }
 }
 
+private class ProfileScreenContentPreviewDataProvider :
+    CollectionPreviewParameterProvider<ProfileScreenContentPreviewData>(
+        collection = buildList {
+            AuthProvider.entries.forEach { authProvider ->
+                add(
+                    ProfileScreenContentPreviewData(
+                        authProvider = authProvider,
+                    )
+                )
+            }
+        }
+    )
+
+private data class ProfileScreenContentPreviewData(
+    val authProvider: AuthProvider
+)
+
 @ProjectComponentPreview
 @Composable
-private fun ProfileScreenContentPreview() {
+private fun ProfileScreenContentPreview(
+    @PreviewParameter(ProfileScreenContentPreviewDataProvider::class) data: ProfileScreenContentPreviewData
+) {
     ProjectTheme {
         ProfileScreenContent(
             innerPadding = PaddingValues(),
@@ -248,7 +269,7 @@ private fun ProfileScreenContentPreview() {
             email = "john.doe@test.fr",
             createdAt = System.currentTimeMillis(),
             avatar = null,
-            authProvider = AuthProvider.ANONYMOUS,
+            authProvider = data.authProvider,
             onEditAvatarClicked = {},
             onLinkAccountClicked = {},
             onChangeEmailClicked = {},

@@ -96,4 +96,7 @@
     <!-- Edit Avatar -->
     <string name="edit_avatar_title">Modifier votre avatar</string>
 
+    <!-- Edit Avatar Loading -->
+    <string name="edit_avatar_loading_dialog_title">Modification de votre avatar en cours...</string>
+
 </resources>
