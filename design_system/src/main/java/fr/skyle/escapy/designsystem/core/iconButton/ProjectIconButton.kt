@@ -28,8 +28,9 @@ import fr.skyle.escapy.designsystem.theme.ProjectTheme
 fun ProjectIconButton(
     icon: Painter,
     onClick: () -> Unit,
-    style: ProjectIconButtonDefaults.IconButtonStyle,
-    tint: ProjectIconButtonDefaults.IconButtonTint,
+    style: ProjectIconButtonDefaults.Style,
+    tint: ProjectIconButtonDefaults.Tint,
+    size: ProjectIconButtonDefaults.Size,
     modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
     isLoading: Boolean = false,
@@ -38,14 +39,15 @@ fun ProjectIconButton(
     val content: @Composable () -> Unit = {
         ProjectIconButtonContent(
             icon = icon,
+            size = size,
             isLoading = isLoading,
         )
     }
 
     when (style) {
-        ProjectIconButtonDefaults.IconButtonStyle.FILLED -> {
+        ProjectIconButtonDefaults.Style.FILLED -> {
             ProjectFilledIconButton(
-                modifier = modifier.size(ProjectIconButtonDefaults.BUTTON_SIZE_DP.dp),
+                modifier = modifier.size(size.buttonSize),
                 onClick = onClick,
                 tint = tint,
                 isEnabled = isEnabled,
@@ -54,9 +56,9 @@ fun ProjectIconButton(
             )
         }
 
-        ProjectIconButtonDefaults.IconButtonStyle.OUTLINED -> {
+        ProjectIconButtonDefaults.Style.OUTLINED -> {
             ProjectOutlinedIconButton(
-                modifier = modifier.size(ProjectIconButtonDefaults.BUTTON_SIZE_DP.dp),
+                modifier = modifier.size(size.buttonSize),
                 onClick = onClick,
                 tint = tint,
                 isEnabled = isEnabled,
@@ -65,9 +67,9 @@ fun ProjectIconButton(
             )
         }
 
-        ProjectIconButtonDefaults.IconButtonStyle.SIMPLE -> {
+        ProjectIconButtonDefaults.Style.SIMPLE -> {
             ProjectSimpleIconButton(
-                modifier = modifier.size(ProjectIconButtonDefaults.BUTTON_SIZE_DP.dp),
+                modifier = modifier.size(size.buttonSize),
                 onClick = onClick,
                 tint = tint,
                 isEnabled = isEnabled,
@@ -81,7 +83,7 @@ fun ProjectIconButton(
 @Composable
 private fun ProjectFilledIconButton(
     onClick: () -> Unit,
-    tint: ProjectIconButtonDefaults.IconButtonTint,
+    tint: ProjectIconButtonDefaults.Tint,
     isEnabled: Boolean,
     content: @Composable () -> Unit,
     modifier: Modifier = Modifier,
@@ -105,7 +107,7 @@ private fun ProjectFilledIconButton(
 @Composable
 private fun ProjectOutlinedIconButton(
     onClick: () -> Unit,
-    tint: ProjectIconButtonDefaults.IconButtonTint,
+    tint: ProjectIconButtonDefaults.Tint,
     isEnabled: Boolean,
     content: @Composable () -> Unit,
     modifier: Modifier = Modifier,
@@ -137,7 +139,7 @@ private fun ProjectOutlinedIconButton(
 @Composable
 private fun ProjectSimpleIconButton(
     onClick: () -> Unit,
-    tint: ProjectIconButtonDefaults.IconButtonTint,
+    tint: ProjectIconButtonDefaults.Tint,
     isEnabled: Boolean,
     content: @Composable () -> Unit,
     modifier: Modifier = Modifier,
@@ -158,17 +160,18 @@ private fun ProjectSimpleIconButton(
 @Composable
 private fun ProjectIconButtonContent(
     icon: Painter,
+    size: ProjectIconButtonDefaults.Size,
     isLoading: Boolean,
     modifier: Modifier = Modifier
 ) {
     if (isLoading) {
         CircularProgressIndicator(
-            modifier = modifier.size(ProjectIconButtonDefaults.ICON_SIZE_DP.dp),
+            modifier = modifier.size(size.iconSize),
             color = LocalContentColor.current,
         )
     } else {
         Icon(
-            modifier = modifier.size(ProjectIconButtonDefaults.ICON_SIZE_DP.dp),
+            modifier = modifier.size(size.iconSize),
             painter = icon,
             contentDescription = null
         )
@@ -178,18 +181,21 @@ private fun ProjectIconButtonContent(
 private class ProjectIconButtonPreviewDataProvider :
     CollectionPreviewParameterProvider<ProjectIconButtonPreviewData>(
         collection = buildList {
-            ProjectIconButtonDefaults.IconButtonStyle.entries.forEach { style ->
-                ProjectIconButtonDefaults.IconButtonTint.entries.forEach { tint ->
-                    Boolean.values.forEach { isEnabled ->
-                        Boolean.values.forEach { isLoading ->
-                            add(
-                                ProjectIconButtonPreviewData(
-                                    style = style,
-                                    tint = tint,
-                                    isEnabled = isEnabled,
-                                    isLoading = isLoading,
+            ProjectIconButtonDefaults.Style.entries.forEach { style ->
+                ProjectIconButtonDefaults.Tint.entries.forEach { tint ->
+                    ProjectIconButtonDefaults.Size.entries.forEach { size ->
+                        Boolean.values.forEach { isEnabled ->
+                            Boolean.values.forEach { isLoading ->
+                                add(
+                                    ProjectIconButtonPreviewData(
+                                        style = style,
+                                        tint = tint,
+                                        size = size,
+                                        isEnabled = isEnabled,
+                                        isLoading = isLoading,
+                                    )
                                 )
-                            )
+                            }
                         }
                     }
                 }
@@ -198,8 +204,9 @@ private class ProjectIconButtonPreviewDataProvider :
     )
 
 private data class ProjectIconButtonPreviewData(
-    val style: ProjectIconButtonDefaults.IconButtonStyle,
-    val tint: ProjectIconButtonDefaults.IconButtonTint,
+    val style: ProjectIconButtonDefaults.Style,
+    val tint: ProjectIconButtonDefaults.Tint,
+    val size: ProjectIconButtonDefaults.Size,
     val isEnabled: Boolean,
     val isLoading: Boolean,
 )
@@ -214,6 +221,7 @@ private fun ProjectIconButtonPreview(
             icon = rememberVectorPainter(Icons.Default.Refresh),
             style = data.style,
             tint = data.tint,
+            size = data.size,
             isEnabled = data.isEnabled,
             isLoading = data.isLoading,
             onClick = {},

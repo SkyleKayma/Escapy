@@ -1,11 +1,10 @@
 package fr.skyle.escapy.data.rest.firebase
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import androidx.annotation.Keep
 
-@Serializable
+@Keep
 data class UserRequestDTO(
-    @SerialName("username") val username: String = "",
-    @SerialName("avatarType") val avatarType: Int? = null,
-    @SerialName("createdAt") val createdAt: Long? = null,
+    val username: String = "",
+    val avatarType: Int? = null,
+    val createdAt: Long? = null,
 )

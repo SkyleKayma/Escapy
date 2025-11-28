@@ -29,7 +29,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import fr.skyle.escapy.designsystem.core.iconButton.ProjectIconButtonDefaults
 import fr.skyle.escapy.designsystem.ext.values
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
 
@@ -37,9 +36,9 @@ import fr.skyle.escapy.designsystem.theme.ProjectTheme
 fun ProjectButton(
     text: String,
     onClick: () -> Unit,
-    style: ProjectButtonDefaults.ButtonStyle,
-    tint: ProjectButtonDefaults.ButtonTint,
-    size: ProjectButtonDefaults.ButtonSize,
+    style: ProjectButtonDefaults.Style,
+    tint: ProjectButtonDefaults.Tint,
+    size: ProjectButtonDefaults.Size,
     modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
     isLoading: Boolean = false,
@@ -62,7 +61,7 @@ fun ProjectButton(
     }
 
     when (style) {
-        ProjectButtonDefaults.ButtonStyle.FILLED -> {
+        ProjectButtonDefaults.Style.FILLED -> {
             ProjectFilledButton(
                 modifier = modifier,
                 onClick = onClick,
@@ -73,7 +72,7 @@ fun ProjectButton(
             )
         }
 
-        ProjectButtonDefaults.ButtonStyle.OUTLINED -> {
+        ProjectButtonDefaults.Style.OUTLINED -> {
             ProjectOutlinedButton(
                 modifier = modifier,
                 onClick = onClick,
@@ -84,7 +83,7 @@ fun ProjectButton(
             )
         }
 
-        ProjectButtonDefaults.ButtonStyle.TEXT -> {
+        ProjectButtonDefaults.Style.TEXT -> {
             ProjectTextButton(
                 modifier = modifier,
                 onClick = onClick,
@@ -100,8 +99,8 @@ fun ProjectButton(
 @Composable
 private fun ProjectFilledButton(
     onClick: () -> Unit,
-    tint: ProjectButtonDefaults.ButtonTint,
-    size: ProjectButtonDefaults.ButtonSize,
+    tint: ProjectButtonDefaults.Tint,
+    size: ProjectButtonDefaults.Size,
     isEnabled: Boolean,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
@@ -126,8 +125,8 @@ private fun ProjectFilledButton(
 @Composable
 private fun ProjectTextButton(
     onClick: () -> Unit,
-    tint: ProjectButtonDefaults.ButtonTint,
-    size: ProjectButtonDefaults.ButtonSize,
+    tint: ProjectButtonDefaults.Tint,
+    size: ProjectButtonDefaults.Size,
     isEnabled: Boolean,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
@@ -150,8 +149,8 @@ private fun ProjectTextButton(
 @Composable
 private fun ProjectOutlinedButton(
     onClick: () -> Unit,
-    tint: ProjectButtonDefaults.ButtonTint,
-    size: ProjectButtonDefaults.ButtonSize,
+    tint: ProjectButtonDefaults.Tint,
+    size: ProjectButtonDefaults.Size,
     isEnabled: Boolean,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
@@ -184,7 +183,7 @@ private fun ProjectButtonContent(
     text: String,
     textStyle: TextStyle,
     textDecoration: TextDecoration?,
-    size: ProjectButtonDefaults.ButtonSize,
+    size: ProjectButtonDefaults.Size,
     isLoading: Boolean,
     modifier: Modifier = Modifier,
     leadingContent: (@Composable () -> Unit)? = null,
@@ -197,7 +196,7 @@ private fun ProjectButtonContent(
     ) {
         if (isLoading) {
             CircularProgressIndicator(
-                modifier = modifier.size(ProjectIconButtonDefaults.ICON_SIZE_DP.dp),
+                modifier = modifier.size(ProjectButtonDefaults.CIRCULAR_PROGRESS_SIZE_DP.dp),
                 color = LocalContentColor.current,
             )
         } else {
@@ -235,9 +234,9 @@ private fun ProjectButtonContent(
 private class ProjectButtonPreviewDataProvider :
     CollectionPreviewParameterProvider<ProjectButtonPreviewData>(
         collection = buildList {
-            ProjectButtonDefaults.ButtonStyle.entries.forEach { style ->
-                ProjectButtonDefaults.ButtonTint.entries.forEach { tint ->
-                    ProjectButtonDefaults.ButtonSize.entries.forEach { size ->
+            ProjectButtonDefaults.Style.entries.forEach { style ->
+                ProjectButtonDefaults.Tint.entries.forEach { tint ->
+                    ProjectButtonDefaults.Size.entries.forEach { size ->
                         Boolean.values.forEach { isEnabled ->
                             Boolean.values.forEach { isLoading ->
                                 add(
@@ -258,9 +257,9 @@ private class ProjectButtonPreviewDataProvider :
     )
 
 private data class ProjectButtonPreviewData(
-    val style: ProjectButtonDefaults.ButtonStyle,
-    val tint: ProjectButtonDefaults.ButtonTint,
-    val size: ProjectButtonDefaults.ButtonSize,
+    val style: ProjectButtonDefaults.Style,
+    val tint: ProjectButtonDefaults.Tint,
+    val size: ProjectButtonDefaults.Size,
     val isEnabled: Boolean,
     val isLoading: Boolean,
 )

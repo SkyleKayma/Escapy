@@ -23,6 +23,9 @@ sealed interface Route {
 
     @Serializable
     data object ChangeEmail : Route
+
+    @Serializable
+    data object EditAvatar : Route
 }
 
 @Serializable

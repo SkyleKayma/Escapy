@@ -93,4 +93,7 @@
     <string name="email_verification_sent_dialog_title">Un mail de vérification a été envoyé</string>
     <string name="email_verification_sent_dialog_subtitle">Veuillez cliquer sur le lien reçu par mail pour valider le changement de votre adresse email.</string>
 
+    <!-- Edit Avatar -->
+    <string name="edit_avatar_title">Modifier votre avatar</string>
+
 </resources>

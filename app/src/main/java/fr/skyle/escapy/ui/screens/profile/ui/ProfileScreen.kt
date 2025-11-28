@@ -1,6 +1,7 @@
 package fr.skyle.escapy.ui.screens.profile.ui
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -11,11 +12,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,6 +32,7 @@ import fr.skyle.escapy.BuildConfig
 import fr.skyle.escapy.R
 import fr.skyle.escapy.data.enums.AuthProvider
 import fr.skyle.escapy.data.enums.Avatar
+import fr.skyle.escapy.designsystem.core.iconButton.ProjectIconButton
 import fr.skyle.escapy.designsystem.core.iconButton.ProjectIconButtonDefaults
 import fr.skyle.escapy.designsystem.core.topAppBar.ProjectTopAppBar
 import fr.skyle.escapy.designsystem.core.topAppBar.component.ProjectTopAppBarItem
@@ -46,6 +50,7 @@ import fr.skyle.escapy.utils.format
 fun ProfileScreen(
     profileState: ProfileViewModel.ProfileState,
     onBackButtonClicked: () -> Unit,
+    onEditAvatarClicked: () -> Unit,
     onLinkAccountClicked: () -> Unit,
     onChangeEmailClicked: () -> Unit,
     onChangePasswordClicked: () -> Unit,
@@ -63,7 +68,7 @@ fun ProfileScreen(
                 leadingContent = {
                     ProjectTopAppBarItem(
                         icon = rememberVectorPainter(Icons.AutoMirrored.Filled.ArrowBack),
-                        style = ProjectIconButtonDefaults.IconButtonStyle.FILLED,
+                        style = ProjectIconButtonDefaults.Style.FILLED,
                         onClick = onBackButtonClicked,
                     )
                 },
@@ -78,6 +83,7 @@ fun ProfileScreen(
             createdAt = profileState.createdAt,
             avatar = profileState.avatar,
             authProvider = profileState.authProvider,
+            onEditAvatarClicked = onEditAvatarClicked,
             onLinkAccountClicked = onLinkAccountClicked,
             onChangeEmailClicked = onChangeEmailClicked,
             onChangePasswordClicked = onChangePasswordClicked,
@@ -96,6 +102,7 @@ private fun ProfileScreenContent(
     createdAt: Long?,
     avatar: Avatar?,
     authProvider: AuthProvider,
+    onEditAvatarClicked: () -> Unit,
     onLinkAccountClicked: () -> Unit,
     onChangeEmailClicked: () -> Unit,
     onChangePasswordClicked: () -> Unit,
@@ -115,10 +122,22 @@ private fun ProfileScreenContent(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            ProfileAvatar(
-                modifier = Modifier.size(100.dp),
-                avatar = avatar
-            )
+            Box(modifier = Modifier.wrapContentSize()) {
+                ProfileAvatar(
+                    modifier = Modifier.size(100.dp),
+                    avatar = avatar,
+                    onAvatarClicked = onEditAvatarClicked
+                )
+
+                ProjectIconButton(
+                    modifier = Modifier.align(Alignment.BottomEnd),
+                    icon = rememberVectorPainter(Icons.Default.Edit),
+                    style = ProjectIconButtonDefaults.Style.FILLED,
+                    tint = ProjectIconButtonDefaults.Tint.NEUTRAL,
+                    size = ProjectIconButtonDefaults.Size.SMALL,
+                    onClick = onEditAvatarClicked
+                )
+            }
 
             Spacer(modifier = Modifier.width(24.dp))
 
@@ -194,7 +213,7 @@ private fun ProfileScreenContent(
             textAlign = TextAlign.End
         )
 
-        Spacer(modifier = Modifier.padding(innerPadding.calculateBottomPadding()))
+        Spacer(modifier = Modifier.height(innerPadding.calculateBottomPadding()))
     }
 }
 
@@ -208,6 +227,7 @@ private fun ProfileScreenPreview() {
                 avatar = Avatar.AVATAR_01,
             ),
             onBackButtonClicked = {},
+            onEditAvatarClicked = {},
             onLinkAccountClicked = {},
             onChangeEmailClicked = {},
             onChangePasswordClicked = {},
@@ -229,6 +249,7 @@ private fun ProfileScreenContentPreview() {
             createdAt = System.currentTimeMillis(),
             avatar = null,
             authProvider = AuthProvider.ANONYMOUS,
+            onEditAvatarClicked = {},
             onLinkAccountClicked = {},
             onChangeEmailClicked = {},
             onChangePasswordClicked = {},

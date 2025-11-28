@@ -48,9 +48,9 @@ fun ProjectAlertDialogStructure(
         ProjectButton(
             modifier = Modifier.fillMaxWidth(),
             text = buttonText,
-            size = ProjectButtonDefaults.ButtonSize.MEDIUM,
-            tint = ProjectButtonDefaults.ButtonTint.PRIMARY,
-            style = ProjectButtonDefaults.ButtonStyle.FILLED,
+            size = ProjectButtonDefaults.Size.MEDIUM,
+            tint = ProjectButtonDefaults.Tint.PRIMARY,
+            style = ProjectButtonDefaults.Style.FILLED,
             onClick = onButtonClick,
         )
     }

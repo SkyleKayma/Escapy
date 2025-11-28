@@ -15,8 +15,8 @@ import androidx.compose.ui.unit.dp
 import fr.skyle.escapy.R
 import fr.skyle.escapy.designsystem.ext.values
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
-import fr.skyle.escapy.ui.core.snackbar.ProjectSnackbar
-import fr.skyle.escapy.ui.core.snackbar.state.ProjectSnackbarState
+import fr.skyle.escapy.designsystem.core.snackbar.ProjectSnackbar
+import fr.skyle.escapy.designsystem.core.snackbar.state.ProjectSnackbarState
 import fr.skyle.escapy.utils.ProjectComponentPreview
 import fr.skyle.escapy.utils.ProjectScreenPreview
 

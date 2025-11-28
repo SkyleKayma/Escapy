@@ -124,26 +124,26 @@ private fun ProjectTopAppBarPreview() {
             leadingContent = {
                 ProjectTopAppBarItem(
                     icon = rememberVectorPainter(Icons.AutoMirrored.Filled.ArrowBack),
-                    style = ProjectIconButtonDefaults.IconButtonStyle.FILLED,
+                    style = ProjectIconButtonDefaults.Style.FILLED,
                     onClick = {},
                 )
 
                 ProjectTopAppBarItem(
                     icon = rememberVectorPainter(Icons.Default.Settings),
-                    style = ProjectIconButtonDefaults.IconButtonStyle.FILLED,
+                    style = ProjectIconButtonDefaults.Style.FILLED,
                     onClick = {},
                 )
             },
             trailingContent = {
                 ProjectTopAppBarItem(
                     icon = rememberVectorPainter(Icons.Default.Settings),
-                    style = ProjectIconButtonDefaults.IconButtonStyle.FILLED,
+                    style = ProjectIconButtonDefaults.Style.FILLED,
                     onClick = {},
                 )
 
                 ProjectTopAppBarItem(
                     icon = rememberVectorPainter(Icons.Default.Settings),
-                    style = ProjectIconButtonDefaults.IconButtonStyle.FILLED,
+                    style = ProjectIconButtonDefaults.Style.FILLED,
                     onClick = {},
                 )
             }

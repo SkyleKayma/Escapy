@@ -1,10 +1,10 @@
 package fr.skyle.escapy.data.vo.adapter
 
-import fr.skyle.escapy.data.rest.github.response.GithubContributorResponse
+import fr.skyle.escapy.data.rest.github.response.GithubContributorResponseDTO
 import fr.skyle.escapy.data.vo.GithubContributor
 
-fun GithubContributor.toGithubContributorResponse(): GithubContributorResponse =
-    GithubContributorResponse(
+fun GithubContributor.toGithubContributorResponse(): GithubContributorResponseDTO =
+    GithubContributorResponseDTO(
         id = id,
         username = username,
         avatarUrl = avatarUrl,
@@ -12,7 +12,7 @@ fun GithubContributor.toGithubContributorResponse(): GithubContributorResponse =
         nbContributions = nbContributions
     )
 
-fun GithubContributorResponse.toGithubContributor(): GithubContributor? =
+fun GithubContributorResponseDTO.toGithubContributor(): GithubContributor? =
     username?.let {
         GithubContributor(
             id = id,

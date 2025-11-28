@@ -59,9 +59,9 @@ fun ProjectDialogStructure(
                     ProjectButton(
                         modifier = Modifier.weight(1f),
                         text = leftButtonText,
-                        size = ProjectButtonDefaults.ButtonSize.MEDIUM,
-                        tint = ProjectButtonDefaults.ButtonTint.SECONDARY,
-                        style = ProjectButtonDefaults.ButtonStyle.FILLED,
+                        size = ProjectButtonDefaults.Size.MEDIUM,
+                        tint = ProjectButtonDefaults.Tint.SECONDARY,
+                        style = ProjectButtonDefaults.Style.FILLED,
                         onClick = onLeftButtonClick,
                     )
 
@@ -70,9 +70,9 @@ fun ProjectDialogStructure(
                     ProjectButton(
                         modifier = Modifier.weight(1f),
                         text = rightButtonText,
-                        size = ProjectButtonDefaults.ButtonSize.MEDIUM,
-                        tint = ProjectButtonDefaults.ButtonTint.PRIMARY,
-                        style = ProjectButtonDefaults.ButtonStyle.FILLED,
+                        size = ProjectButtonDefaults.Size.MEDIUM,
+                        tint = ProjectButtonDefaults.Tint.PRIMARY,
+                        style = ProjectButtonDefaults.Style.FILLED,
                         onClick = onRightButtonClick,
                     )
                 }
@@ -83,9 +83,9 @@ fun ProjectDialogStructure(
                     ProjectButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = leftButtonText,
-                        size = ProjectButtonDefaults.ButtonSize.MEDIUM,
-                        tint = ProjectButtonDefaults.ButtonTint.SECONDARY,
-                        style = ProjectButtonDefaults.ButtonStyle.FILLED,
+                        size = ProjectButtonDefaults.Size.MEDIUM,
+                        tint = ProjectButtonDefaults.Tint.SECONDARY,
+                        style = ProjectButtonDefaults.Style.FILLED,
                         onClick = onLeftButtonClick,
                     )
 
@@ -94,9 +94,9 @@ fun ProjectDialogStructure(
                     ProjectButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = rightButtonText,
-                        size = ProjectButtonDefaults.ButtonSize.MEDIUM,
-                        tint = ProjectButtonDefaults.ButtonTint.PRIMARY,
-                        style = ProjectButtonDefaults.ButtonStyle.FILLED,
+                        size = ProjectButtonDefaults.Size.MEDIUM,
+                        tint = ProjectButtonDefaults.Tint.PRIMARY,
+                        style = ProjectButtonDefaults.Style.FILLED,
                         onClick = onRightButtonClick,
                     )
                 }

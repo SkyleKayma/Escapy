@@ -1,5 +1,6 @@
 package fr.skyle.escapy.ui.screens.profile.ui.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
@@ -22,11 +23,16 @@ import fr.skyle.escapy.utils.ProjectComponentPreview
 fun ProfileAvatar(
     avatar: Avatar?,
     modifier: Modifier = Modifier,
+    onAvatarClicked: (() -> Unit)? = null,
 ) {
     val context = LocalContext.current
 
     AsyncImage(
-        modifier = modifier.boxCardStyle(shape = CircleShape),
+        modifier = modifier
+            .boxCardStyle(shape = CircleShape)
+            .clickable {
+                onAvatarClicked?.invoke()
+            },
         model = ImageRequest.Builder(context)
             .data(avatar?.iconId)
             .crossfade(true)

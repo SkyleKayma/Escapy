@@ -52,7 +52,7 @@ fun AboutScreen(
                 leadingContent = {
                     ProjectTopAppBarItem(
                         icon = rememberVectorPainter(Icons.AutoMirrored.Filled.ArrowBack),
-                        style = ProjectIconButtonDefaults.IconButtonStyle.FILLED,
+                        style = ProjectIconButtonDefaults.Style.FILLED,
                         onClick = onBackButtonClicked,
                     )
                 },

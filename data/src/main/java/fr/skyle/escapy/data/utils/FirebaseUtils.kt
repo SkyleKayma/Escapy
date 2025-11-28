@@ -35,3 +35,32 @@ suspend fun <T> DatabaseReference.readOnce(clazz: Class<T>): FirebaseResponse<T>
         }
     }
 }
+
+suspend fun DatabaseReference.updateOnce(
+    data: Map<String, Any?>
+): FirebaseResponse<Unit> {
+    return suspendCancellableCoroutine { continuation ->
+        this.updateChildren(data)
+            .addOnCompleteListener { task ->
+                if (continuation.isCancelled) return@addOnCompleteListener
+
+                if (task.isSuccessful) {
+                    continuation.resume(
+                        FirebaseResponse(
+                            body = Unit,
+                            exception = null
+                        ),
+                        null
+                    )
+                } else {
+                    continuation.resume(
+                        FirebaseResponse(
+                            body = null,
+                            exception = task.exception ?: Exception("Unknown Firebase error")
+                        ),
+                        null
+                    )
+                }
+            }
+    }
+}

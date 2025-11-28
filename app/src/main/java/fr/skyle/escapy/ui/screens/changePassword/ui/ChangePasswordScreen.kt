@@ -32,15 +32,15 @@ import fr.skyle.escapy.designsystem.core.topAppBar.ProjectTopAppBar
 import fr.skyle.escapy.designsystem.core.topAppBar.component.ProjectTopAppBarItem
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
 import fr.skyle.escapy.ui.core.form.PasswordFormValidationRow
-import fr.skyle.escapy.ui.core.snackbar.state.ProjectSnackbarState
-import fr.skyle.escapy.ui.core.snackbar.state.rememberProjectSnackbarState
+import fr.skyle.escapy.designsystem.core.snackbar.state.ProjectSnackbarState
+import fr.skyle.escapy.designsystem.core.snackbar.state.rememberProjectSnackbarState
 import fr.skyle.escapy.ui.core.structure.ProjectScreenStructure
 import fr.skyle.escapy.utils.ProjectComponentPreview
 import fr.skyle.escapy.utils.ProjectScreenPreview
 
 @Composable
 fun ChangePasswordScreen(
-    projectSnackbarState: ProjectSnackbarState,
+    snackbarState: ProjectSnackbarState,
     changePasswordState: ChangePasswordViewModel.ChangePasswordState,
     onBackButtonClicked: () -> Unit,
     onCurrentPasswordChange: (currentPassword: String) -> Unit,
@@ -51,7 +51,7 @@ fun ChangePasswordScreen(
     ProjectScreenStructure(
         modifier = Modifier.fillMaxSize(),
         isPatternDisplayed = true,
-        snackbarState = projectSnackbarState,
+        snackbarState = snackbarState,
         topContent = {
             ProjectTopAppBar(
                 modifier = Modifier.fillMaxWidth(),
@@ -59,7 +59,7 @@ fun ChangePasswordScreen(
                 leadingContent = {
                     ProjectTopAppBarItem(
                         icon = rememberVectorPainter(Icons.AutoMirrored.Filled.ArrowBack),
-                        style = ProjectIconButtonDefaults.IconButtonStyle.FILLED,
+                        style = ProjectIconButtonDefaults.Style.FILLED,
                         onClick = onBackButtonClicked,
                     )
                 },
@@ -202,9 +202,9 @@ private fun ChangePasswordScreenContent(
                 keyboardController?.hide()
             },
             text = stringResource(R.string.generic_action_modify),
-            style = ProjectButtonDefaults.ButtonStyle.FILLED,
-            tint = ProjectButtonDefaults.ButtonTint.PRIMARY,
-            size = ProjectButtonDefaults.ButtonSize.LARGE,
+            style = ProjectButtonDefaults.Style.FILLED,
+            tint = ProjectButtonDefaults.Tint.PRIMARY,
+            size = ProjectButtonDefaults.Size.LARGE,
             isLoading = isButtonLoading,
         )
 
@@ -217,7 +217,7 @@ private fun ChangePasswordScreenContent(
 private fun ChangePasswordScreenPreview() {
     ProjectTheme {
         ChangePasswordScreen(
-            projectSnackbarState = rememberProjectSnackbarState(),
+            snackbarState = rememberProjectSnackbarState(),
             changePasswordState = ChangePasswordViewModel.ChangePasswordState(),
             onBackButtonClicked = {},
             onCurrentPasswordChange = {},

@@ -1,4 +1,4 @@
-package fr.skyle.escapy.ui.core.snackbar
+package fr.skyle.escapy.designsystem.core.snackbar
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable

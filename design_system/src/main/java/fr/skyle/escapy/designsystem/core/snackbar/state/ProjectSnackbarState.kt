@@ -1,4 +1,4 @@
-package fr.skyle.escapy.ui.core.snackbar.state
+package fr.skyle.escapy.designsystem.core.snackbar.state
 
 import androidx.compose.material3.SnackbarData
 import androidx.compose.material3.SnackbarHostState
@@ -9,7 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import fr.skyle.escapy.ui.core.snackbar.ProjectSnackbarDefaults
+import fr.skyle.escapy.designsystem.core.snackbar.ProjectSnackbarDefaults
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 

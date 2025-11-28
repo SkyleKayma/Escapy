@@ -75,8 +75,9 @@ fun AboutProjectCard(
 
         ProjectIconButton(
             icon = painterResource(R.drawable.ic_github),
-            style = ProjectIconButtonDefaults.IconButtonStyle.FILLED,
-            tint = ProjectIconButtonDefaults.IconButtonTint.NEUTRAL,
+            style = ProjectIconButtonDefaults.Style.FILLED,
+            tint = ProjectIconButtonDefaults.Tint.NEUTRAL,
+            size = ProjectIconButtonDefaults.Size.LARGE,
             onClick = context::navigateToProjectRepository
         )
     }

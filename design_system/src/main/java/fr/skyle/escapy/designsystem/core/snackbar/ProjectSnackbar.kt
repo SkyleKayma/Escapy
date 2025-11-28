@@ -1,4 +1,4 @@
-package fr.skyle.escapy.ui.core.snackbar
+package fr.skyle.escapy.designsystem.core.snackbar
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Row
@@ -15,16 +15,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import fr.skyle.escapy.designsystem.core.button.ProjectButton
 import fr.skyle.escapy.designsystem.core.button.ProjectButtonDefaults
+import fr.skyle.escapy.designsystem.core.snackbar.ext.iconColor
+import fr.skyle.escapy.designsystem.core.snackbar.ext.painter
+import fr.skyle.escapy.designsystem.core.snackbar.state.ProjectSnackbarState
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
-import fr.skyle.escapy.ui.core.snackbar.ext.iconColor
-import fr.skyle.escapy.ui.core.snackbar.ext.painter
-import fr.skyle.escapy.ui.core.snackbar.state.ProjectSnackbarState
-import fr.skyle.escapy.utils.ProjectComponentPreview
 
 @Composable
 fun ProjectSnackbar(
@@ -77,18 +77,18 @@ private fun ProjectSnackbarContent(
                     onClick = {
                         onActionClicked?.invoke()
                     },
-                    style = ProjectButtonDefaults.ButtonStyle.TEXT,
+                    style = ProjectButtonDefaults.Style.TEXT,
                     tint = when (type) {
                         ProjectSnackbarDefaults.ProjectSnackbarType.NEUTRAL ->
-                            ProjectButtonDefaults.ButtonTint.PRIMARY
+                            ProjectButtonDefaults.Tint.PRIMARY
 
                         ProjectSnackbarDefaults.ProjectSnackbarType.SUCCESS ->
-                            ProjectButtonDefaults.ButtonTint.SUCCESS
+                            ProjectButtonDefaults.Tint.SUCCESS
 
                         ProjectSnackbarDefaults.ProjectSnackbarType.ERROR ->
-                            ProjectButtonDefaults.ButtonTint.ERROR
+                            ProjectButtonDefaults.Tint.ERROR
                     },
-                    size = ProjectButtonDefaults.ButtonSize.SMALL
+                    size = ProjectButtonDefaults.Size.SMALL
                 )
             }
         }
@@ -132,7 +132,7 @@ private data class ProjectSnackbarPreviewData(
     val type: ProjectSnackbarDefaults.ProjectSnackbarType
 )
 
-@ProjectComponentPreview
+@Preview
 @Composable
 private fun ProjectSnackbarPreview(
     @PreviewParameter(ProjectSnackbarPreviewDataProvider::class) data: ProjectSnackbarPreviewData
@@ -145,7 +145,7 @@ private fun ProjectSnackbarPreview(
     }
 }
 
-@ProjectComponentPreview
+@Preview
 @Composable
 private fun ProjectSnackbarWithActionPreview(
     @PreviewParameter(ProjectSnackbarPreviewDataProvider::class) data: ProjectSnackbarPreviewData

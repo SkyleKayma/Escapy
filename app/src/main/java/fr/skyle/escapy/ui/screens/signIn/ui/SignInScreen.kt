@@ -43,11 +43,11 @@ import fr.skyle.escapy.designsystem.core.button.ProjectButton
 import fr.skyle.escapy.designsystem.core.button.ProjectButtonDefaults
 import fr.skyle.escapy.designsystem.core.iconButton.ProjectIconButton
 import fr.skyle.escapy.designsystem.core.iconButton.ProjectIconButtonDefaults
+import fr.skyle.escapy.designsystem.core.snackbar.state.ProjectSnackbarState
+import fr.skyle.escapy.designsystem.core.snackbar.state.rememberProjectSnackbarState
 import fr.skyle.escapy.designsystem.core.textField.ProjectTextField
 import fr.skyle.escapy.designsystem.ext.values
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
-import fr.skyle.escapy.ui.core.snackbar.state.ProjectSnackbarState
-import fr.skyle.escapy.ui.core.snackbar.state.rememberProjectSnackbarState
 import fr.skyle.escapy.ui.core.structure.ProjectScreenStructure
 import fr.skyle.escapy.ui.screens.signIn.ui.enums.AuthType
 import fr.skyle.escapy.ui.screens.signIn.ui.ext.actionText
@@ -61,7 +61,7 @@ import fr.skyle.escapy.utils.buildAnnotatedString
 
 @Composable
 fun SignInScreen(
-    projectSnackbarState: ProjectSnackbarState,
+    snackbarState: ProjectSnackbarState,
     signInState: SignInViewModel.SignInState,
     onSignInClicked: (String, String) -> Unit,
     onSignUpClicked: (String, String) -> Unit,
@@ -72,7 +72,7 @@ fun SignInScreen(
     ProjectScreenStructure(
         modifier = Modifier.fillMaxSize(),
         isPatternDisplayed = true,
-        snackbarState = projectSnackbarState
+        snackbarState = snackbarState
     ) { innerPadding ->
         SignInScreenContent(
             modifier = Modifier.fillMaxSize(),
@@ -113,7 +113,7 @@ private fun SignInScreenContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Spacer(modifier = Modifier.padding(innerPadding.calculateTopPadding()))
+        Spacer(modifier = Modifier.height(innerPadding.calculateTopPadding()))
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -195,9 +195,9 @@ private fun SignInScreenContent(
                 keyboardController?.hide()
             },
             text = authType.actionText,
-            style = ProjectButtonDefaults.ButtonStyle.FILLED,
-            tint = ProjectButtonDefaults.ButtonTint.PRIMARY,
-            size = ProjectButtonDefaults.ButtonSize.LARGE,
+            style = ProjectButtonDefaults.Style.FILLED,
+            tint = ProjectButtonDefaults.Tint.PRIMARY,
+            size = ProjectButtonDefaults.Size.LARGE,
             isLoading = isButtonLoading
         )
 
@@ -235,8 +235,9 @@ private fun SignInScreenContent(
         ) {
             ProjectIconButton(
                 icon = painterResource(R.drawable.ic_google),
-                style = ProjectIconButtonDefaults.IconButtonStyle.FILLED,
-                tint = ProjectIconButtonDefaults.IconButtonTint.DARK,
+                style = ProjectIconButtonDefaults.Style.FILLED,
+                tint = ProjectIconButtonDefaults.Tint.DARK,
+                size = ProjectIconButtonDefaults.Size.LARGE,
                 onClick = onGoogleSignInClicked,
                 isEnabled = !isButtonLoading
             )
@@ -272,13 +273,13 @@ private fun SignInScreenContent(
             modifier = Modifier.wrapContentWidth(),
             text = stringResource(R.string.sign_in_up_continue_as_guest),
             onClick = onContinueAsGuestClicked,
-            style = ProjectButtonDefaults.ButtonStyle.OUTLINED,
-            tint = ProjectButtonDefaults.ButtonTint.SECONDARY,
-            size = ProjectButtonDefaults.ButtonSize.SMALL,
+            style = ProjectButtonDefaults.Style.OUTLINED,
+            tint = ProjectButtonDefaults.Tint.SECONDARY,
+            size = ProjectButtonDefaults.Size.SMALL,
             isEnabled = !isButtonLoading
         )
 
-        Spacer(modifier = Modifier.padding(innerPadding.calculateBottomPadding()))
+        Spacer(modifier = Modifier.height(innerPadding.calculateBottomPadding()))
     }
 }
 
@@ -287,7 +288,7 @@ private fun SignInScreenContent(
 private fun SignInScreenPreview() {
     ProjectTheme {
         SignInScreen(
-            projectSnackbarState = rememberProjectSnackbarState(),
+            snackbarState = rememberProjectSnackbarState(),
             signInState = SignInViewModel.SignInState(),
             onSignInClicked = { _, _ -> },
             onSignUpClicked = { _, _ -> },

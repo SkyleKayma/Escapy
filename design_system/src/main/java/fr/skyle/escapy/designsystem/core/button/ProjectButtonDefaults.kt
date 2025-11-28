@@ -1,7 +1,6 @@
 package fr.skyle.escapy.designsystem.core.button
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -22,8 +21,9 @@ object ProjectButtonDefaults {
     const val BUTTON_LARGE_ICON_SIZE_DP = 20
     const val BUTTON_SMALL_ICON_SIZE_DP = 16
     const val BUTTON_BORDER_WIDTH_DP = 1
+    const val CIRCULAR_PROGRESS_SIZE_DP = 38
 
-    enum class ButtonStyle {
+    enum class Style {
         OUTLINED,
         FILLED,
         TEXT;
@@ -36,7 +36,7 @@ object ProjectButtonDefaults {
             }
     }
 
-    enum class ButtonTint {
+    enum class Tint {
         PRIMARY,
         SECONDARY,
         ERROR,
@@ -88,7 +88,7 @@ object ProjectButtonDefaults {
             }
     }
 
-    enum class ButtonSize {
+    enum class Size {
         SMALL,
         MEDIUM,
         LARGE;
@@ -125,22 +125,22 @@ object ProjectButtonDefaults {
     }
 
     @Composable
-    fun getTextStyle(style: ButtonStyle, size: ButtonSize): TextStyle {
+    fun getTextStyle(style: Style, size: Size): TextStyle {
         return when (style) {
-            ButtonStyle.OUTLINED,
-            ButtonStyle.FILLED -> {
+            Style.OUTLINED,
+            Style.FILLED -> {
                 when (size) {
-                    ButtonSize.SMALL -> ProjectTheme.typography.buttonS
-                    ButtonSize.MEDIUM,
-                    ButtonSize.LARGE -> ProjectTheme.typography.buttonL
+                    Size.SMALL -> ProjectTheme.typography.buttonS
+                    Size.MEDIUM,
+                    Size.LARGE -> ProjectTheme.typography.buttonL
                 }
             }
 
-            ButtonStyle.TEXT -> {
+            Style.TEXT -> {
                 when (size) {
-                    ButtonSize.SMALL -> ProjectTheme.typography.buttonS
-                    ButtonSize.MEDIUM,
-                    ButtonSize.LARGE -> ProjectTheme.typography.buttonL
+                    Size.SMALL -> ProjectTheme.typography.buttonS
+                    Size.MEDIUM,
+                    Size.LARGE -> ProjectTheme.typography.buttonL
                 }
             }
         }

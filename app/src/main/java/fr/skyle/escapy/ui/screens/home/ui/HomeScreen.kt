@@ -55,8 +55,9 @@ fun HomeScreen(
                 trailingContent = {
                     ProjectIconButton(
                         icon = rememberVectorPainter(Icons.Default.Person2),
-                        style = ProjectIconButtonDefaults.IconButtonStyle.OUTLINED,
-                        tint = ProjectIconButtonDefaults.IconButtonTint.NEUTRAL,
+                        style = ProjectIconButtonDefaults.Style.OUTLINED,
+                        tint = ProjectIconButtonDefaults.Tint.NEUTRAL,
+                        size = ProjectIconButtonDefaults.Size.LARGE,
                         onClick = onProfileClicked
                     )
                 }
@@ -186,9 +187,9 @@ private fun HomeScreenContent(
         ProjectButton(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(R.string.home_history),
-            style = ProjectButtonDefaults.ButtonStyle.FILLED,
-            tint = ProjectButtonDefaults.ButtonTint.PRIMARY,
-            size = ProjectButtonDefaults.ButtonSize.LARGE,
+            style = ProjectButtonDefaults.Style.FILLED,
+            tint = ProjectButtonDefaults.Tint.PRIMARY,
+            size = ProjectButtonDefaults.Size.LARGE,
             onClick = {
                 // TODO
             },

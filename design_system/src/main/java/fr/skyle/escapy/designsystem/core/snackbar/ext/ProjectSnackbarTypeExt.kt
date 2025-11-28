@@ -1,4 +1,4 @@
-package fr.skyle.escapy.ui.core.snackbar.ext
+package fr.skyle.escapy.designsystem.core.snackbar.ext
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
@@ -8,8 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import fr.skyle.escapy.designsystem.core.snackbar.ProjectSnackbarDefaults
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
-import fr.skyle.escapy.ui.core.snackbar.ProjectSnackbarDefaults
 
 val ProjectSnackbarDefaults.ProjectSnackbarType.painter: Painter
     @Composable

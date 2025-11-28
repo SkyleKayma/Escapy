@@ -10,8 +10,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fr.skyle.escapy.R
-import fr.skyle.escapy.ui.core.snackbar.ProjectSnackbarDefaults
-import fr.skyle.escapy.ui.core.snackbar.state.rememberProjectSnackbarState
+import fr.skyle.escapy.designsystem.core.snackbar.ProjectSnackbarDefaults
+import fr.skyle.escapy.designsystem.core.snackbar.state.rememberProjectSnackbarState
 import fr.skyle.escapy.ui.screens.changePassword.ui.component.PasswordChangedDialog
 
 @Composable
@@ -61,7 +61,7 @@ fun ChangePasswordRoute(
     }
 
     ChangePasswordScreen(
-        projectSnackbarState = projectSnackbarState,
+        snackbarState = projectSnackbarState,
         changePasswordState = changePasswordState,
         onBackButtonClicked = navigateBack,
         onCurrentPasswordChange = changePasswordViewModel::setCurrentPassword,
