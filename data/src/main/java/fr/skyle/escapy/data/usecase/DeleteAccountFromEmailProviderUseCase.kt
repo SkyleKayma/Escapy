@@ -45,8 +45,8 @@ class DeleteAccountFromEmailProviderUseCaseImpl @Inject constructor(
     }
 }
 
-sealed class DeleteAccountFromEmailProviderUseCaseResponse {
-    data object Success : DeleteAccountFromEmailProviderUseCaseResponse()
-    data object ErrorInvalidFields : DeleteAccountFromEmailProviderUseCaseResponse()
-    data class Error(val exception: Exception) : DeleteAccountFromEmailProviderUseCaseResponse()
+sealed interface DeleteAccountFromEmailProviderUseCaseResponse {
+    data object Success : DeleteAccountFromEmailProviderUseCaseResponse
+    data object ErrorInvalidFields : DeleteAccountFromEmailProviderUseCaseResponse
+    data class Error(val exception: Exception) : DeleteAccountFromEmailProviderUseCaseResponse
 }

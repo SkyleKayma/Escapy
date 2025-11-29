@@ -19,7 +19,7 @@ class DeleteAccountFromAnonymousProviderUseCaseImpl @Inject constructor(
         return try {
             val user = requireNotNull(firebaseAuth.currentUser)
 
-            // Then delete the account
+            // Delete the account
             user.delete().awaitWithTimeout()
 
             DeleteAccountFromAnonymousProviderUseCaseResponse.Success
@@ -35,8 +35,8 @@ class DeleteAccountFromAnonymousProviderUseCaseImpl @Inject constructor(
     }
 }
 
-sealed class DeleteAccountFromAnonymousProviderUseCaseResponse {
-    data object Success : DeleteAccountFromAnonymousProviderUseCaseResponse()
-    data object InvalidFields : DeleteAccountFromAnonymousProviderUseCaseResponse()
-    data class Error(val exception: Exception) : DeleteAccountFromAnonymousProviderUseCaseResponse()
+sealed interface DeleteAccountFromAnonymousProviderUseCaseResponse {
+    data object Success : DeleteAccountFromAnonymousProviderUseCaseResponse
+    data object InvalidFields : DeleteAccountFromAnonymousProviderUseCaseResponse
+    data class Error(val exception: Exception) : DeleteAccountFromAnonymousProviderUseCaseResponse
 }
