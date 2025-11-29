@@ -11,6 +11,7 @@ import androidx.compose.runtime.setValue
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fr.skyle.escapy.ui.screens.bottomsheets.editAvatar.EditAvatarBottomSheet
+import fr.skyle.escapy.ui.screens.profile.ui.component.SignOutConfirmationDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -29,6 +30,9 @@ fun ProfileRoute(
 
     val editAvatarBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var isEditAvatarBottomSheetDisplayed by remember {
+        mutableStateOf(false)
+    }
+    var isSignOutConfirmationDialogDisplayed by remember {
         mutableStateOf(false)
     }
 
@@ -55,7 +59,9 @@ fun ProfileRoute(
         onChangePasswordClicked = navigateChangePassword,
         onNotificationsClicked = navigateToNotifications,
         onAboutAppClicked = navigateToAboutApp,
-        onSignOutClicked = profileViewModel::signOut,
+        onSignOutClicked = {
+            isSignOutConfirmationDialogDisplayed = true
+        },
         onDeleteAccountClicked = navigateToDeleteAccount,
     )
 
@@ -64,6 +70,18 @@ fun ProfileRoute(
             sheetState = editAvatarBottomSheetState,
             onDismissRequest = {
                 isEditAvatarBottomSheetDisplayed = false
+            }
+        )
+    }
+
+    if (isSignOutConfirmationDialogDisplayed) {
+        SignOutConfirmationDialog(
+            onSignOutClicked = {
+                profileViewModel.signOut()
+                isSignOutConfirmationDialogDisplayed = false
+            },
+            onDismissRequest = {
+                isSignOutConfirmationDialogDisplayed = false
             }
         )
     }

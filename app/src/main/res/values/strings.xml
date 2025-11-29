@@ -8,6 +8,8 @@
 
     <!-- Generic Action -->
     <string name="generic_action_ok">OK</string>
+    <string name="generic_action_yes">Oui</string>
+    <string name="generic_action_no">Non</string>
     <string name="generic_action_modify">Modifier</string>
     <string name="generic_action_delete">Supprimer</string>
     <string name="generic_action_cancel">Annuler</string>
@@ -74,6 +76,10 @@
     <string name="profile_sign_out">Se déconnecter</string>
     <string name="profile_delete_account">Supprimer mon compte</string>
     <string name="profile_version_format">Version %1$s (Build %2$s)</string>
+
+    <!-- Sign Out Confirmation Dialog -->
+    <string name="sign_out_confirmation_dialog_title">Déconnexion</string>
+    <string name="sign_out_confirmation_dialog_subtitle">Souhaitez-vous vraiment vous déconnecter \?</string>
 
     <!-- About -->
     <string name="about_title">À propos</string>
