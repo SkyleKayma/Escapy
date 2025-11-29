@@ -27,10 +27,8 @@ interface AuthRepository {
         currentPassword: String,
     ): Result<Unit>
 
-    suspend fun changePasswordForEmailPasswordProvider(
+    suspend fun changePasswordForEmailProvider(
         currentPassword: String,
         newPassword: String,
     ): Result<Unit>
-
-    suspend fun signOut()
 }

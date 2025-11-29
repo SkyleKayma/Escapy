@@ -154,10 +154,6 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun signOut() {
-        firebaseAuth.signOut()
-    }
-
     // Update account
 
     override suspend fun changeEmailForEmailPasswordProvider(
@@ -190,7 +186,7 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun changePasswordForEmailPasswordProvider(
+    override suspend fun changePasswordForEmailProvider(
         currentPassword: String,
         newPassword: String
     ): Result<Unit> {

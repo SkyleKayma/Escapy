@@ -63,7 +63,7 @@ class ChangePasswordViewModel @Inject constructor(
             }
 
             try {
-                authRepository.changePasswordForEmailPasswordProvider(
+                authRepository.changePasswordForEmailProvider(
                     currentPassword = _changePasswordState.value.currentPassword,
                     newPassword = _changePasswordState.value.newPassword
                 ).getOrThrow()

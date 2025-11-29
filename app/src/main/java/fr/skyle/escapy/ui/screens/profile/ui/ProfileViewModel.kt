@@ -7,6 +7,8 @@ import fr.skyle.escapy.data.enums.AuthProvider
 import fr.skyle.escapy.data.enums.Avatar
 import fr.skyle.escapy.data.repository.auth.api.AuthRepository
 import fr.skyle.escapy.data.repository.user.api.UserRepository
+import fr.skyle.escapy.data.usecase.SignOutUseCase
+import fr.skyle.escapy.data.usecase.SignOutUseCaseResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,8 +20,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val userRepository: UserRepository,
-    private val authRepository: AuthRepository
+    userRepository: UserRepository,
+    authRepository: AuthRepository,
+    private val signOutUseCase: SignOutUseCase
 ) : ViewModel() {
 
     private val _profileState = MutableStateFlow<ProfileState>(ProfileState())
@@ -44,13 +47,13 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun signOut() {
-        viewModelScope.launch {
-            authRepository.signOut()
-
-            _profileState.update {
-                it.copy(
-                    event = ProfileEvent.SignOutSuccess
-                )
+        when (signOutUseCase()) {
+            SignOutUseCaseResponse.Success -> {
+                _profileState.update {
+                    it.copy(
+                        event = ProfileEvent.SignOutSuccess
+                    )
+                }
             }
         }
     }

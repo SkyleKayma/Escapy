@@ -8,6 +8,8 @@ import fr.skyle.escapy.data.usecase.DeleteAccountFromAnonymousProviderUseCase
 import fr.skyle.escapy.data.usecase.DeleteAccountFromAnonymousProviderUseCaseImpl
 import fr.skyle.escapy.data.usecase.DeleteAccountFromEmailProviderUseCase
 import fr.skyle.escapy.data.usecase.DeleteAccountFromEmailProviderUseCaseImpl
+import fr.skyle.escapy.data.usecase.SignOutUseCase
+import fr.skyle.escapy.data.usecase.SignOutUseCaseImpl
 import javax.inject.Singleton
 
 @Module
@@ -25,4 +27,10 @@ interface UseCaseModule {
     fun bindsDeleteAccountFromEmailPasswordProviderUseCase(
         deleteAccountFromEmailPasswordProviderUseCaseImpl: DeleteAccountFromEmailProviderUseCaseImpl,
     ): DeleteAccountFromEmailProviderUseCase
+
+    @Binds
+    @Singleton
+    fun bindsSignOutUseCase(
+        signOutUseCaseImpl: SignOutUseCaseImpl,
+    ): SignOutUseCase
 }
