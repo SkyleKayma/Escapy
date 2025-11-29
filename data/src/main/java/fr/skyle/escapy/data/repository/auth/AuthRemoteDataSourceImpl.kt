@@ -12,7 +12,7 @@ import fr.skyle.escapy.data.db.ProjectDatabase
 import fr.skyle.escapy.data.db.dao.UserDao
 import fr.skyle.escapy.data.enums.AuthProvider
 import fr.skyle.escapy.data.ext.awaitWithTimeout
-import fr.skyle.escapy.data.repository.auth.api.FirebaseAuthRemoteDataSource
+import fr.skyle.escapy.data.repository.auth.api.AuthRemoteDataSource
 import fr.skyle.escapy.data.rest.firebase.UserRequestDTO
 import fr.skyle.escapy.data.utils.FirebaseAuthHelper
 import fr.skyle.escapy.data.utils.ProjectDataStore
@@ -25,14 +25,16 @@ import fr.skyle.escapy.data.vo.adapter.toUserRequestDTO
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import javax.inject.Singleton
 
-class FirebaseAuthRemoteDataSourceImpl @Inject constructor(
+@Singleton
+class AuthRemoteDataSourceImpl @Inject constructor(
     private val firebaseAuthHelper: FirebaseAuthHelper,
     private val database: ProjectDatabase,
     private val dataStore: ProjectDataStore,
     private val dbRef: DatabaseReference,
     private val userDao: UserDao,
-) : FirebaseAuthRemoteDataSource {
+) : AuthRemoteDataSource {
 
     private suspend fun handleUserSwitch(userId: String) {
         if (userId != dataStore.getCurrentUserId()) {

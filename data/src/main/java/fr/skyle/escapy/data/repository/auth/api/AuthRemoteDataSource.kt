@@ -1,6 +1,6 @@
 package fr.skyle.escapy.data.repository.auth.api
 
-interface FirebaseAuthRemoteDataSource {
+interface AuthRemoteDataSource {
 
     suspend fun signUpAsGuest()
 

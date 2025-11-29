@@ -1,82 +1,59 @@
 package fr.skyle.escapy.data.repository.user
 
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import fr.skyle.escapy.data.FirebaseNode
-import fr.skyle.escapy.data.db.dao.UserDao
 import fr.skyle.escapy.data.enums.Avatar
+import fr.skyle.escapy.data.repository.user.api.UserLocalDataSource
+import fr.skyle.escapy.data.repository.user.api.UserRemoteDataSource
 import fr.skyle.escapy.data.repository.user.api.UserRepository
-import fr.skyle.escapy.data.rest.firebase.UserRequestDTO
-import fr.skyle.escapy.data.utils.readOnce
-import fr.skyle.escapy.data.utils.updateOnce
+import fr.skyle.escapy.data.utils.FirebaseAuthHelper
 import fr.skyle.escapy.data.vo.User
 import fr.skyle.escapy.data.vo.adapter.toUser
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.distinctUntilChanged
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class UserRepositoryImpl @Inject constructor(
-    private val dbRef: DatabaseReference,
-    private val firebaseAuth: FirebaseAuth,
-    private val userDao: UserDao,
+    private val firebaseAuthHelper: FirebaseAuthHelper,
+    private val userRemoteDataSource: UserRemoteDataSource,
+    private val userLocalDataSource: UserLocalDataSource,
 ) : UserRepository {
 
-    // Remote
-
-    override suspend fun fetchCurrentUser(): Result<Unit> {
-        val userId = firebaseAuth.currentUser?.uid
-            ?: return Result.failure(Exception("There is no currentUser"))
-
-        return fetchUser(userId)
-    }
-
     override suspend fun fetchUser(userId: String): Result<Unit> {
-        val response = dbRef
-            .child(FirebaseNode.Users.path)
-            .child(userId)
-            .readOnce(UserRequestDTO::class.java)
+        val response = userRemoteDataSource.fetchUser(userId)
 
-        val user = response.body?.toUser(userId)
+        val body = response.body
 
-        return if (response.isSuccessful && user != null) {
-            // Insert
-            userDao.insert(user)
+        return if (response.isSuccessful && body != null) {
+            userLocalDataSource.insertUser(body.toUser(userId))
 
             Result.success(Unit)
         } else {
-            Result.failure(Exception(response.message()))
+            Result.failure(Exception())
         }
     }
 
+    override suspend fun fetchCurrentUser(): Result<Unit> {
+        val userId = firebaseAuthHelper.requireCurrentUser().uid
+        return fetchUser(userId)
+    }
+
     override suspend fun updateAvatar(avatar: Avatar): Result<Unit> {
-        val userId = firebaseAuth.currentUser?.uid
-            ?: return Result.failure(Exception("There is no currentUser"))
+        val userId = firebaseAuthHelper.requireCurrentUser().uid
 
-        val update = mapOf(
-            UserRequestDTO::avatarType.name to avatar.type
-        )
-
-        val response = dbRef
-            .child(FirebaseNode.Users.path)
-            .child(userId)
-            .updateOnce(update)
+        val response = userRemoteDataSource.updateAvatar(userId, avatar)
 
         return if (response.isSuccessful) {
             Result.success(Unit)
         } else {
-            Result.failure(Exception(response.message()))
+            Result.failure(Exception(response.exception))
         }
     }
 
-    // Local
-
     override fun watchCurrentUser(): Flow<User?> {
-        val userId = firebaseAuth.currentUser?.uid ?: ""
+        val userId = firebaseAuthHelper.getCurrentUser()?.uid ?: ""
         return watchUser(userId)
     }
 
     override fun watchUser(userId: String): Flow<User?> =
-        userDao.watchUser(userId).distinctUntilChanged()
+        userLocalDataSource.watchUser(userId)
 }

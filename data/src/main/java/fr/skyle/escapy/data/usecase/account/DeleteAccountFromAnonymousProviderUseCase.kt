@@ -1,4 +1,4 @@
-package fr.skyle.escapy.data.usecase
+package fr.skyle.escapy.data.usecase.account
 
 import fr.skyle.escapy.data.repository.auth.api.AuthRepository
 import kotlinx.coroutines.CancellationException
@@ -22,12 +22,12 @@ class DeleteAccountFromAnonymousProviderUseCaseImpl @Inject constructor(
             throw e
         } catch (e: Exception) {
             Timber.e(e)
-            DeleteAccountFromAnonymousProviderUseCaseResponse.Error(e)
+            DeleteAccountFromAnonymousProviderUseCaseResponse.Error(e.message)
         }
     }
 }
 
 sealed interface DeleteAccountFromAnonymousProviderUseCaseResponse {
     data object Success : DeleteAccountFromAnonymousProviderUseCaseResponse
-    data class Error(val exception: Exception) : DeleteAccountFromAnonymousProviderUseCaseResponse
+    data class Error(val message: String?) : DeleteAccountFromAnonymousProviderUseCaseResponse
 }

@@ -3,19 +3,20 @@ package fr.skyle.escapy.ui.screens.home.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fr.skyle.escapy.data.repository.user.api.UserRepository
+import fr.skyle.escapy.data.usecase.user.WatchCurrentUserUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    userRepository: UserRepository
+    watchCurrentUserUseCase: WatchCurrentUserUseCase
 ) : ViewModel() {
 
     private val _homeState = MutableStateFlow<HomeState>(HomeState())
@@ -23,11 +24,12 @@ class HomeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            userRepository.watchCurrentUser()
+            watchCurrentUserUseCase()
+                .map { it.user }
                 .filterNotNull()
-                .collectLatest { currentUser ->
+                .collectLatest { user ->
                     _homeState.update {
-                        it.copy(username = currentUser.username)
+                        it.copy(username = user.username)
                     }
                 }
         }

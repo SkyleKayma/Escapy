@@ -1,4 +1,4 @@
-package fr.skyle.escapy.data.usecase
+package fr.skyle.escapy.data.usecase.account
 
 import fr.skyle.escapy.data.repository.auth.api.AuthRepository
 import javax.inject.Inject
@@ -29,12 +29,12 @@ class SignUpUseCaseImpl @Inject constructor(
         } catch (e: CancellationException) {
             throw e
         } catch (e: Exception) {
-            SignUpUseCaseResponse.Error(e)
+            SignUpUseCaseResponse.Error(e.message)
         }
     }
 }
 
 sealed interface SignUpUseCaseResponse {
     data object Success : SignUpUseCaseResponse
-    data class Error(val exception: Exception) : SignUpUseCaseResponse
+    data class Error(val message: String?) : SignUpUseCaseResponse
 }

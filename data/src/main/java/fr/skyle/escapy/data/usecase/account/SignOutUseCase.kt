@@ -1,4 +1,4 @@
-package fr.skyle.escapy.data.usecase
+package fr.skyle.escapy.data.usecase.account
 
 import fr.skyle.escapy.data.repository.auth.api.AuthRepository
 import javax.inject.Inject

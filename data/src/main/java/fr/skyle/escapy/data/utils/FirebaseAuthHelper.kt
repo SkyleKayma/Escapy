@@ -17,6 +17,9 @@ class FirebaseAuthHelper @Inject constructor(
     fun getCurrentUser(): FirebaseUser? =
         firebaseAuth.currentUser
 
+    fun requireCurrentUser(): FirebaseUser =
+        firebaseAuth.currentUser ?: throw Exception("No current user")
+
     fun isUserLoggedIn(): Boolean =
         getCurrentUser() != null
 

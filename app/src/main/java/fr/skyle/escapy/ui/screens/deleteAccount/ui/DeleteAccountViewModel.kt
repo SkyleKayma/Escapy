@@ -4,10 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.skyle.escapy.data.enums.AuthProvider
-import fr.skyle.escapy.data.usecase.DeleteAccountFromAnonymousProviderUseCase
-import fr.skyle.escapy.data.usecase.DeleteAccountFromAnonymousProviderUseCaseResponse
-import fr.skyle.escapy.data.usecase.DeleteAccountFromEmailProviderUseCase
-import fr.skyle.escapy.data.usecase.DeleteAccountFromEmailProviderUseCaseResponse
+import fr.skyle.escapy.data.usecase.account.DeleteAccountFromAnonymousProviderUseCase
+import fr.skyle.escapy.data.usecase.account.DeleteAccountFromAnonymousProviderUseCaseResponse
+import fr.skyle.escapy.data.usecase.account.DeleteAccountFromEmailProviderUseCase
+import fr.skyle.escapy.data.usecase.account.DeleteAccountFromEmailProviderUseCaseResponse
 import fr.skyle.escapy.data.utils.FirebaseAuthHelper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -45,7 +45,7 @@ class DeleteAccountViewModel @Inject constructor(
             when (val response = deleteAccountFromEmailProviderUseCase(password)) {
                 is DeleteAccountFromEmailProviderUseCaseResponse.Error -> {
                     _deleteAccountState.update {
-                        it.copy(event = DeleteAccountEvent.Error(response.exception.message))
+                        it.copy(event = DeleteAccountEvent.Error(response.message))
                     }
                 }
 
@@ -77,7 +77,7 @@ class DeleteAccountViewModel @Inject constructor(
             when (val response = deleteAccountFromAnonymousProviderUseCase()) {
                 is DeleteAccountFromAnonymousProviderUseCaseResponse.Error -> {
                     _deleteAccountState.update {
-                        it.copy(event = DeleteAccountEvent.Error(response.exception.message))
+                        it.copy(event = DeleteAccountEvent.Error(response.message))
                     }
                 }
 

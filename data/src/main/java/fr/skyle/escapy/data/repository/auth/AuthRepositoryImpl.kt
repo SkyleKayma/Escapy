@@ -1,19 +1,19 @@
 package fr.skyle.escapy.data.repository.auth
 
 import fr.skyle.escapy.data.repository.auth.api.AuthRepository
-import fr.skyle.escapy.data.repository.auth.api.FirebaseAuthRemoteDataSource
+import fr.skyle.escapy.data.repository.auth.api.AuthRemoteDataSource
 import kotlinx.coroutines.CancellationException
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class AuthRepositoryImpl @Inject constructor(
-    private val firebaseAuthRemoteDataSource: FirebaseAuthRemoteDataSource,
+    private val authRemoteDataSource: AuthRemoteDataSource,
 ) : AuthRepository {
 
     override suspend fun signUpAsGuest(): Result<Unit> {
         return try {
-            firebaseAuthRemoteDataSource.signUpAsGuest()
+            authRemoteDataSource.signUpAsGuest()
 
             Result.success(Unit)
         } catch (e: CancellationException) {
@@ -28,7 +28,7 @@ class AuthRepositoryImpl @Inject constructor(
         password: String
     ): Result<Unit> {
         return try {
-            firebaseAuthRemoteDataSource.signUp(
+            authRemoteDataSource.signUp(
                 email = email,
                 password = password
             )
@@ -46,7 +46,7 @@ class AuthRepositoryImpl @Inject constructor(
         password: String
     ): Result<Unit> {
         return try {
-            firebaseAuthRemoteDataSource.signIn(
+            authRemoteDataSource.signIn(
                 email = email,
                 password = password
             )
@@ -60,14 +60,14 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override fun signOut() {
-        firebaseAuthRemoteDataSource.signOut()
+        authRemoteDataSource.signOut()
     }
 
     override suspend fun sendMailForEmailProvider(
         newMail: String,
         currentPassword: String
     ): Result<Unit> {
-        firebaseAuthRemoteDataSource.sendMailForEmailProvider(
+        authRemoteDataSource.sendMailForEmailProvider(
             newMail = newMail,
             currentPassword = currentPassword
         )
@@ -78,7 +78,7 @@ class AuthRepositoryImpl @Inject constructor(
         currentPassword: String,
         newPassword: String
     ): Result<Unit> {
-        firebaseAuthRemoteDataSource.updatePassword(
+        authRemoteDataSource.updatePassword(
             currentPassword = currentPassword,
             newPassword = newPassword
         )
@@ -86,12 +86,12 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteAccountFromEmailProvider(currentPassword: String): Result<Unit> {
-        firebaseAuthRemoteDataSource.deleteAccountFromEmailProvider(currentPassword)
+        authRemoteDataSource.deleteAccountFromEmailProvider(currentPassword)
         return Result.success(Unit)
     }
 
     override suspend fun deleteAccountFromAnonymousProvider(): Result<Unit> {
-        firebaseAuthRemoteDataSource.deleteAccountFromAnonymousProvider()
+        authRemoteDataSource.deleteAccountFromAnonymousProvider()
         return Result.success(Unit)
     }
 }

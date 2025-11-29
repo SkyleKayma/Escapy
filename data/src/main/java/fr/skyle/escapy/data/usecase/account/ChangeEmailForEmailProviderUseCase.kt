@@ -1,4 +1,4 @@
-package fr.skyle.escapy.data.usecase
+package fr.skyle.escapy.data.usecase.account
 
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import fr.skyle.escapy.data.repository.auth.api.AuthRepository
@@ -32,7 +32,7 @@ class ChangeEmailForEmailProviderUseCaseImpl @Inject constructor(
             ChangeEmailForEmailProviderUseCaseResponse.InvalidCurrent
         } catch (e: Exception) {
             Timber.e(e)
-            ChangeEmailForEmailProviderUseCaseResponse.Error(e)
+            ChangeEmailForEmailProviderUseCaseResponse.Error(e.message)
         }
     }
 }
@@ -40,5 +40,5 @@ class ChangeEmailForEmailProviderUseCaseImpl @Inject constructor(
 sealed interface ChangeEmailForEmailProviderUseCaseResponse {
     data object EmailVerificationSent : ChangeEmailForEmailProviderUseCaseResponse
     data object InvalidCurrent : ChangeEmailForEmailProviderUseCaseResponse
-    data class Error(val exception: Exception) : ChangeEmailForEmailProviderUseCaseResponse
+    data class Error(val message: String?) : ChangeEmailForEmailProviderUseCaseResponse
 }

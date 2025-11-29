@@ -5,12 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fr.skyle.escapy.data.usecase.SignInAsGuestUseCase
-import fr.skyle.escapy.data.usecase.SignInAsGuestUseCaseResponse
-import fr.skyle.escapy.data.usecase.SignInFromEmailProviderUseCase
-import fr.skyle.escapy.data.usecase.SignInFromEmailProviderUseCaseResponse
-import fr.skyle.escapy.data.usecase.SignUpUseCase
-import fr.skyle.escapy.data.usecase.SignUpUseCaseResponse
+import fr.skyle.escapy.data.usecase.account.SignInAsGuestUseCase
+import fr.skyle.escapy.data.usecase.account.SignInAsGuestUseCaseResponse
+import fr.skyle.escapy.data.usecase.account.SignInFromEmailProviderUseCase
+import fr.skyle.escapy.data.usecase.account.SignInFromEmailProviderUseCaseResponse
+import fr.skyle.escapy.data.usecase.account.SignUpUseCase
+import fr.skyle.escapy.data.usecase.account.SignUpUseCaseResponse
 import fr.skyle.escapy.ui.main.navigation.Route
 import fr.skyle.escapy.ui.screens.signIn.ui.enums.AuthType
 import fr.skyle.escapy.ui.screens.signIn.ui.enums.SignInReason
@@ -53,7 +53,7 @@ class SignInViewModel @Inject constructor(
                 is SignInFromEmailProviderUseCaseResponse.Error -> {
                     _signInState.update {
                         it.copy(
-                            event = SignInEvent.SignInError(response.exception.message),
+                            event = SignInEvent.SignInError(response.message),
                         )
                     }
                 }
@@ -82,7 +82,7 @@ class SignInViewModel @Inject constructor(
             when (val response = signInAsGuestUseCase()) {
                 is SignInAsGuestUseCaseResponse.Error -> {
                     _signInState.update {
-                        it.copy(event = SignInEvent.SignUpError(response.exception.message))
+                        it.copy(event = SignInEvent.SignUpError(response.message))
                     }
                 }
 
@@ -123,7 +123,7 @@ class SignInViewModel @Inject constructor(
                 is SignUpUseCaseResponse.Error -> {
                     _signInState.update {
                         it.copy(
-                            event = SignInEvent.SignUpError(response.exception.message),
+                            event = SignInEvent.SignUpError(response.message),
                         )
                     }
                 }

@@ -1,4 +1,4 @@
-package fr.skyle.escapy.data.usecase
+package fr.skyle.escapy.data.usecase.account
 
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import fr.skyle.escapy.data.repository.auth.api.AuthRepository
@@ -30,7 +30,7 @@ class DeleteAccountFromEmailProviderUseCaseImpl @Inject constructor(
             DeleteAccountFromEmailProviderUseCaseResponse.InvalidCurrentPassword
         } catch (e: Exception) {
             Timber.e(e)
-            DeleteAccountFromEmailProviderUseCaseResponse.Error(e)
+            DeleteAccountFromEmailProviderUseCaseResponse.Error(e.message)
         }
     }
 }
@@ -38,5 +38,5 @@ class DeleteAccountFromEmailProviderUseCaseImpl @Inject constructor(
 sealed interface DeleteAccountFromEmailProviderUseCaseResponse {
     data object Success : DeleteAccountFromEmailProviderUseCaseResponse
     data object InvalidCurrentPassword : DeleteAccountFromEmailProviderUseCaseResponse
-    data class Error(val exception: Exception) : DeleteAccountFromEmailProviderUseCaseResponse
+    data class Error(val message: String?) : DeleteAccountFromEmailProviderUseCaseResponse
 }

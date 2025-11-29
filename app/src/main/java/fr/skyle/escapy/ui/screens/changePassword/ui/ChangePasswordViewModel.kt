@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.skyle.escapy.PASSWORD_VALID_LENGTH
-import fr.skyle.escapy.data.usecase.ChangePasswordForEmailProviderUseCase
-import fr.skyle.escapy.data.usecase.ChangePasswordForEmailProviderUseCaseResponse
+import fr.skyle.escapy.data.usecase.account.ChangePasswordForEmailProviderUseCase
+import fr.skyle.escapy.data.usecase.account.ChangePasswordForEmailProviderUseCaseResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -44,7 +44,7 @@ class ChangePasswordViewModel @Inject constructor(
             when (response) {
                 is ChangePasswordForEmailProviderUseCaseResponse.Error ->
                     _changePasswordState.update {
-                        it.copy(event = ChangePasswordEvent.Error(response.exception.message))
+                        it.copy(event = ChangePasswordEvent.Error(response.message))
                     }
 
                 ChangePasswordForEmailProviderUseCaseResponse.InvalidCurrentPassword ->

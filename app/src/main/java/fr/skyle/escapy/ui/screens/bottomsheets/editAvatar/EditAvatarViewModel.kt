@@ -5,22 +5,24 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.skyle.escapy.MIN_DELAY_BEFORE_SHOWING_LOADER
 import fr.skyle.escapy.data.enums.Avatar
-import fr.skyle.escapy.data.repository.user.api.UserRepository
-import kotlinx.coroutines.CancellationException
+import fr.skyle.escapy.data.usecase.user.UpdateAvatarUseCase
+import fr.skyle.escapy.data.usecase.user.UpdateAvatarUseCaseResponse
+import fr.skyle.escapy.data.usecase.user.WatchCurrentUserUseCase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class EditAvatarViewModel @Inject constructor(
-    private val userRepository: UserRepository,
+    private val watchCurrentUserUseCase: WatchCurrentUserUseCase,
+    private val updateAvatarUseCase: UpdateAvatarUseCase,
 ) : ViewModel() {
 
     private val _editAvatarState = MutableStateFlow<EditAvatarState>(EditAvatarState())
@@ -28,12 +30,13 @@ class EditAvatarViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            userRepository.watchCurrentUser()
+            watchCurrentUserUseCase()
+                .map { it.user }
                 .filterNotNull()
-                .collectLatest { currentUser ->
+                .collectLatest { user ->
                     _editAvatarState.update {
                         it.copy(
-                            currentAvatar = Avatar.fromType(currentUser.avatarType),
+                            currentAvatar = Avatar.fromType(user.avatarType),
                         )
                     }
                 }
@@ -54,29 +57,29 @@ class EditAvatarViewModel @Inject constructor(
                 }
             }
 
-            try {
-                userRepository.updateAvatar(avatar).getOrThrow()
-                userRepository.fetchCurrentUser().getOrThrow()
+            val response = updateAvatarUseCase(avatar)
 
-                showLoadingJob.cancel()
+            showLoadingJob.cancel()
 
-                _editAvatarState.update {
-                    it.copy(event = EditAvatarEvent.Success)
+            when (response) {
+                is UpdateAvatarUseCaseResponse.Error -> {
+                    _editAvatarState.update {
+                        it.copy(event = EditAvatarEvent.Error(response.message))
+                    }
                 }
-            } catch (e: CancellationException) {
-                throw e
-            } catch (e: Exception) {
-                Timber.e(e)
-                _editAvatarState.update {
-                    it.copy(event = EditAvatarEvent.Error(e.message))
+
+                UpdateAvatarUseCaseResponse.Success -> {
+                    _editAvatarState.update {
+                        it.copy(event = EditAvatarEvent.Success)
+                    }
                 }
-            } finally {
-                _editAvatarState.update {
-                    it.copy(
-                        isAvatarUpdating = false,
-                        isLoadingShown = false
-                    )
-                }
+            }
+
+            _editAvatarState.update {
+                it.copy(
+                    isAvatarUpdating = false,
+                    isLoadingShown = false
+                )
             }
         }
     }

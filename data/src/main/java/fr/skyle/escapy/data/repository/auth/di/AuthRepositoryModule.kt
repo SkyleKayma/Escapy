@@ -6,8 +6,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import fr.skyle.escapy.data.repository.auth.AuthRepositoryImpl
 import fr.skyle.escapy.data.repository.auth.api.AuthRepository
-import fr.skyle.escapy.data.repository.auth.api.FirebaseAuthRemoteDataSource
-import fr.skyle.escapy.data.repository.auth.FirebaseAuthRemoteDataSourceImpl
+import fr.skyle.escapy.data.repository.auth.api.AuthRemoteDataSource
+import fr.skyle.escapy.data.repository.auth.AuthRemoteDataSourceImpl
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -20,6 +20,6 @@ interface AuthRepositoryModule {
 
     @Binds
     fun bindsFirebaseAuthRemoteDataSource(
-        firebaseAuthRemoteDataSourceImpl: FirebaseAuthRemoteDataSourceImpl,
-    ): FirebaseAuthRemoteDataSource
+        firebaseAuthRemoteDataSourceImpl: AuthRemoteDataSourceImpl,
+    ): AuthRemoteDataSource
 }

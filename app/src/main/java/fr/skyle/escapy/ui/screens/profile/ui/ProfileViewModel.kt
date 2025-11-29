@@ -5,24 +5,25 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.skyle.escapy.data.enums.AuthProvider
 import fr.skyle.escapy.data.enums.Avatar
-import fr.skyle.escapy.data.repository.user.api.UserRepository
-import fr.skyle.escapy.data.usecase.SignOutUseCase
-import fr.skyle.escapy.data.usecase.SignOutUseCaseResponse
+import fr.skyle.escapy.data.usecase.account.SignOutUseCase
+import fr.skyle.escapy.data.usecase.account.SignOutUseCaseResponse
+import fr.skyle.escapy.data.usecase.user.WatchCurrentUserUseCase
 import fr.skyle.escapy.data.utils.FirebaseAuthHelper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    userRepository: UserRepository,
     firebaseAuthHelper: FirebaseAuthHelper,
-    private val signOutUseCase: SignOutUseCase
+    private val signOutUseCase: SignOutUseCase,
+    private val watchCurrentUserUseCase: WatchCurrentUserUseCase
 ) : ViewModel() {
 
     private val _profileState = MutableStateFlow<ProfileState>(ProfileState())
@@ -30,15 +31,16 @@ class ProfileViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            userRepository.watchCurrentUser()
+            watchCurrentUserUseCase()
+                .map { it.user }
                 .filterNotNull()
-                .collectLatest { currentUser ->
+                .collectLatest { user ->
                     _profileState.update {
                         it.copy(
-                            username = currentUser.username,
+                            username = user.username,
                             email = firebaseAuthHelper.getAccountEmail(),
-                            createdAt = currentUser.createdAt,
-                            avatar = Avatar.fromType(currentUser.avatarType),
+                            createdAt = user.createdAt,
+                            avatar = Avatar.fromType(user.avatarType),
                             authProvider = firebaseAuthHelper.getAccountAuthProvider()
                         )
                     }

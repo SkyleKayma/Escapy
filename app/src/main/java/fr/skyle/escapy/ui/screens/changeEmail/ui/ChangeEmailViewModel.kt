@@ -4,8 +4,8 @@ import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fr.skyle.escapy.data.usecase.ChangeEmailForEmailProviderUseCase
-import fr.skyle.escapy.data.usecase.ChangeEmailForEmailProviderUseCaseResponse
+import fr.skyle.escapy.data.usecase.account.ChangeEmailForEmailProviderUseCase
+import fr.skyle.escapy.data.usecase.account.ChangeEmailForEmailProviderUseCaseResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -45,7 +45,7 @@ class ChangeEmailViewModel @Inject constructor(
             when (response) {
                 is ChangeEmailForEmailProviderUseCaseResponse.Error -> {
                     _changeEmailState.update {
-                        it.copy(event = ChangeEmailEvent.Error(response.exception.message))
+                        it.copy(event = ChangeEmailEvent.Error(response.message))
                     }
                 }
 
