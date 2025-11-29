@@ -39,41 +39,31 @@ class DeleteAccountViewModel @Inject constructor(
     fun deleteAccountFromEmailProvider(password: String) {
         viewModelScope.launch {
             _deleteAccountState.update {
-                it.copy(
-                    isButtonLoading = true
-                )
+                it.copy(isButtonLoading = true)
             }
 
             when (val response = deleteAccountFromEmailProviderUseCase(password)) {
                 is DeleteAccountFromEmailProviderUseCaseResponse.Error -> {
                     _deleteAccountState.update {
-                        it.copy(
-                            event = DeleteAccountEvent.Error(response.exception.message)
-                        )
+                        it.copy(event = DeleteAccountEvent.Error(response.exception.message))
                     }
                 }
 
-                DeleteAccountFromEmailProviderUseCaseResponse.ErrorInvalidFields -> {
+                DeleteAccountFromEmailProviderUseCaseResponse.InvalidCurrentPassword -> {
                     _deleteAccountState.update {
-                        it.copy(
-                            event = DeleteAccountEvent.InvalidPassword
-                        )
+                        it.copy(event = DeleteAccountEvent.InvalidCurrentPassword)
                     }
                 }
 
                 DeleteAccountFromEmailProviderUseCaseResponse.Success -> {
                     _deleteAccountState.update {
-                        it.copy(
-                            event = DeleteAccountEvent.Success
-                        )
+                        it.copy(event = DeleteAccountEvent.Success)
                     }
                 }
             }
 
             _deleteAccountState.update {
-                it.copy(
-                    isButtonLoading = false
-                )
+                it.copy(isButtonLoading = false)
             }
         }
     }
@@ -81,41 +71,25 @@ class DeleteAccountViewModel @Inject constructor(
     fun deleteAccountFromAnonymousProvider() {
         viewModelScope.launch {
             _deleteAccountState.update {
-                it.copy(
-                    isButtonLoading = true
-                )
+                it.copy(isButtonLoading = true)
             }
 
             when (val response = deleteAccountFromAnonymousProviderUseCase()) {
                 is DeleteAccountFromAnonymousProviderUseCaseResponse.Error -> {
                     _deleteAccountState.update {
-                        it.copy(
-                            event = DeleteAccountEvent.Error(response.exception.message)
-                        )
-                    }
-                }
-
-                DeleteAccountFromAnonymousProviderUseCaseResponse.InvalidFields -> {
-                    _deleteAccountState.update {
-                        it.copy(
-                            event = DeleteAccountEvent.InvalidPassword
-                        )
+                        it.copy(event = DeleteAccountEvent.Error(response.exception.message))
                     }
                 }
 
                 DeleteAccountFromAnonymousProviderUseCaseResponse.Success -> {
                     _deleteAccountState.update {
-                        it.copy(
-                            event = DeleteAccountEvent.Success
-                        )
+                        it.copy(event = DeleteAccountEvent.Success)
                     }
                 }
             }
 
             _deleteAccountState.update {
-                it.copy(
-                    isButtonLoading = false
-                )
+                it.copy(isButtonLoading = false)
             }
         }
     }
@@ -136,7 +110,7 @@ class DeleteAccountViewModel @Inject constructor(
 
     sealed interface DeleteAccountEvent {
         data object Success : DeleteAccountEvent
-        data object InvalidPassword : DeleteAccountEvent
+        data object InvalidCurrentPassword : DeleteAccountEvent
         data class Error(val message: String?) : DeleteAccountEvent
     }
 }

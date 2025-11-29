@@ -36,8 +36,15 @@ fun ChangePasswordRoute(
 
                 ChangePasswordViewModel.ChangePasswordEvent.InvalidFields -> {
                     projectSnackbarState.showSnackbar(
-                        message = context.getString(R.string.generic_error_incorrect_fields),
+                        message = context.getString(R.string.generic_error_invalid_fields),
                         type = ProjectSnackbarDefaults.ProjectSnackbarType.NEUTRAL
+                    )
+                }
+
+                ChangePasswordViewModel.ChangePasswordEvent.InvalidCurrentPassword -> {
+                    projectSnackbarState.showSnackbar(
+                        message = context.getString(R.string.generic_error_invalid_current_password),
+                        type = ProjectSnackbarDefaults.ProjectSnackbarType.ERROR
                     )
                 }
 

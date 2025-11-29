@@ -4,6 +4,10 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import fr.skyle.escapy.data.usecase.ChangeEmailForEmailProviderUseCase
+import fr.skyle.escapy.data.usecase.ChangeEmailForEmailProviderUseCaseImpl
+import fr.skyle.escapy.data.usecase.ChangePasswordForEmailProviderUseCase
+import fr.skyle.escapy.data.usecase.ChangePasswordForEmailProviderUseCaseImpl
 import fr.skyle.escapy.data.usecase.DeleteAccountFromAnonymousProviderUseCase
 import fr.skyle.escapy.data.usecase.DeleteAccountFromAnonymousProviderUseCaseImpl
 import fr.skyle.escapy.data.usecase.DeleteAccountFromEmailProviderUseCase
@@ -33,4 +37,16 @@ interface UseCaseModule {
     fun bindsSignOutUseCase(
         signOutUseCaseImpl: SignOutUseCaseImpl,
     ): SignOutUseCase
+
+    @Binds
+    @Singleton
+    fun bindsChangeEmailForEmailProviderUseCase(
+        changeEmailForEmailProviderUseCaseImpl: ChangeEmailForEmailProviderUseCaseImpl,
+    ): ChangeEmailForEmailProviderUseCase
+
+    @Binds
+    @Singleton
+    fun bindsChangePasswordForEmailProviderUseCase(
+        changePasswordForEmailProviderUseCaseImpl: ChangePasswordForEmailProviderUseCaseImpl,
+    ): ChangePasswordForEmailProviderUseCase
 }

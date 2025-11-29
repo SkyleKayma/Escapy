@@ -4,19 +4,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.skyle.escapy.PASSWORD_VALID_LENGTH
-import fr.skyle.escapy.data.repository.auth.api.AuthRepository
+import fr.skyle.escapy.data.usecase.ChangePasswordForEmailProviderUseCase
+import fr.skyle.escapy.data.usecase.ChangePasswordForEmailProviderUseCaseResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
-import kotlin.coroutines.cancellation.CancellationException
 
 @HiltViewModel
 class ChangePasswordViewModel @Inject constructor(
-    private val authRepository: AuthRepository,
+    private val changePasswordForEmailProviderUseCase: ChangePasswordForEmailProviderUseCase,
 ) : ViewModel() {
 
     private val _changePasswordState = MutableStateFlow<ChangePasswordState>(ChangePasswordState())
@@ -24,37 +23,12 @@ class ChangePasswordViewModel @Inject constructor(
 
     fun changePassword() {
         viewModelScope.launch {
-            _changePasswordState.update {
-                it.copy(
-                    currentPasswordValidationState = it.currentPasswordValidationState.copy(
-                        hasBeenChecked = true
-                    ),
-                    newPasswordValidationState = it.newPasswordValidationState.copy(
-                        hasBeenChecked = true
-                    ),
-                    newPasswordConfirmationValidationState = it.newPasswordConfirmationValidationState.copy(
-                        hasBeenChecked = true
-                    )
-                )
-            }
+            markAllFieldsChecked()
 
-            val currentPasswordValidationState =
-                _changePasswordState.value.currentPasswordValidationState
-            val newPasswordValidationState =
-                _changePasswordState.value.newPasswordValidationState
-            val newPasswordConfirmationValidationState =
-                _changePasswordState.value.newPasswordConfirmationValidationState
-
-            if (!currentPasswordValidationState.isValid
-                || !newPasswordValidationState.isValid
-                || !newPasswordConfirmationValidationState.isValid
-            ) {
+            if (!areFieldsValid()) {
                 _changePasswordState.update {
-                    it.copy(
-                        event = ChangePasswordEvent.InvalidFields
-                    )
+                    it.copy(event = ChangePasswordEvent.InvalidFields)
                 }
-
                 return@launch
             }
 
@@ -62,42 +36,53 @@ class ChangePasswordViewModel @Inject constructor(
                 it.copy(isButtonLoading = true)
             }
 
-            try {
-                authRepository.changePasswordForEmailProvider(
-                    currentPassword = _changePasswordState.value.currentPassword,
-                    newPassword = _changePasswordState.value.newPassword
-                ).getOrThrow()
+            val response = changePasswordForEmailProviderUseCase(
+                currentPassword = _changePasswordState.value.currentPassword,
+                newPassword = _changePasswordState.value.newPassword
+            )
 
-                _changePasswordState.update {
-                    it.copy(
-                        event = ChangePasswordEvent.Success,
-                    )
-                }
-            } catch (e: CancellationException) {
-                throw e
-            } catch (e: Exception) {
-                Timber.e(e)
-                _changePasswordState.update {
-                    it.copy(
-                        event = ChangePasswordEvent.Error(e.message)
-                    )
-                }
-            } finally {
-                _changePasswordState.update {
-                    it.copy(
-                        isButtonLoading = false
-                    )
-                }
+            when (response) {
+                is ChangePasswordForEmailProviderUseCaseResponse.Error ->
+                    _changePasswordState.update {
+                        it.copy(event = ChangePasswordEvent.Error(response.exception.message))
+                    }
+
+                ChangePasswordForEmailProviderUseCaseResponse.InvalidCurrentPassword ->
+                    _changePasswordState.update {
+                        it.copy(event = ChangePasswordEvent.InvalidCurrentPassword)
+                    }
+
+                ChangePasswordForEmailProviderUseCaseResponse.Success ->
+                    _changePasswordState.update {
+                        it.copy(event = ChangePasswordEvent.Success)
+                    }
+            }
+
+            _changePasswordState.update {
+                it.copy(isButtonLoading = false)
             }
         }
     }
 
-    fun eventDelivered() {
-        viewModelScope.launch {
-            _changePasswordState.update {
-                it.copy(event = null)
-            }
+    private fun markAllFieldsChecked() {
+        _changePasswordState.update {
+            it.copy(
+                currentPasswordValidationState = it.currentPasswordValidationState.copy(
+                    hasBeenChecked = true
+                ),
+                newPasswordValidationState = it.newPasswordValidationState.copy(hasBeenChecked = true),
+                newPasswordConfirmationValidationState = it.newPasswordConfirmationValidationState.copy(
+                    hasBeenChecked = true
+                )
+            )
         }
+    }
+
+    private fun areFieldsValid(): Boolean {
+        val state = _changePasswordState.value
+        return state.currentPasswordValidationState.isValid &&
+                state.newPasswordValidationState.isValid &&
+                state.newPasswordConfirmationValidationState.isValid
     }
 
     fun setCurrentPassword(currentPassword: String) {
@@ -176,6 +161,14 @@ class ChangePasswordViewModel @Inject constructor(
         }
     }
 
+    fun eventDelivered() {
+        viewModelScope.launch {
+            _changePasswordState.update {
+                it.copy(event = null)
+            }
+        }
+    }
+
     data class ChangePasswordState(
         val isButtonLoading: Boolean = false,
         val currentPassword: String = "",
@@ -217,6 +210,7 @@ class ChangePasswordViewModel @Inject constructor(
     sealed interface ChangePasswordEvent {
         data object Success : ChangePasswordEvent
         data object InvalidFields : ChangePasswordEvent
+        data object InvalidCurrentPassword : ChangePasswordEvent
         data class Error(val message: String?) : ChangePasswordEvent
     }
 }

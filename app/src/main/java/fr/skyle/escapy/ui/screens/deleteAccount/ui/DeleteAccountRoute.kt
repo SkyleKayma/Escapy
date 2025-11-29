@@ -40,9 +40,9 @@ fun DeleteAccountRoute(
                     navigateBackToSignIn()
                 }
 
-                DeleteAccountViewModel.DeleteAccountEvent.InvalidPassword -> {
+                DeleteAccountViewModel.DeleteAccountEvent.InvalidCurrentPassword -> {
                     projectSnackbarState.showSnackbar(
-                        message = context.getString(R.string.generic_error_invalid_credentials),
+                        message = context.getString(R.string.generic_error_invalid_current_password),
                         type = ProjectSnackbarDefaults.ProjectSnackbarType.ERROR
                     )
                 }

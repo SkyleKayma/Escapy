@@ -1,7 +1,6 @@
 package fr.skyle.escapy.data.usecase
 
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import fr.skyle.escapy.data.ext.awaitWithTimeout
 import kotlinx.coroutines.CancellationException
 import timber.log.Timber
@@ -25,9 +24,6 @@ class DeleteAccountFromAnonymousProviderUseCaseImpl @Inject constructor(
             DeleteAccountFromAnonymousProviderUseCaseResponse.Success
         } catch (e: CancellationException) {
             throw e
-        } catch (e: FirebaseAuthInvalidCredentialsException) {
-            Timber.e(e)
-            DeleteAccountFromAnonymousProviderUseCaseResponse.InvalidFields
         } catch (e: Exception) {
             Timber.e(e)
             DeleteAccountFromAnonymousProviderUseCaseResponse.Error(e)
@@ -37,6 +33,5 @@ class DeleteAccountFromAnonymousProviderUseCaseImpl @Inject constructor(
 
 sealed interface DeleteAccountFromAnonymousProviderUseCaseResponse {
     data object Success : DeleteAccountFromAnonymousProviderUseCaseResponse
-    data object InvalidFields : DeleteAccountFromAnonymousProviderUseCaseResponse
     data class Error(val exception: Exception) : DeleteAccountFromAnonymousProviderUseCaseResponse
 }

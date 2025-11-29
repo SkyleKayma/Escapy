@@ -14,8 +14,8 @@
 
     <!-- Generic Error -->
     <string name="generic_error_format">Une erreur est survenue (%s)</string>
-    <string name="generic_error_incorrect_fields">Certains champs sont incorrects</string>
-    <string name="generic_error_invalid_credentials">Vos identifiants sont incorrects</string>
+    <string name="generic_error_invalid_fields">Certains champs sont invalides</string>
+    <string name="generic_error_invalid_current_password">Votre mot de passe actuel est invalide</string>
 
     <!-- Generic Password Rule -->
     <string name="generic_password_rule_uppercase">Contient une majuscule</string>
@@ -28,7 +28,7 @@
     <string name="sign_in_action">Se connecter</string>
     <string name="sign_in_no_account">Vous n\'avez pas de compte ?\nInscrivez-vous !</string>
     <string name="sign_in_no_account_highlighted">Inscrivez-vous</string>
-    <string name="sign_in_error_session_expired">La session a expirée, veuillez vous reconnecter</string>
+    <string name="sign_in_error_expired_session">La session a expirée, veuillez vous reconnecter</string>
 
     <!-- SignUp -->
     <string name="sign_up_title">Inscription</string>

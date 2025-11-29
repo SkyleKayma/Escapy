@@ -4,19 +4,18 @@ import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fr.skyle.escapy.data.repository.auth.api.AuthRepository
+import fr.skyle.escapy.data.usecase.ChangeEmailForEmailProviderUseCase
+import fr.skyle.escapy.data.usecase.ChangeEmailForEmailProviderUseCaseResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
-import kotlin.coroutines.cancellation.CancellationException
 
 @HiltViewModel
 class ChangeEmailViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val changeEmailForEmailProviderUseCase: ChangeEmailForEmailProviderUseCase,
 ) : ViewModel() {
 
     private val _changeEmailState = MutableStateFlow<ChangeEmailState>(ChangeEmailState())
@@ -24,27 +23,11 @@ class ChangeEmailViewModel @Inject constructor(
 
     fun saveProfile() {
         viewModelScope.launch {
-            _changeEmailState.update {
-                it.copy(
-                    newEmailValidationState = it.newEmailValidationState.copy(
-                        hasBeenChecked = true
-                    ),
-                    currentPasswordValidationState = it.currentPasswordValidationState.copy(
-                        hasBeenChecked = true
-                    ),
-                )
-            }
+            markAllFieldsChecked()
 
-            val newEmailValidationState =
-                _changeEmailState.value.newEmailValidationState
-            val currentPasswordValidationState =
-                _changeEmailState.value.currentPasswordValidationState
-
-            if (!currentPasswordValidationState.isValid || !newEmailValidationState.isValid) {
+            if (!areFieldsValid()) {
                 _changeEmailState.update {
-                    it.copy(
-                        event = ChangeEmailEvent.InvalidFields
-                    )
+                    it.copy(event = ChangeEmailEvent.InvalidFields)
                 }
 
                 return@launch
@@ -54,40 +37,50 @@ class ChangeEmailViewModel @Inject constructor(
                 it.copy(isButtonLoading = true)
             }
 
-            try {
-                authRepository.changeEmailForEmailPasswordProvider(
-                    newEmail = _changeEmailState.value.newEmail,
-                    currentPassword = _changeEmailState.value.currentPassword,
-                ).getOrThrow()
+            val response = changeEmailForEmailProviderUseCase(
+                newEmail = _changeEmailState.value.currentPassword,
+                currentPassword = _changeEmailState.value.currentPassword
+            )
 
-                _changeEmailState.update {
-                    it.copy(event = ChangeEmailEvent.EmailVerificationSent)
+            when (response) {
+                is ChangeEmailForEmailProviderUseCaseResponse.Error -> {
+                    _changeEmailState.update {
+                        it.copy(event = ChangeEmailEvent.Error(response.exception.message))
+                    }
                 }
-            } catch (e: CancellationException) {
-                throw e
-            } catch (e: Exception) {
-                Timber.e(e)
-                _changeEmailState.update {
-                    it.copy(
-                        event = ChangeEmailEvent.Error(e.message)
-                    )
+
+                ChangeEmailForEmailProviderUseCaseResponse.InvalidCurrent -> {
+                    _changeEmailState.update {
+                        it.copy(event = ChangeEmailEvent.InvalidCurrentPassword)
+                    }
                 }
-            } finally {
-                _changeEmailState.update {
-                    it.copy(
-                        isButtonLoading = false
-                    )
+
+                ChangeEmailForEmailProviderUseCaseResponse.EmailVerificationSent -> {
+                    _changeEmailState.update {
+                        it.copy(event = ChangeEmailEvent.EmailVerificationSent)
+                    }
                 }
             }
         }
     }
 
-    fun eventDelivered() {
-        viewModelScope.launch {
-            _changeEmailState.update {
-                it.copy(event = null)
-            }
+    private fun markAllFieldsChecked() {
+        _changeEmailState.update {
+            it.copy(
+                newEmailValidationState = it.newEmailValidationState.copy(
+                    hasBeenChecked = true
+                ),
+                currentPasswordValidationState = it.currentPasswordValidationState.copy(
+                    hasBeenChecked = true
+                ),
+            )
         }
+    }
+
+    private fun areFieldsValid(): Boolean {
+        val state = _changeEmailState.value
+        return state.newEmailValidationState.isValid &&
+                state.currentPasswordValidationState.isValid
     }
 
     fun setNewEmail(newEmail: String) {
@@ -133,6 +126,14 @@ class ChangeEmailViewModel @Inject constructor(
         }
     }
 
+    fun eventDelivered() {
+        viewModelScope.launch {
+            _changeEmailState.update {
+                it.copy(event = null)
+            }
+        }
+    }
+
     data class ChangeEmailState(
         val isButtonLoading: Boolean = false,
         val newEmail: String = "",
@@ -162,6 +163,7 @@ class ChangeEmailViewModel @Inject constructor(
     sealed interface ChangeEmailEvent {
         data object EmailVerificationSent : ChangeEmailEvent
         data object InvalidFields : ChangeEmailEvent
+        data object InvalidCurrentPassword : ChangeEmailEvent
         data class Error(val message: String?) : ChangeEmailEvent
     }
 }

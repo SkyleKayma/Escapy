@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
 
 @Module
 @InstallIn(SingletonComponent::class)
-internal object NetworkModule {
+object NetworkModule {
 
     @Provides
     fun provideOkHttpClientBuilder(@ApplicationContext context: Context): OkHttpClient.Builder {

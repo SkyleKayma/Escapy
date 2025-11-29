@@ -8,5 +8,5 @@ val SignInReason.messageId: Int
     @StringRes
     get() = when (this) {
         SignInReason.SESSION_EXPIRED ->
-            R.string.sign_in_error_session_expired
+            R.string.sign_in_error_expired_session
     }

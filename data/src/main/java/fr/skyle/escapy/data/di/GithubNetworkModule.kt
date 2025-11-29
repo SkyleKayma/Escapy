@@ -18,7 +18,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-internal object GithubNetworkModule {
+object GithubNetworkModule {
 
     @GithubRetrofit
     @Provides

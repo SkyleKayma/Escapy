@@ -36,8 +36,15 @@ fun ChangeEmailRoute(
 
                 ChangeEmailViewModel.ChangeEmailEvent.InvalidFields -> {
                     projectSnackbarState.showSnackbar(
-                        message = context.getString(R.string.generic_error_incorrect_fields),
+                        message = context.getString(R.string.generic_error_invalid_fields),
                         type = ProjectSnackbarDefaults.ProjectSnackbarType.NEUTRAL
+                    )
+                }
+
+                ChangeEmailViewModel.ChangeEmailEvent.InvalidCurrentPassword -> {
+                    projectSnackbarState.showSnackbar(
+                        message = context.getString(R.string.generic_error_invalid_current_password),
+                        type = ProjectSnackbarDefaults.ProjectSnackbarType.ERROR
                     )
                 }
 

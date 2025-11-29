@@ -37,7 +37,7 @@ class DeleteAccountFromEmailProviderUseCaseImpl @Inject constructor(
             throw e
         } catch (e: FirebaseAuthInvalidCredentialsException) {
             Timber.e(e)
-            DeleteAccountFromEmailProviderUseCaseResponse.ErrorInvalidFields
+            DeleteAccountFromEmailProviderUseCaseResponse.InvalidCurrentPassword
         } catch (e: Exception) {
             Timber.e(e)
             DeleteAccountFromEmailProviderUseCaseResponse.Error(e)
@@ -47,6 +47,6 @@ class DeleteAccountFromEmailProviderUseCaseImpl @Inject constructor(
 
 sealed interface DeleteAccountFromEmailProviderUseCaseResponse {
     data object Success : DeleteAccountFromEmailProviderUseCaseResponse
-    data object ErrorInvalidFields : DeleteAccountFromEmailProviderUseCaseResponse
+    data object InvalidCurrentPassword : DeleteAccountFromEmailProviderUseCaseResponse
     data class Error(val exception: Exception) : DeleteAccountFromEmailProviderUseCaseResponse
 }
