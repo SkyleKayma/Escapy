@@ -40,7 +40,7 @@ private const val KEY_VIEW_TYPE_CONTRIBUTORS_TITLE = "ContributorsTitle"
 @Composable
 fun AboutScreen(
     aboutState: AboutViewModel.AboutState,
-    onBackButtonClicked: () -> Unit,
+    navigateBack: () -> Unit,
 ) {
     ProjectScreenStructure(
         modifier = Modifier.fillMaxSize(),
@@ -53,7 +53,7 @@ fun AboutScreen(
                     ProjectTopAppBarItem(
                         icon = rememberVectorPainter(Icons.AutoMirrored.Filled.ArrowBack),
                         style = ProjectIconButtonDefaults.Style.FILLED,
-                        onClick = onBackButtonClicked,
+                        onClick = navigateBack,
                     )
                 },
             )
@@ -155,7 +155,7 @@ private fun AboutScreenPreview() {
                     )
                 ),
             ),
-            onBackButtonClicked = {},
+            navigateBack = {},
         )
     }
 }

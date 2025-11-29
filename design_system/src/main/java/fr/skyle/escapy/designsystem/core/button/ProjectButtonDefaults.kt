@@ -21,7 +21,7 @@ object ProjectButtonDefaults {
     const val BUTTON_LARGE_ICON_SIZE_DP = 20
     const val BUTTON_SMALL_ICON_SIZE_DP = 16
     const val BUTTON_BORDER_WIDTH_DP = 1
-    const val CIRCULAR_PROGRESS_SIZE_DP = 38
+    const val CIRCULAR_PROGRESS_SIZE_DP = 20
 
     enum class Style {
         OUTLINED,

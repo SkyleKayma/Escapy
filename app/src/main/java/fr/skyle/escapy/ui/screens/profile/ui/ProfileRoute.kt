@@ -15,13 +15,14 @@ import fr.skyle.escapy.ui.screens.bottomsheets.editAvatar.EditAvatarBottomSheet
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileRoute(
-    navigateBack: () -> Unit,
     navigateLinkAccount: () -> Unit,
     navigateChangeEmail: () -> Unit,
     navigateChangePassword: () -> Unit,
     navigateToNotifications: () -> Unit,
     navigateToAboutApp: () -> Unit,
-    navigateToSignIn: () -> Unit,
+    navigateBackToSignIn: () -> Unit,
+    navigateToDeleteAccount: () -> Unit,
+    navigateBack: () -> Unit,
     profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
     val profileState by profileViewModel.profileState.collectAsStateWithLifecycle()
@@ -35,7 +36,7 @@ fun ProfileRoute(
         profileState.event?.let { event ->
             when (event) {
                 ProfileViewModel.ProfileEvent.SignOutSuccess -> {
-                    navigateToSignIn()
+                    navigateBackToSignIn()
                 }
             }
 
@@ -45,7 +46,7 @@ fun ProfileRoute(
 
     ProfileScreen(
         profileState = profileState,
-        onBackButtonClicked = navigateBack,
+        navigateBack = navigateBack,
         onEditAvatarClicked = {
             isEditAvatarBottomSheetDisplayed = true
         },
@@ -55,6 +56,7 @@ fun ProfileRoute(
         onNotificationsClicked = navigateToNotifications,
         onAboutAppClicked = navigateToAboutApp,
         onSignOutClicked = profileViewModel::signOut,
+        onDeleteAccountClicked = navigateToDeleteAccount,
     )
 
     if (isEditAvatarBottomSheetDisplayed) {

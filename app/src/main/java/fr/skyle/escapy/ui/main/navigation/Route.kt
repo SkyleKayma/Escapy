@@ -25,7 +25,7 @@ sealed interface Route {
     data object ChangeEmail : Route
 
     @Serializable
-    data object EditAvatar : Route
+    data object DeleteAccount : Route
 }
 
 @Serializable

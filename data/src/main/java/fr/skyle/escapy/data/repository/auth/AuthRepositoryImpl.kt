@@ -1,21 +1,26 @@
 package fr.skyle.escapy.data.repository.auth
 
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthProvider
 import com.google.firebase.database.DatabaseReference
 import fr.skyle.escapy.data.FirebaseNode
+import fr.skyle.escapy.data.db.ProjectDatabase
 import fr.skyle.escapy.data.db.dao.UserDao
 import fr.skyle.escapy.data.enums.AuthProvider
 import fr.skyle.escapy.data.ext.awaitWithTimeout
 import fr.skyle.escapy.data.repository.auth.api.AuthRepository
 import fr.skyle.escapy.data.rest.firebase.UserRequestDTO
+import fr.skyle.escapy.data.utils.ProjectDataStore
+import fr.skyle.escapy.data.utils.getAuthProvider
 import fr.skyle.escapy.data.utils.readOnce
 import fr.skyle.escapy.data.utils.requireUser
 import fr.skyle.escapy.data.vo.User
 import fr.skyle.escapy.data.vo.adapter.toUser
 import fr.skyle.escapy.data.vo.adapter.toUserRequestDTO
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -27,7 +32,11 @@ class AuthRepositoryImpl @Inject constructor(
     private val dbRef: DatabaseReference,
     private val firebaseAuth: FirebaseAuth,
     private val userDao: UserDao,
+    private val database: ProjectDatabase,
+    private val dataStore: ProjectDataStore,
 ) : AuthRepository {
+
+    // Helpful methods
 
     override fun isUserLoggedIn(): Boolean =
         firebaseAuth.currentUser != null
@@ -35,37 +44,65 @@ class AuthRepositoryImpl @Inject constructor(
     override fun getAccountEmail(): String? =
         firebaseAuth.currentUser?.email
 
-    override fun getAccountAuthProvider(): AuthProvider {
-        val providers = firebaseAuth.currentUser?.providerData ?: emptyList()
+    override fun getAccountAuthProvider(): AuthProvider =
+        firebaseAuth.currentUser?.getAuthProvider() ?: AuthProvider.ANONYMOUS
 
-        // Exclude the first element: it is ALWAYS FirebaseAuthProvider.PROVIDER_ID
-        val realProvider = providers
-            .map { it.providerId }
-            .firstOrNull { it != FirebaseAuthProvider.PROVIDER_ID }
+    // SignIn SignUp common methods
 
-        return AuthProvider.fromProviderId(realProvider) ?: AuthProvider.ANONYMOUS
+    private suspend fun handleUserSwitch(userId: String) {
+        if (userId != dataStore.getCurrentUserId()) {
+            withContext(Dispatchers.IO) {
+                database.clearAllTables()
+            }
+            dataStore.setCurrentUserId(userId)
+        }
     }
 
-    override suspend fun signInAsGuest(): Result<Unit> {
-        return try {
-            val result = firebaseAuth.signInAnonymously().awaitWithTimeout()
+    private suspend fun postAuthOperations(
+        authResult: AuthResult,
+        isSignUp: Boolean
+    ) {
+        val firebaseUser = authResult.requireUser()
+        val userId = firebaseUser.uid
 
-            val firebaseUser = result.requireUser()
-            val currentUserId = firebaseUser.uid
-            val newUser = User.createDefault(
-                userId = currentUserId,
-                userNamePrefix = PREFIX_GUEST,
-            )
+        handleUserSwitch(userId)
 
-            // Insert in Firebase
+        if (isSignUp) {
+            val prefix = when (firebaseUser.getAuthProvider()) {
+                AuthProvider.ANONYMOUS -> PREFIX_GUEST
+                else -> PREFIX_PLAYER
+            }
+
+            val newUser = User.createDefault(userId, prefix)
+
+            // Write
             dbRef.child(FirebaseNode.Users.path)
-                .child(newUser.uid)
+                .child(userId)
                 .setValue(newUser.toUserRequestDTO())
                 .awaitWithTimeout()
+        }
 
-            // Insert in DB
-            // This is helpful to have user info on home screen directly after login
-            userDao.insert(newUser)
+        val response = dbRef
+            .child(FirebaseNode.Users.path)
+            .child(userId)
+            .readOnce(UserRequestDTO::class.java)
+
+        response.body
+            ?.toUser(userId)
+            ?.let {
+                // This is helpful to have user info on home screen directly after login
+                // TODO What should we do if user is null ?? Has been manually deleted ??
+                userDao.insert(it)
+            }
+    }
+
+    override suspend fun signUpAsGuest(): Result<Unit> {
+        return try {
+            val authResult = firebaseAuth.signInAnonymously().awaitWithTimeout()
+            postAuthOperations(
+                authResult = authResult,
+                isSignUp = true
+            )
 
             Result.success(Unit)
         } catch (e: CancellationException) {
@@ -80,25 +117,12 @@ class AuthRepositoryImpl @Inject constructor(
         password: String
     ): Result<Unit> {
         return try {
-            val result =
+            val authResult =
                 firebaseAuth.createUserWithEmailAndPassword(email, password).awaitWithTimeout()
-
-            val firebaseUser = result.requireUser()
-            val currentUserId = firebaseUser.uid
-            val newUser = User.createDefault(
-                userId = currentUserId,
-                userNamePrefix = PREFIX_PLAYER,
+            postAuthOperations(
+                authResult = authResult,
+                isSignUp = true
             )
-
-            // Insert in Firebase
-            dbRef.child(FirebaseNode.Users.path)
-                .child(newUser.uid)
-                .setValue(newUser.toUserRequestDTO())
-                .awaitWithTimeout()
-
-            // Insert in DB
-            // This is helpful to have user info on home screen directly after login
-            userDao.insert(newUser)
 
             Result.success(Unit)
         } catch (e: CancellationException) {
@@ -107,30 +131,20 @@ class AuthRepositoryImpl @Inject constructor(
             Result.failure(e)
         }
     }
+
+    // SignIn
 
     override suspend fun signIn(
         email: String,
         password: String
     ): Result<Unit> {
         return try {
-            val result =
+            val authResult =
                 firebaseAuth.signInWithEmailAndPassword(email, password).awaitWithTimeout()
-
-            val firebaseUser = result.requireUser()
-            val userId = firebaseUser.uid
-
-            // Read once from Realtime Database
-            val response = dbRef
-                .child(FirebaseNode.Users.path)
-                .child(userId)
-                .readOnce(UserRequestDTO::class.java)
-
-            val currentUser = response.body
-
-            // Insert in DB
-            // This is helpful to have user info on home screen directly after login
-            // TODO What should we do if user is null ?? Has been manually deleted ??
-            currentUser?.toUser(userId)?.let { userDao.insert(it) }
+            postAuthOperations(
+                authResult = authResult,
+                isSignUp = false
+            )
 
             Result.success(Unit)
         } catch (e: CancellationException) {
@@ -139,6 +153,12 @@ class AuthRepositoryImpl @Inject constructor(
             Result.failure(e)
         }
     }
+
+    override suspend fun signOut() {
+        firebaseAuth.signOut()
+    }
+
+    // Update account
 
     override suspend fun changeEmailForEmailPasswordProvider(
         newEmail: String,
@@ -153,11 +173,7 @@ class AuthRepositoryImpl @Inject constructor(
             val email = user.email
                 ?: return Result.failure(Exception("User has no email"))
 
-            if (newEmail == user.email) {
-                return Result.failure(Exception("New email is the same as the current one"))
-            }
-
-            // Create credentials
+            // Create credential
             val credential = EmailAuthProvider.getCredential(email, currentPassword)
 
             // First reauthenticate to be sure that the user has logged recently
@@ -187,7 +203,7 @@ class AuthRepositoryImpl @Inject constructor(
             val email = user.email
                 ?: return Result.failure(Exception("User has no email"))
 
-            // Create credentials
+            // Create credential
             val credential = EmailAuthProvider.getCredential(email, currentPassword)
 
             // First reauthenticate to be sure that the user has logged recently
@@ -202,13 +218,5 @@ class AuthRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             Result.failure(e)
         }
-    }
-
-    override suspend fun signOut() {
-        // Sign out from Firebase Auth
-        FirebaseAuth.getInstance().signOut()
-
-        // Remove all local data related to user
-        userDao.deleteAll()
     }
 }

@@ -27,12 +27,12 @@ import fr.skyle.escapy.R
 import fr.skyle.escapy.designsystem.core.button.ProjectButton
 import fr.skyle.escapy.designsystem.core.button.ProjectButtonDefaults
 import fr.skyle.escapy.designsystem.core.iconButton.ProjectIconButtonDefaults
+import fr.skyle.escapy.designsystem.core.snackbar.state.ProjectSnackbarState
+import fr.skyle.escapy.designsystem.core.snackbar.state.rememberProjectSnackbarState
 import fr.skyle.escapy.designsystem.core.textField.ProjectTextField
 import fr.skyle.escapy.designsystem.core.topAppBar.ProjectTopAppBar
 import fr.skyle.escapy.designsystem.core.topAppBar.component.ProjectTopAppBarItem
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
-import fr.skyle.escapy.designsystem.core.snackbar.state.ProjectSnackbarState
-import fr.skyle.escapy.designsystem.core.snackbar.state.rememberProjectSnackbarState
 import fr.skyle.escapy.ui.core.structure.ProjectScreenStructure
 import fr.skyle.escapy.utils.ProjectComponentPreview
 import fr.skyle.escapy.utils.ProjectScreenPreview
@@ -41,10 +41,10 @@ import fr.skyle.escapy.utils.ProjectScreenPreview
 fun ChangeEmailScreen(
     snackbarState: ProjectSnackbarState,
     changeEmailState: ChangeEmailViewModel.ChangeEmailState,
-    onBackButtonClicked: () -> Unit,
-    onCurrentPasswordChanged: (currentPassword: String) -> Unit,
+    onCurrentPasswordChange: (currentPassword: String) -> Unit,
     onNewEmailChanged: (newEmail: String) -> Unit,
     onSaveProfile: () -> Unit,
+    navigateBack: () -> Unit,
 ) {
     ProjectScreenStructure(
         modifier = Modifier.fillMaxSize(),
@@ -58,7 +58,7 @@ fun ChangeEmailScreen(
                     ProjectTopAppBarItem(
                         icon = rememberVectorPainter(Icons.AutoMirrored.Filled.ArrowBack),
                         style = ProjectIconButtonDefaults.Style.FILLED,
-                        onClick = onBackButtonClicked,
+                        onClick = navigateBack,
                     )
                 },
             )
@@ -73,7 +73,7 @@ fun ChangeEmailScreen(
             newEmailValidationState = changeEmailState.newEmailValidationState,
             currentPasswordValidationState = changeEmailState.currentPasswordValidationState,
             onNewEmailChange = onNewEmailChanged,
-            onCurrentPasswordChange = onCurrentPasswordChanged,
+            onCurrentPasswordChange = onCurrentPasswordChange,
             onChangeEmail = onSaveProfile,
         )
     }
@@ -162,10 +162,10 @@ private fun ChangeEmailScreenPreview() {
         ChangeEmailScreen(
             snackbarState = rememberProjectSnackbarState(),
             changeEmailState = ChangeEmailViewModel.ChangeEmailState(),
-            onBackButtonClicked = {},
             onNewEmailChanged = {},
-            onCurrentPasswordChanged = {},
+            onCurrentPasswordChange = {},
             onSaveProfile = {},
+            navigateBack = {},
         )
     }
 }

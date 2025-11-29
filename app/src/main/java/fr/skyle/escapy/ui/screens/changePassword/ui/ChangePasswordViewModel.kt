@@ -51,9 +51,7 @@ class ChangePasswordViewModel @Inject constructor(
             ) {
                 _changePasswordState.update {
                     it.copy(
-                        event = ChangePasswordEvent.Error(
-                            ChangePasswordError.InvalidFields
-                        )
+                        event = ChangePasswordEvent.InvalidFields
                     )
                 }
 
@@ -81,9 +79,7 @@ class ChangePasswordViewModel @Inject constructor(
                 Timber.e(e)
                 _changePasswordState.update {
                     it.copy(
-                        event = ChangePasswordEvent.Error(
-                            ChangePasswordError.Error(e.message)
-                        )
+                        event = ChangePasswordEvent.Error(e.message)
                     )
                 }
             } finally {
@@ -220,11 +216,7 @@ class ChangePasswordViewModel @Inject constructor(
 
     sealed interface ChangePasswordEvent {
         data object Success : ChangePasswordEvent
-        data class Error(val error: ChangePasswordError) : ChangePasswordEvent
-    }
-
-    sealed interface ChangePasswordError {
-        data class Error(val errorMessage: String?) : ChangePasswordError
-        data object InvalidFields : ChangePasswordError
+        data object InvalidFields : ChangePasswordEvent
+        data class Error(val message: String?) : ChangePasswordEvent
     }
 }

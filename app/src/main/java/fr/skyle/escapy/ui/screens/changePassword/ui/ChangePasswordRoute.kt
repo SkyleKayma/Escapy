@@ -30,44 +30,40 @@ fun ChangePasswordRoute(
     LaunchedEffect(changePasswordState.event) {
         changePasswordState.event?.let { event ->
             when (event) {
-                is ChangePasswordViewModel.ChangePasswordEvent.Error -> {
-                    when (val error = event.error) {
-                        is ChangePasswordViewModel.ChangePasswordError.Error -> {
-                            projectSnackbarState.showSnackbar(
-                                message = context.getString(
-                                    R.string.generic_error_format,
-                                    error.errorMessage ?: "-"
-                                ),
-                                type = ProjectSnackbarDefaults.ProjectSnackbarType.ERROR
-                            )
-                        }
-
-                        ChangePasswordViewModel.ChangePasswordError.InvalidFields -> {
-                            projectSnackbarState.showSnackbar(
-                                message = context.getString(R.string.generic_error_incorrect_fields),
-                                type = ProjectSnackbarDefaults.ProjectSnackbarType.NEUTRAL
-                            )
-                        }
-                    }
-                }
-
                 ChangePasswordViewModel.ChangePasswordEvent.Success -> {
                     isPasswordChangedDialogDisplayed = true
                 }
-            }
 
-            changePasswordViewModel.eventDelivered()
+                ChangePasswordViewModel.ChangePasswordEvent.InvalidFields -> {
+                    projectSnackbarState.showSnackbar(
+                        message = context.getString(R.string.generic_error_incorrect_fields),
+                        type = ProjectSnackbarDefaults.ProjectSnackbarType.NEUTRAL
+                    )
+                }
+
+                is ChangePasswordViewModel.ChangePasswordEvent.Error -> {
+                    projectSnackbarState.showSnackbar(
+                        message = context.getString(
+                            R.string.generic_error_format,
+                            event.message ?: "-"
+                        ),
+                        type = ProjectSnackbarDefaults.ProjectSnackbarType.ERROR
+                    )
+                }
+            }
         }
+
+        changePasswordViewModel.eventDelivered()
     }
 
     ChangePasswordScreen(
         snackbarState = projectSnackbarState,
         changePasswordState = changePasswordState,
-        onBackButtonClicked = navigateBack,
         onCurrentPasswordChange = changePasswordViewModel::setCurrentPassword,
         onNewPasswordChange = changePasswordViewModel::setNewPassword,
         onNewPasswordConfirmationChange = changePasswordViewModel::setNewPasswordConfirmation,
-        onChangePassword = changePasswordViewModel::changePassword
+        onChangePassword = changePasswordViewModel::changePassword,
+        navigateBack = navigateBack,
     )
 
     if (isPasswordChangedDialogDisplayed) {

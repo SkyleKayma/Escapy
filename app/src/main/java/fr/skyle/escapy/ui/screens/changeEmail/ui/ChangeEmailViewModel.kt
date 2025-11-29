@@ -43,9 +43,7 @@ class ChangeEmailViewModel @Inject constructor(
             if (!currentPasswordValidationState.isValid || !newEmailValidationState.isValid) {
                 _changeEmailState.update {
                     it.copy(
-                        event = ChangeEmailEvent.Error(
-                            ChangeEmailError.InvalidFields
-                        )
+                        event = ChangeEmailEvent.InvalidFields
                     )
                 }
 
@@ -63,9 +61,7 @@ class ChangeEmailViewModel @Inject constructor(
                 ).getOrThrow()
 
                 _changeEmailState.update {
-                    it.copy(
-                        event = ChangeEmailEvent.EmailVerificationSent
-                    )
+                    it.copy(event = ChangeEmailEvent.EmailVerificationSent)
                 }
             } catch (e: CancellationException) {
                 throw e
@@ -73,9 +69,7 @@ class ChangeEmailViewModel @Inject constructor(
                 Timber.e(e)
                 _changeEmailState.update {
                     it.copy(
-                        event = ChangeEmailEvent.Error(
-                            ChangeEmailError.Error(e.message)
-                        )
+                        event = ChangeEmailEvent.Error(e.message)
                     )
                 }
             } finally {
@@ -167,11 +161,7 @@ class ChangeEmailViewModel @Inject constructor(
 
     sealed interface ChangeEmailEvent {
         data object EmailVerificationSent : ChangeEmailEvent
-        data class Error(val error: ChangeEmailError) : ChangeEmailEvent
-    }
-
-    sealed interface ChangeEmailError {
-        data class Error(val errorMessage: String?) : ChangeEmailError
-        data object InvalidFields : ChangeEmailError
+        data object InvalidFields : ChangeEmailEvent
+        data class Error(val message: String?) : ChangeEmailEvent
     }
 }

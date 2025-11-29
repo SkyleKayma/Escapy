@@ -10,7 +10,7 @@ interface AuthRepository {
 
     fun getAccountAuthProvider(): AuthProvider
 
-    suspend fun signInAsGuest(): Result<Unit>
+    suspend fun signUpAsGuest(): Result<Unit>
 
     suspend fun signUp(
         email: String,

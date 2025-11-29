@@ -138,7 +138,7 @@ class SignInViewModel @Inject constructor(
             }
 
             try {
-                authRepository.signInAsGuest().getOrThrow()
+                authRepository.signUpAsGuest().getOrThrow()
 
                 _signInState.update {
                     it.copy(
@@ -199,8 +199,8 @@ class SignInViewModel @Inject constructor(
     )
 
     sealed interface SignInEvent {
-        data class SignInError(val errorMessage: String?) : SignInEvent
-        data class SignUpError(val errorMessage: String?) : SignInEvent
+        data class SignInError(val message: String?) : SignInEvent
+        data class SignUpError(val message: String?) : SignInEvent
         data object SignInSuccess : SignInEvent
         data object SignUpSuccess : SignInEvent
     }

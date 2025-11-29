@@ -29,7 +29,7 @@ fun SignInRoute(
                     projectSnackbarState.showSnackbar(
                         message = context.getString(
                             R.string.generic_error_format,
-                            event.errorMessage ?: "-"
+                            event.message ?: "-"
                         ),
                         type = ProjectSnackbarDefaults.ProjectSnackbarType.ERROR
                     )
@@ -44,7 +44,7 @@ fun SignInRoute(
                     projectSnackbarState.showSnackbar(
                         message = context.getString(
                             R.string.generic_error_format,
-                            event.errorMessage ?: "-"
+                            event.message ?: "-"
                         ),
                         type = ProjectSnackbarDefaults.ProjectSnackbarType.ERROR
                     )

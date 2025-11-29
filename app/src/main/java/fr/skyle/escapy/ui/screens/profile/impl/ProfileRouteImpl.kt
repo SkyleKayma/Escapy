@@ -15,7 +15,6 @@ fun NavGraphBuilder.profileRoute(
 ) {
     composable<Route.Profile> {
         ProfileRoute(
-            navigateBack = navHostController::popBackStackWithLifecycle,
             navigateLinkAccount = {
                 // TODO
             },
@@ -31,9 +30,13 @@ fun NavGraphBuilder.profileRoute(
             navigateToAboutApp = {
                 navHostController.navigateWithLifecycle(Route.About)
             },
-            navigateToSignIn = {
+            navigateBackToSignIn = {
                 navHostController.navigateToDestinationAndPopUpTo<Graph.Main>(Route.SignIn())
             },
+            navigateToDeleteAccount = {
+                navHostController.navigateWithLifecycle(Route.DeleteAccount)
+            },
+            navigateBack = navHostController::popBackStackWithLifecycle,
         )
     }
 }

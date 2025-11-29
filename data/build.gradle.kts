@@ -56,4 +56,7 @@ dependencies {
     // OKHttp BOM
     implementation(platform(libs.okhttp.bom))
     implementation(libs.okhttp)
+
+    // Datastore
+    implementation(libs.bundles.datastore)
 }

@@ -14,6 +14,6 @@ fun AboutRoute(
 
     AboutScreen(
         aboutState = aboutState,
-        onBackButtonClicked = navigateBack,
+        navigateBack = navigateBack,
     )
 }

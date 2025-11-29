@@ -30,29 +30,25 @@ fun ChangeEmailRoute(
     LaunchedEffect(changeEmailState.event) {
         changeEmailState.event?.let { event ->
             when (event) {
-                is ChangeEmailViewModel.ChangeEmailEvent.Error -> {
-                    when (val error = event.error) {
-                        is ChangeEmailViewModel.ChangeEmailError.Error -> {
-                            projectSnackbarState.showSnackbar(
-                                message = context.getString(
-                                    R.string.generic_error_format,
-                                    error.errorMessage ?: "-"
-                                ),
-                                type = ProjectSnackbarDefaults.ProjectSnackbarType.ERROR
-                            )
-                        }
-
-                        ChangeEmailViewModel.ChangeEmailError.InvalidFields -> {
-                            projectSnackbarState.showSnackbar(
-                                message = context.getString(R.string.generic_error_incorrect_fields),
-                                type = ProjectSnackbarDefaults.ProjectSnackbarType.NEUTRAL
-                            )
-                        }
-                    }
-                }
-
                 ChangeEmailViewModel.ChangeEmailEvent.EmailVerificationSent -> {
                     isEmailVerificationSentDialogDisplayed = true
+                }
+
+                ChangeEmailViewModel.ChangeEmailEvent.InvalidFields -> {
+                    projectSnackbarState.showSnackbar(
+                        message = context.getString(R.string.generic_error_incorrect_fields),
+                        type = ProjectSnackbarDefaults.ProjectSnackbarType.NEUTRAL
+                    )
+                }
+
+                is ChangeEmailViewModel.ChangeEmailEvent.Error -> {
+                    projectSnackbarState.showSnackbar(
+                        message = context.getString(
+                            R.string.generic_error_format,
+                            event.message ?: "-"
+                        ),
+                        type = ProjectSnackbarDefaults.ProjectSnackbarType.ERROR
+                    )
                 }
             }
 
@@ -63,10 +59,10 @@ fun ChangeEmailRoute(
     ChangeEmailScreen(
         snackbarState = projectSnackbarState,
         changeEmailState = changeEmailState,
-        onBackButtonClicked = navigateBack,
-        onCurrentPasswordChanged = changeEmailViewModel::setCurrentPassword,
+        onCurrentPasswordChange = changeEmailViewModel::setCurrentPassword,
         onNewEmailChanged = changeEmailViewModel::setNewEmail,
         onSaveProfile = changeEmailViewModel::saveProfile,
+        navigateBack = navigateBack,
     )
 
     if (isEmailVerificationSentDialogDisplayed) {

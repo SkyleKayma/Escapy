@@ -51,14 +51,15 @@ import fr.skyle.escapy.utils.format
 @Composable
 fun ProfileScreen(
     profileState: ProfileViewModel.ProfileState,
-    onBackButtonClicked: () -> Unit,
     onEditAvatarClicked: () -> Unit,
     onLinkAccountClicked: () -> Unit,
     onChangeEmailClicked: () -> Unit,
     onChangePasswordClicked: () -> Unit,
     onNotificationsClicked: () -> Unit,
     onAboutAppClicked: () -> Unit,
-    onSignOutClicked: () -> Unit
+    onSignOutClicked: () -> Unit,
+    onDeleteAccountClicked: () -> Unit,
+    navigateBack: () -> Unit,
 ) {
     ProjectScreenStructure(
         modifier = Modifier.fillMaxSize(),
@@ -71,7 +72,7 @@ fun ProfileScreen(
                     ProjectTopAppBarItem(
                         icon = rememberVectorPainter(Icons.AutoMirrored.Filled.ArrowBack),
                         style = ProjectIconButtonDefaults.Style.FILLED,
-                        onClick = onBackButtonClicked,
+                        onClick = navigateBack,
                     )
                 },
             )
@@ -92,6 +93,7 @@ fun ProfileScreen(
             onNotificationsClicked = onNotificationsClicked,
             onAboutAppClicked = onAboutAppClicked,
             onSignOutClicked = onSignOutClicked,
+            onDeleteAccountClicked = onDeleteAccountClicked,
         )
     }
 }
@@ -111,6 +113,7 @@ private fun ProfileScreenContent(
     onNotificationsClicked: () -> Unit,
     onAboutAppClicked: () -> Unit,
     onSignOutClicked: () -> Unit,
+    onDeleteAccountClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -199,6 +202,7 @@ private fun ProfileScreenContent(
             onNotificationsClicked = onNotificationsClicked,
             onAboutAppClicked = onAboutAppClicked,
             onSignOutClicked = onSignOutClicked,
+            onDeleteAccountClicked = onDeleteAccountClicked,
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -228,7 +232,6 @@ private fun ProfileScreenPreview() {
                 username = "John Doe",
                 avatar = Avatar.AVATAR_01,
             ),
-            onBackButtonClicked = {},
             onEditAvatarClicked = {},
             onLinkAccountClicked = {},
             onChangeEmailClicked = {},
@@ -236,6 +239,8 @@ private fun ProfileScreenPreview() {
             onNotificationsClicked = {},
             onAboutAppClicked = {},
             onSignOutClicked = {},
+            onDeleteAccountClicked = {},
+            navigateBack = {},
         )
     }
 }
@@ -277,6 +282,7 @@ private fun ProfileScreenContentPreview(
             onNotificationsClicked = {},
             onAboutAppClicked = {},
             onSignOutClicked = {},
+            onDeleteAccountClicked = {},
         )
     }
 }

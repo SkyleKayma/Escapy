@@ -9,10 +9,13 @@
     <!-- Generic Action -->
     <string name="generic_action_ok">OK</string>
     <string name="generic_action_modify">Modifier</string>
+    <string name="generic_action_delete">Supprimer</string>
+    <string name="generic_action_cancel">Annuler</string>
 
     <!-- Generic Error -->
     <string name="generic_error_format">Une erreur est survenue (%s)</string>
     <string name="generic_error_incorrect_fields">Certains champs sont incorrects</string>
+    <string name="generic_error_invalid_credentials">Vos identifiants sont incorrects</string>
 
     <!-- Generic Password Rule -->
     <string name="generic_password_rule_uppercase">Contient une majuscule</string>
@@ -69,6 +72,7 @@
     <string name="profile_privacy_policy">Politique de confidentialité</string>
     <string name="profile_about_app">À propos de l\'application</string>
     <string name="profile_sign_out">Se déconnecter</string>
+    <string name="profile_delete_account">Supprimer mon compte</string>
     <string name="profile_version_format">Version %1$s (Build %2$s)</string>
 
     <!-- About -->
@@ -98,5 +102,15 @@
 
     <!-- Edit Avatar Loading -->
     <string name="edit_avatar_loading_dialog_title">Modification de votre avatar en cours...</string>
+
+    <!-- Delete Account -->
+    <string name="delete_account_title">Supprimer mon compte</string>
+    <string name="delete_account_current_password">Mot de passe actuel</string>
+    <string name="delete_account_warning_delete_account">Toutes vos données seront supprimées. Votre pseudo sera remplacé par un identifiant dans l\'historique des autres joueurs. Toute suppression est définitive.</string>
+    <string name="delete_account_warning_delete_account_anonymous">Votre compte est un compte "invité", par conséquent votre compte sera supprimé au bout de 30jours sans action de votre part.</string>
+
+    <!-- Delete Account Confirmation Dialog -->
+    <string name="delete_account_confirmation_dialog_title">Etes-vous sûr de vouloir supprimer votre compte ?</string>
+    <string name="delete_account_confirmation_dialog_subtitle">Toutes les données de votre compte seront supprimées. Cette action est irréversible.</string>
 
 </resources>

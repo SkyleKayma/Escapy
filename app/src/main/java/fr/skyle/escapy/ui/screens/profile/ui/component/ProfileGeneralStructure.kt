@@ -21,6 +21,7 @@ fun ProfileGeneralStructure(
     onNotificationsClicked: () -> Unit,
     onAboutAppClicked: () -> Unit,
     onSignOutClicked: () -> Unit,
+    onDeleteAccountClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -81,6 +82,25 @@ fun ProfileGeneralStructure(
                 )
             }
         }
+
+        group {
+            item {
+                ProfileMenuStructureItem(
+                    modifier = Modifier.fillMaxWidth(),
+                    title = buildAnnotatedString(
+                        fullText = stringResource(R.string.profile_delete_account),
+                        AnnotatedData(
+                            text = stringResource(R.string.profile_delete_account),
+                            spanStyle = SpanStyle(
+                                fontWeight = FontWeight.Bold,
+                                color = ProjectTheme.colors.error,
+                            )
+                        )
+                    ),
+                    onCellClicked = onDeleteAccountClicked
+                )
+            }
+        }
     }
 }
 
@@ -92,6 +112,7 @@ private fun ProfileGeneralStructurePreview() {
             onNotificationsClicked = {},
             onAboutAppClicked = {},
             onSignOutClicked = {},
+            onDeleteAccountClicked = {},
         )
     }
 }
