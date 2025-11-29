@@ -11,6 +11,36 @@ import fr.skyle.escapy.designsystem.theme.SmallShapeToken
 
 object ProjectSnackbarDefaults {
     private const val SNACKBAR_PADDING_DP = 20
+
+    /**
+     * See [androidx.compose.material3.tokens.SnackbarTokens].SingleLineContainerHeight
+     * and calculated on [ProjectSnackbarDefaults.textStyle] font size
+     */
+    private const val SNACKBAR_INTERNAL_VERTICAL_PADDING = 12
+    private const val SNACKBAR_INTERNAL_HORIZONTAL_PADDING = 16
+
+    /**
+     * See [androidx.compose.material3.Snackbar].TextEndExtraSpacing
+     * and calculated on [ProjectSnackbarDefaults.textStyle] font size
+     */
+    private const val SNACKBAR_WITH_BUTTON_INTERNAL_START_PADDING = 16
+    private const val SNACKBAR_WITH_BUTTON_INTERNAL_TOP_PADDING = 12
+    private const val SNACKBAR_WITH_BUTTON_INTERNAL_END_PADDING = 8
+    private const val SNACKBAR_WITH_BUTTON_INTERNAL_BOTTOM_PADDING = 12
+
+    /**
+     * See [androidx.compose.material3.tokens.SnackbarTokens].ContainerElevation
+     */
+    const val SNACKBAR_ELEVATION_DP = 6
+
+    /**
+     * See [androidx.compose.material3.tokens.SnackbarTokens].IconSize
+     */
+    const val SNACKBAR_ICON_SIZE = 24
+
+    const val SNACKBAR_PADDING_BETWEEN_ICON_AND_TEXT_DP = 12
+    const val SNACKBAR_PADDING_BETWEEN_TEXT_AND_BUTTON_DP = 8
+
     const val SNACKBAR_BORDER_WIDTH_DP = 1
 
     enum class ProjectSnackbarType {
@@ -25,10 +55,10 @@ object ProjectSnackbarDefaults {
                     ProjectTheme.colors.surfaceContainerHigh
 
                 SUCCESS ->
-                    ProjectTheme.colors.successContainer
+                    ProjectTheme.colors.surfaceContainerHigh
 
                 ERROR ->
-                    ProjectTheme.colors.errorContainer
+                    ProjectTheme.colors.surfaceContainerHigh
             }
 
         val contentColor: Color
@@ -38,10 +68,10 @@ object ProjectSnackbarDefaults {
                     ProjectTheme.colors.onSurface
 
                 SUCCESS ->
-                    ProjectTheme.colors.success
+                    ProjectTheme.colors.onSurface
 
                 ERROR ->
-                    ProjectTheme.colors.error
+                    ProjectTheme.colors.onSurface
             }
 
         val borderColor: Color
@@ -51,10 +81,10 @@ object ProjectSnackbarDefaults {
                     ProjectTheme.colors.black
 
                 SUCCESS ->
-                    ProjectTheme.colors.surfaceContainerHigh
+                    ProjectTheme.colors.success
 
                 ERROR ->
-                    ProjectTheme.colors.surfaceContainerHigh
+                    ProjectTheme.colors.error
             }
     }
 
@@ -65,6 +95,17 @@ object ProjectSnackbarDefaults {
     val snackbarShape: Shape =
         SmallShapeToken
 
-    val snackbarPadding: PaddingValues =
-        PaddingValues(all = SNACKBAR_PADDING_DP.dp)
+    val snackbarPadding = PaddingValues(SNACKBAR_PADDING_DP.dp)
+
+    val snackbarInternalPadding = PaddingValues(
+        vertical = SNACKBAR_INTERNAL_VERTICAL_PADDING.dp,
+        horizontal = SNACKBAR_INTERNAL_HORIZONTAL_PADDING.dp
+    )
+
+    val snackbarWithButtonInternalPadding = PaddingValues(
+        start = SNACKBAR_WITH_BUTTON_INTERNAL_START_PADDING.dp,
+        top = SNACKBAR_WITH_BUTTON_INTERNAL_TOP_PADDING.dp,
+        end = SNACKBAR_WITH_BUTTON_INTERNAL_END_PADDING.dp,
+        bottom = SNACKBAR_WITH_BUTTON_INTERNAL_BOTTOM_PADDING.dp
+    )
 }

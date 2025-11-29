@@ -47,8 +47,8 @@ object ProjectButtonDefaults {
             get() = when (this) {
                 PRIMARY -> ProjectTheme.colors.primary
                 SECONDARY -> ProjectTheme.colors.secondary
-                ERROR -> ProjectTheme.colors.errorContainer
-                SUCCESS -> ProjectTheme.colors.successContainer
+                ERROR -> ProjectTheme.colors.error
+                SUCCESS -> ProjectTheme.colors.success
             }
 
         val contentColor: Color
@@ -56,8 +56,8 @@ object ProjectButtonDefaults {
             get() = when (this) {
                 PRIMARY -> ProjectTheme.colors.onPrimary
                 SECONDARY -> ProjectTheme.colors.onSecondary
-                ERROR -> ProjectTheme.colors.error
-                SUCCESS -> ProjectTheme.colors.success
+                ERROR -> ProjectTheme.colors.onPrimary
+                SUCCESS -> ProjectTheme.colors.onPrimary
             }
 
         val outlineContentColor: Color

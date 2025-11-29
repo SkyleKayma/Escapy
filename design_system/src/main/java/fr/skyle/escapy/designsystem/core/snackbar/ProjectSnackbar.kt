@@ -1,6 +1,8 @@
 package fr.skyle.escapy.designsystem.core.snackbar
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -8,19 +10,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import fr.skyle.escapy.designsystem.core.button.ProjectButton
 import fr.skyle.escapy.designsystem.core.button.ProjectButtonDefaults
+import fr.skyle.escapy.designsystem.core.snackbar.ProjectSnackbarDefaults.SNACKBAR_ELEVATION_DP
 import fr.skyle.escapy.designsystem.core.snackbar.ext.iconColor
 import fr.skyle.escapy.designsystem.core.snackbar.ext.painter
 import fr.skyle.escapy.designsystem.core.snackbar.state.ProjectSnackbarState
@@ -41,7 +45,9 @@ fun ProjectSnackbar(
 
         snackbarData?.let {
             ProjectSnackbarContent(
-                modifier = Modifier.padding(ProjectSnackbarDefaults.snackbarPadding),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(ProjectSnackbarDefaults.snackbarPadding),
                 type = snackbarData.type,
                 message = snackbarData.message,
                 actionLabel = snackbarData.actionLabel,
@@ -59,18 +65,50 @@ private fun ProjectSnackbarContent(
     actionLabel: String? = null,
     onActionClicked: (() -> Unit)? = null
 ) {
-    Snackbar(
+    Box(
         modifier = modifier
+            .shadow(
+                elevation = SNACKBAR_ELEVATION_DP.dp,
+                shape = ProjectSnackbarDefaults.snackbarShape
+            )
             .border(
                 width = ProjectSnackbarDefaults.SNACKBAR_BORDER_WIDTH_DP.dp,
                 shape = ProjectSnackbarDefaults.snackbarShape,
                 color = type.borderColor
+            )
+            .clip(ProjectSnackbarDefaults.snackbarShape)
+            .background(type.containerColor)
+            .padding(
+                if (actionLabel != null)
+                    ProjectSnackbarDefaults.snackbarWithButtonInternalPadding
+                else {
+                    ProjectSnackbarDefaults.snackbarInternalPadding
+                }
             ),
-        shape = ProjectSnackbarDefaults.snackbarShape,
-        containerColor = type.containerColor,
-        contentColor = type.contentColor,
-        action = actionLabel?.let {
-            {
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Icon(
+                modifier = Modifier.size(ProjectSnackbarDefaults.SNACKBAR_ICON_SIZE.dp),
+                painter = type.painter,
+                contentDescription = null,
+                tint = type.iconColor
+            )
+
+            Spacer(modifier = Modifier.width(ProjectSnackbarDefaults.SNACKBAR_PADDING_BETWEEN_ICON_AND_TEXT_DP.dp))
+
+            Text(
+                modifier = Modifier.weight(1f),
+                text = message,
+                style = ProjectSnackbarDefaults.textStyle,
+                color = type.contentColor
+            )
+
+            actionLabel?.let {
+                Spacer(modifier = Modifier.width(ProjectSnackbarDefaults.SNACKBAR_PADDING_BETWEEN_TEXT_AND_BUTTON_DP.dp))
+
                 ProjectButton(
                     modifier = Modifier,
                     text = actionLabel,
@@ -91,26 +129,6 @@ private fun ProjectSnackbarContent(
                     size = ProjectButtonDefaults.Size.SMALL
                 )
             }
-        }
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Icon(
-                modifier = Modifier.size(24.dp),
-                painter = type.painter,
-                contentDescription = null,
-                tint = type.iconColor
-            )
-
-            Spacer(modifier = Modifier.width(12.dp))
-
-            Text(
-                modifier = Modifier.weight(1f),
-                text = message,
-                style = ProjectSnackbarDefaults.textStyle
-            )
         }
     }
 }
@@ -152,9 +170,9 @@ private fun ProjectSnackbarWithActionPreview(
 ) {
     ProjectTheme {
         ProjectSnackbarContent(
-            message = "message",
+            message = "message message message message message message message message message message message message message message message message message message message message message message message message message message message message message",
             type = data.type,
-            actionLabel = "action",
+            actionLabel = "Dismiss",
             onActionClicked = {}
         )
     }

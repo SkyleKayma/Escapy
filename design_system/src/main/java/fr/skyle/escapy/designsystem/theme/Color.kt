@@ -14,12 +14,9 @@ val SurfaceContainerLow = Color(0xFF23272A)
 
 val OnSurface = Color(0xFFFFFFFF)
 
-val Error = Color(0xFF84202A)
-val ErrorContainer = Color(0xFFF8D7DA)
+val Error = Color(0xffEA3A24)
 val Warning = Color(0xFF664D03)
-val WarningContainer = Color(0xFFFFF3CD)
-val Success = Color(0xFF0F5133)
-val SuccessContainer = Color(0xFFD1E7DD)
+val Success = Color(0xFF0F9C4D)
 
 val White = Color(0xFFFFFFFF)
 val Black = Color(0xFF000000)
@@ -38,11 +35,8 @@ data class ProjectColors(
     val surfaceContainerLow: Color,
     val onSurface: Color,
     val error: Color,
-    val errorContainer: Color,
     val warning: Color,
-    val warningContainer: Color,
     val success: Color,
-    val successContainer: Color,
     val white: Color,
     val black: Color,
     val grey750: Color,
@@ -60,11 +54,8 @@ internal val LocalColors = staticCompositionLocalOf {
         surfaceContainerLow = Color.Unspecified,
         onSurface = Color.Unspecified,
         error = Color.Unspecified,
-        errorContainer = Color.Unspecified,
         warning = Color.Unspecified,
-        warningContainer = Color.Unspecified,
         success = Color.Unspecified,
-        successContainer = Color.Unspecified,
         white = Color.Unspecified,
         black = Color.Unspecified,
         grey750 = Color.Unspecified,
@@ -82,11 +73,8 @@ val DarkColorScheme = ProjectColors(
     surfaceContainerLow = SurfaceContainerLow,
     onSurface = OnSurface,
     error = Error,
-    errorContainer = ErrorContainer,
     warning = Warning,
-    warningContainer = WarningContainer,
     success = Success,
-    successContainer = SuccessContainer,
     white = White,
     black = Black,
     grey750 = Grey750,
