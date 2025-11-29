@@ -4,11 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.skyle.escapy.data.enums.AuthProvider
-import fr.skyle.escapy.data.repository.auth.api.AuthRepository
 import fr.skyle.escapy.data.usecase.DeleteAccountFromAnonymousProviderUseCase
 import fr.skyle.escapy.data.usecase.DeleteAccountFromAnonymousProviderUseCaseResponse
 import fr.skyle.escapy.data.usecase.DeleteAccountFromEmailProviderUseCase
 import fr.skyle.escapy.data.usecase.DeleteAccountFromEmailProviderUseCaseResponse
+import fr.skyle.escapy.data.utils.FirebaseAuthHelper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DeleteAccountViewModel @Inject constructor(
-    authRepository: AuthRepository,
+    firebaseAuthHelper: FirebaseAuthHelper,
     private val deleteAccountFromAnonymousProviderUseCase: DeleteAccountFromAnonymousProviderUseCase,
     private val deleteAccountFromEmailProviderUseCase: DeleteAccountFromEmailProviderUseCase,
 ) : ViewModel() {
@@ -30,7 +30,7 @@ class DeleteAccountViewModel @Inject constructor(
         viewModelScope.launch {
             _deleteAccountState.update {
                 it.copy(
-                    authProvider = authRepository.getAccountAuthProvider()
+                    authProvider = firebaseAuthHelper.getAccountAuthProvider()
                 )
             }
         }

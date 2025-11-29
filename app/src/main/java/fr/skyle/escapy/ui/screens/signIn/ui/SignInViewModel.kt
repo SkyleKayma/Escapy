@@ -5,7 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fr.skyle.escapy.data.repository.auth.api.AuthRepository
+import fr.skyle.escapy.data.usecase.SignInAsGuestUseCase
+import fr.skyle.escapy.data.usecase.SignInAsGuestUseCaseResponse
+import fr.skyle.escapy.data.usecase.SignInFromEmailProviderUseCase
+import fr.skyle.escapy.data.usecase.SignInFromEmailProviderUseCaseResponse
+import fr.skyle.escapy.data.usecase.SignUpUseCase
+import fr.skyle.escapy.data.usecase.SignUpUseCaseResponse
 import fr.skyle.escapy.ui.main.navigation.Route
 import fr.skyle.escapy.ui.screens.signIn.ui.enums.AuthType
 import fr.skyle.escapy.ui.screens.signIn.ui.enums.SignInReason
@@ -14,14 +19,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
-import kotlin.coroutines.cancellation.CancellationException
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val authRepository: AuthRepository,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
+    private val signInAsGuestUseCase: SignInAsGuestUseCase,
+    private val signInFromEmailProviderUseCase: SignInFromEmailProviderUseCase,
+    private val signUpUseCase: SignUpUseCase,
 ) : ViewModel() {
 
     private val route = savedStateHandle.toRoute<Route.SignIn>()
@@ -39,95 +44,32 @@ class SignInViewModel @Inject constructor(
                 it.copy(isButtonLoading = true)
             }
 
-            try {
-                authRepository.signIn(
-                    email = email,
-                    password = password
-                ).getOrThrow()
+            val response = signInFromEmailProviderUseCase(
+                email = email,
+                password = password
+            )
 
-                _signInState.update {
-                    it.copy(
-                        event = SignInEvent.SignInSuccess
-                    )
+            when (response) {
+                is SignInFromEmailProviderUseCaseResponse.Error -> {
+                    _signInState.update {
+                        it.copy(
+                            event = SignInEvent.SignInError(response.exception.message),
+                        )
+                    }
                 }
-            } catch (e: CancellationException) {
-                throw e
-            } catch (e: Exception) {
-                Timber.e(e)
-                _signInState.update {
-                    it.copy(
-                        event = SignInEvent.SignInError(e.message),
-                    )
-                }
-            } finally {
-                _signInState.update {
-                    it.copy(isButtonLoading = false)
+
+                SignInFromEmailProviderUseCaseResponse.Success -> {
+                    _signInState.update {
+                        it.copy(
+                            event = SignInEvent.SignInSuccess
+                        )
+                    }
                 }
             }
-        }
-    }
 
-    fun signUp(email: String, password: String) {
-        viewModelScope.launch {
             _signInState.update {
-                it.copy(isButtonLoading = true)
+                it.copy(isButtonLoading = false)
             }
-
-            try {
-                authRepository.signUp(
-                    email = email,
-                    password = password
-                ).getOrThrow()
-
-                _signInState.update {
-                    it.copy(
-                        event = SignInEvent.SignUpSuccess
-                    )
-                }
-            } catch (e: CancellationException) {
-                throw e
-            } catch (e: Exception) {
-                Timber.e(e)
-                _signInState.update {
-                    it.copy(
-                        event = SignInEvent.SignUpError(e.message),
-                    )
-                }
-            } finally {
-                _signInState.update {
-                    it.copy(isButtonLoading = false)
-                }
-            }
-        }
-    }
-
-    fun signInWithGoogle() {
-        viewModelScope.launch {
-//            _signInState.update {
-//                it.copy(isButtonLoading = true)
-//            }
-//
-//            try {
-//                userRepository.insertUser("fake_google_token", "Google User name")
-//                _signInState.update {
-//                    it.copy(
-//                        event = SignInEvent.SignInSuccess
-//                    )
-//                }
-//            } catch (e: CancellationException) {
-//                throw e
-//            } catch (e: Exception) {
-//                Timber.e(e)
-//                _signInState.update {
-//                    it.copy(
-//                        event = SignInEvent.SignInError(e.message),
-//                    )
-//                }
-//            } finally {
-//                _signInState.update {
-//                    it.copy(isButtonLoading = false)
-//                }
-//            }
         }
     }
 
@@ -137,27 +79,66 @@ class SignInViewModel @Inject constructor(
                 it.copy(isButtonLoading = true)
             }
 
-            try {
-                authRepository.signUpAsGuest().getOrThrow()
+            when (val response = signInAsGuestUseCase()) {
+                is SignInAsGuestUseCaseResponse.Error -> {
+                    _signInState.update {
+                        it.copy(event = SignInEvent.SignUpError(response.exception.message))
+                    }
+                }
 
-                _signInState.update {
-                    it.copy(
-                        event = SignInEvent.SignInSuccess
-                    )
+                SignInAsGuestUseCaseResponse.Success -> {
+                    _signInState.update {
+                        it.copy(event = SignInEvent.SignUpSuccess)
+                    }
                 }
-            } catch (e: CancellationException) {
-                throw e
-            } catch (e: Exception) {
-                Timber.e(e)
-                _signInState.update {
-                    it.copy(
-                        event = SignInEvent.SignInError(e.message),
-                    )
+            }
+
+            _signInState.update {
+                it.copy(isButtonLoading = false)
+            }
+        }
+    }
+
+    fun signInWithGoogle() {
+        viewModelScope.launch {
+            // TODO
+        }
+    }
+
+    fun signUp(
+        email: String,
+        password: String
+    ) {
+        viewModelScope.launch {
+            _signInState.update {
+                it.copy(isButtonLoading = true)
+            }
+
+            val response = signUpUseCase(
+                email = email,
+                password = password
+            )
+
+            when (response) {
+                is SignUpUseCaseResponse.Error -> {
+                    _signInState.update {
+                        it.copy(
+                            event = SignInEvent.SignUpError(response.exception.message),
+                        )
+                    }
                 }
-            } finally {
-                _signInState.update {
-                    it.copy(isButtonLoading = false)
+
+                SignUpUseCaseResponse.Success -> {
+                    _signInState.update {
+                        it.copy(
+                            event = SignInEvent.SignUpSuccess
+                        )
+                    }
                 }
+            }
+
+            _signInState.update {
+                it.copy(isButtonLoading = false)
             }
         }
     }

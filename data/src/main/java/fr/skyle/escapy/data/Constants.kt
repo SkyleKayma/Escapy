@@ -12,6 +12,11 @@ internal val json by lazy {
     }
 }
 
+// User
+
+const val PREFIX_GUEST = "Guest"
+const val PREFIX_PLAYER = "Player"
+
 // Firebase
 
 val DEFAULT_API_TIMEOUT = 10.seconds

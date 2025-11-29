@@ -12,8 +12,14 @@ import fr.skyle.escapy.data.usecase.DeleteAccountFromAnonymousProviderUseCase
 import fr.skyle.escapy.data.usecase.DeleteAccountFromAnonymousProviderUseCaseImpl
 import fr.skyle.escapy.data.usecase.DeleteAccountFromEmailProviderUseCase
 import fr.skyle.escapy.data.usecase.DeleteAccountFromEmailProviderUseCaseImpl
+import fr.skyle.escapy.data.usecase.SignInAsGuestUseCase
+import fr.skyle.escapy.data.usecase.SignInAsGuestUseCaseImpl
+import fr.skyle.escapy.data.usecase.SignInFromEmailProviderUseCase
+import fr.skyle.escapy.data.usecase.SignInFromEmailProviderUseCaseImpl
 import fr.skyle.escapy.data.usecase.SignOutUseCase
 import fr.skyle.escapy.data.usecase.SignOutUseCaseImpl
+import fr.skyle.escapy.data.usecase.SignUpUseCase
+import fr.skyle.escapy.data.usecase.SignUpUseCaseImpl
 import javax.inject.Singleton
 
 @Module
@@ -22,15 +28,21 @@ interface UseCaseModule {
 
     @Binds
     @Singleton
-    fun bindsDeleteAccountFromAnonymousProviderUseCase(
-        deleteAccountFromAnonymousProviderUseCaseImpl: DeleteAccountFromAnonymousProviderUseCaseImpl,
-    ): DeleteAccountFromAnonymousProviderUseCase
+    fun bindsSignInFromEmailProviderUseCase(
+        signInFromEmailProviderUseCaseImpl: SignInFromEmailProviderUseCaseImpl,
+    ): SignInFromEmailProviderUseCase
 
     @Binds
     @Singleton
-    fun bindsDeleteAccountFromEmailPasswordProviderUseCase(
-        deleteAccountFromEmailPasswordProviderUseCaseImpl: DeleteAccountFromEmailProviderUseCaseImpl,
-    ): DeleteAccountFromEmailProviderUseCase
+    fun bindsSignInAsGuestUseCase(
+        signInAsGuestUseCaseImpl: SignInAsGuestUseCaseImpl,
+    ): SignInAsGuestUseCase
+
+    @Binds
+    @Singleton
+    fun bindsSignUpUseCase(
+        signUpUseCaseImpl: SignUpUseCaseImpl,
+    ): SignUpUseCase
 
     @Binds
     @Singleton
@@ -49,4 +61,16 @@ interface UseCaseModule {
     fun bindsChangePasswordForEmailProviderUseCase(
         changePasswordForEmailProviderUseCaseImpl: ChangePasswordForEmailProviderUseCaseImpl,
     ): ChangePasswordForEmailProviderUseCase
+
+    @Binds
+    @Singleton
+    fun bindsDeleteAccountFromAnonymousProviderUseCase(
+        deleteAccountFromAnonymousProviderUseCaseImpl: DeleteAccountFromAnonymousProviderUseCaseImpl,
+    ): DeleteAccountFromAnonymousProviderUseCase
+
+    @Binds
+    @Singleton
+    fun bindsDeleteAccountFromEmailPasswordProviderUseCase(
+        deleteAccountFromEmailPasswordProviderUseCaseImpl: DeleteAccountFromEmailProviderUseCaseImpl,
+    ): DeleteAccountFromEmailProviderUseCase
 }

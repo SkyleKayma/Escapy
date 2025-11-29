@@ -1,9 +1,7 @@
 package fr.skyle.escapy.data.usecase
 
-import com.google.firebase.auth.EmailAuthProvider
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import fr.skyle.escapy.data.ext.awaitWithTimeout
+import fr.skyle.escapy.data.repository.auth.api.AuthRepository
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.coroutines.cancellation.CancellationException
@@ -16,7 +14,7 @@ interface ChangePasswordForEmailProviderUseCase {
 }
 
 class ChangePasswordForEmailProviderUseCaseImpl @Inject constructor(
-    private val firebaseAuth: FirebaseAuth,
+    private val authRepository: AuthRepository
 ) : ChangePasswordForEmailProviderUseCase {
 
     override suspend fun invoke(
@@ -24,15 +22,10 @@ class ChangePasswordForEmailProviderUseCaseImpl @Inject constructor(
         newPassword: String
     ): ChangePasswordForEmailProviderUseCaseResponse {
         return try {
-            val user = requireNotNull(firebaseAuth.currentUser)
-            val email = requireNotNull(user.email)
-
-            // Reauthenticate
-            val credential = EmailAuthProvider.getCredential(email, currentPassword)
-            user.reauthenticate(credential).awaitWithTimeout()
-
-            // Update password
-            user.updatePassword(newPassword).awaitWithTimeout()
+            authRepository.updatePassword(
+                currentPassword = currentPassword,
+                newPassword = newPassword
+            ).getOrThrow()
 
             ChangePasswordForEmailProviderUseCaseResponse.Success
         } catch (e: CancellationException) {

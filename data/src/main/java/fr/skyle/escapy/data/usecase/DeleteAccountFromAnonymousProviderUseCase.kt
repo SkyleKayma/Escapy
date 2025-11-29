@@ -1,7 +1,6 @@
 package fr.skyle.escapy.data.usecase
 
-import com.google.firebase.auth.FirebaseAuth
-import fr.skyle.escapy.data.ext.awaitWithTimeout
+import fr.skyle.escapy.data.repository.auth.api.AuthRepository
 import kotlinx.coroutines.CancellationException
 import timber.log.Timber
 import javax.inject.Inject
@@ -11,15 +10,12 @@ interface DeleteAccountFromAnonymousProviderUseCase {
 }
 
 class DeleteAccountFromAnonymousProviderUseCaseImpl @Inject constructor(
-    private val firebaseAuth: FirebaseAuth,
+    private val authRepository: AuthRepository,
 ) : DeleteAccountFromAnonymousProviderUseCase {
 
     override suspend fun invoke(): DeleteAccountFromAnonymousProviderUseCaseResponse {
         return try {
-            val user = requireNotNull(firebaseAuth.currentUser)
-
-            // Delete the account
-            user.delete().awaitWithTimeout()
+            authRepository.deleteAccountFromAnonymousProvider().getOrThrow()
 
             DeleteAccountFromAnonymousProviderUseCaseResponse.Success
         } catch (e: CancellationException) {

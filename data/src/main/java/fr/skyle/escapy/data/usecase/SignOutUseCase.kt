@@ -1,6 +1,6 @@
 package fr.skyle.escapy.data.usecase
 
-import com.google.firebase.auth.FirebaseAuth
+import fr.skyle.escapy.data.repository.auth.api.AuthRepository
 import javax.inject.Inject
 
 interface SignOutUseCase {
@@ -8,11 +8,11 @@ interface SignOutUseCase {
 }
 
 class SignOutUseCaseImpl @Inject constructor(
-    private val firebaseAuth: FirebaseAuth,
+    private val authRepository: AuthRepository
 ) : SignOutUseCase {
 
     override fun invoke(): SignOutUseCaseResponse {
-        firebaseAuth.signOut()
+        authRepository.signOut()
 
         return SignOutUseCaseResponse.Success
     }

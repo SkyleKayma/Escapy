@@ -1,9 +1,7 @@
 package fr.skyle.escapy.data.usecase
 
-import com.google.firebase.auth.EmailAuthProvider
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import fr.skyle.escapy.data.ext.awaitWithTimeout
+import fr.skyle.escapy.data.repository.auth.api.AuthRepository
 import kotlinx.coroutines.CancellationException
 import timber.log.Timber
 import javax.inject.Inject
@@ -15,22 +13,14 @@ interface DeleteAccountFromEmailProviderUseCase {
 }
 
 class DeleteAccountFromEmailProviderUseCaseImpl @Inject constructor(
-    private val firebaseAuth: FirebaseAuth,
+    private val authRepository: AuthRepository,
 ) : DeleteAccountFromEmailProviderUseCase {
 
     override suspend fun invoke(
         password: String,
     ): DeleteAccountFromEmailProviderUseCaseResponse {
         return try {
-            val user = requireNotNull(firebaseAuth.currentUser)
-            val email = requireNotNull(user.email)
-
-            // Need to reauthenticate
-            val credential = EmailAuthProvider.getCredential(email, password)
-            user.reauthenticate(credential).awaitWithTimeout()
-
-            // Then delete the account
-            user.delete().awaitWithTimeout()
+            authRepository.deleteAccountFromEmailProvider(password).getOrThrow()
 
             DeleteAccountFromEmailProviderUseCaseResponse.Success
         } catch (e: CancellationException) {

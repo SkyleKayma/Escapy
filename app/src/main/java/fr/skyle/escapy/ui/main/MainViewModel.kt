@@ -3,8 +3,8 @@ package fr.skyle.escapy.ui.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fr.skyle.escapy.data.repository.auth.api.AuthRepository
 import fr.skyle.escapy.data.utils.AuthenticatorHandler
+import fr.skyle.escapy.data.utils.FirebaseAuthHelper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val authRepository: AuthRepository,
+    private val firebaseAuthHelper: FirebaseAuthHelper,
     private val authenticatorHandler: AuthenticatorHandler,
 ) : ViewModel() {
 
@@ -42,7 +42,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun isUserLoggedIn(): Boolean =
-        authRepository.isUserLoggedIn()
+        firebaseAuthHelper.isUserLoggedIn()
 
     fun authenticatorEventDelivered() {
         viewModelScope.launch {
