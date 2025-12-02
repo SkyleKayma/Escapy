@@ -149,4 +149,7 @@ dependencies {
 
     // Splash screen API
     implementation(libs.splashscreen)
+
+    // Firebase
+    implementation(libs.firebase.auth)
 }

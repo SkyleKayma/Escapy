@@ -1,6 +1,7 @@
-package fr.skyle.escapy.data.usecase.account
+package fr.skyle.escapy.data.usecase.firebaseAuth
 
 import fr.skyle.escapy.data.repository.auth.api.AuthRepository
+import timber.log.Timber
 import javax.inject.Inject
 import kotlin.coroutines.cancellation.CancellationException
 
@@ -29,6 +30,7 @@ class SignUpUseCaseImpl @Inject constructor(
         } catch (e: CancellationException) {
             throw e
         } catch (e: Exception) {
+            Timber.e(e)
             SignUpUseCaseResponse.Error(e.message)
         }
     }

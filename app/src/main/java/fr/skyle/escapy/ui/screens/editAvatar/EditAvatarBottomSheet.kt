@@ -1,4 +1,4 @@
-package fr.skyle.escapy.ui.screens.bottomsheets.editAvatar
+package fr.skyle.escapy.ui.screens.editAvatar
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -34,7 +34,7 @@ import fr.skyle.escapy.designsystem.core.snackbar.state.rememberProjectSnackbarS
 import fr.skyle.escapy.designsystem.ext.values
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
 import fr.skyle.escapy.ui.core.dialog.ProjectLoadingDialog
-import fr.skyle.escapy.ui.screens.bottomsheets.editAvatar.component.EditAvatarItem
+import fr.skyle.escapy.ui.screens.editAvatar.component.EditAvatarItem
 import fr.skyle.escapy.utils.ProjectComponentPreview
 import kotlinx.coroutines.launch
 
@@ -48,7 +48,7 @@ fun EditAvatarBottomSheet(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
-    val state by editAvatarViewModel.editAvatarState.collectAsStateWithLifecycle()
+    val state by editAvatarViewModel.state.collectAsStateWithLifecycle()
 
     val projectSnackbarState = rememberProjectSnackbarState()
 

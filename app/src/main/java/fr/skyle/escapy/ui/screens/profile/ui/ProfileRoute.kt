@@ -10,7 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import fr.skyle.escapy.ui.screens.bottomsheets.editAvatar.EditAvatarBottomSheet
+import fr.skyle.escapy.ui.screens.editAvatar.EditAvatarBottomSheet
 import fr.skyle.escapy.ui.screens.profile.ui.component.SignOutConfirmationDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -26,7 +26,7 @@ fun ProfileRoute(
     navigateBack: () -> Unit,
     profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
-    val profileState by profileViewModel.profileState.collectAsStateWithLifecycle()
+    val profileState by profileViewModel.state.collectAsStateWithLifecycle()
 
     val editAvatarBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var isEditAvatarBottomSheetDisplayed by remember {
@@ -49,7 +49,7 @@ fun ProfileRoute(
     }
 
     ProfileScreen(
-        profileState = profileState,
+        state = profileState,
         navigateBack = navigateBack,
         onEditAvatarClicked = {
             isEditAvatarBottomSheetDisplayed = true

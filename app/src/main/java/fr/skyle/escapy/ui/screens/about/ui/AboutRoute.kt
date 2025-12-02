@@ -10,10 +10,10 @@ fun AboutRoute(
     navigateBack: () -> Unit,
     aboutViewModel: AboutViewModel = hiltViewModel()
 ) {
-    val aboutState by aboutViewModel.aboutState.collectAsStateWithLifecycle()
+    val aboutState by aboutViewModel.state.collectAsStateWithLifecycle()
 
     AboutScreen(
-        aboutState = aboutState,
+        state = aboutState,
         navigateBack = navigateBack,
     )
 }

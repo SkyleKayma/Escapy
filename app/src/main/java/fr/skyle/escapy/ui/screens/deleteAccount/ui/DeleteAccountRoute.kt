@@ -23,7 +23,7 @@ fun DeleteAccountRoute(
 ) {
     val context = LocalContext.current
 
-    val deleteAccountState by deleteAccountViewModel.deleteAccountState.collectAsStateWithLifecycle()
+    val deleteAccountState by deleteAccountViewModel.state.collectAsStateWithLifecycle()
 
     val projectSnackbarState = rememberProjectSnackbarState()
 
@@ -64,7 +64,7 @@ fun DeleteAccountRoute(
 
     DeleteAccountScreen(
         snackbarState = projectSnackbarState,
-        deleteAccountState = deleteAccountState,
+        state = deleteAccountState,
         password = password,
         onPasswordChange = {
             password = it

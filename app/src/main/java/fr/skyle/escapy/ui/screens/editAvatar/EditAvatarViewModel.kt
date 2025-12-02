@@ -1,4 +1,4 @@
-package fr.skyle.escapy.ui.screens.bottomsheets.editAvatar
+package fr.skyle.escapy.ui.screens.editAvatar
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,16 +24,15 @@ class EditAvatarViewModel @Inject constructor(
     private val updateAvatarUseCase: UpdateAvatarUseCase,
 ) : ViewModel() {
 
-    private val _editAvatarState = MutableStateFlow<EditAvatarState>(EditAvatarState())
-    val editAvatarState: StateFlow<EditAvatarState> by lazy { _editAvatarState.asStateFlow() }
+    private val _state = MutableStateFlow<State>(State())
+    val state: StateFlow<State> by lazy { _state.asStateFlow() }
 
     init {
         viewModelScope.launch {
             watchCurrentUserUseCase()
-                .map { it.user }
                 .filterNotNull()
                 .collectLatest { user ->
-                    _editAvatarState.update {
+                    _state.update {
                         it.copy(
                             currentAvatar = Avatar.fromType(user.avatarType),
                         )
@@ -45,14 +43,14 @@ class EditAvatarViewModel @Inject constructor(
 
     fun updateAvatar(avatar: Avatar) {
         viewModelScope.launch {
-            _editAvatarState.update {
+            _state.update {
                 it.copy(isAvatarUpdating = true)
             }
 
             // Start a delayed job to show the loading state only if api call is slow
             val showLoadingJob = launch {
                 delay(MIN_DELAY_BEFORE_SHOWING_LOADER)
-                _editAvatarState.update {
+                _state.update {
                     it.copy(isLoadingShown = true)
                 }
             }
@@ -63,19 +61,19 @@ class EditAvatarViewModel @Inject constructor(
 
             when (response) {
                 is UpdateAvatarUseCaseResponse.Error -> {
-                    _editAvatarState.update {
+                    _state.update {
                         it.copy(event = EditAvatarEvent.Error(response.message))
                     }
                 }
 
                 UpdateAvatarUseCaseResponse.Success -> {
-                    _editAvatarState.update {
+                    _state.update {
                         it.copy(event = EditAvatarEvent.Success)
                     }
                 }
             }
 
-            _editAvatarState.update {
+            _state.update {
                 it.copy(
                     isAvatarUpdating = false,
                     isLoadingShown = false
@@ -86,13 +84,13 @@ class EditAvatarViewModel @Inject constructor(
 
     fun eventDelivered() {
         viewModelScope.launch {
-            _editAvatarState.update {
+            _state.update {
                 it.copy(event = null)
             }
         }
     }
 
-    data class EditAvatarState(
+    data class State(
         val currentAvatar: Avatar? = null,
         val isAvatarUpdating: Boolean = false,
         val isLoadingShown: Boolean = false,

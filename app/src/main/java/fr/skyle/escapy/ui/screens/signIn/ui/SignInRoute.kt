@@ -18,7 +18,7 @@ fun SignInRoute(
 ) {
     val context = LocalContext.current
 
-    val signInState by signInViewModel.signInState.collectAsStateWithLifecycle()
+    val signInState by signInViewModel.state.collectAsStateWithLifecycle()
 
     val projectSnackbarState = rememberProjectSnackbarState()
 
@@ -72,7 +72,7 @@ fun SignInRoute(
 
     SignInScreen(
         snackbarState = projectSnackbarState,
-        signInState = signInState,
+        state = signInState,
         onSignInClicked = signInViewModel::signIn,
         onSignUpClicked = signInViewModel::signUp,
         onGoogleSignInClicked = signInViewModel::signInWithGoogle,

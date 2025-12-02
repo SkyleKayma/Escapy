@@ -12,6 +12,8 @@ import fr.skyle.escapy.ui.screens.changeEmail.impl.changeEmailRoute
 import fr.skyle.escapy.ui.screens.changePassword.impl.changePasswordRoute
 import fr.skyle.escapy.ui.screens.deleteAccount.impl.deleteAccountRoute
 import fr.skyle.escapy.ui.screens.home.impl.homeRoute
+import fr.skyle.escapy.ui.screens.linkAccount.impl.linkAccountRoute
+import fr.skyle.escapy.ui.screens.linkAccountWithEmail.impl.linkAccountWithEmailRoute
 import fr.skyle.escapy.ui.screens.profile.impl.profileRoute
 import fr.skyle.escapy.ui.screens.signIn.impl.signInRoute
 
@@ -82,6 +84,14 @@ fun ProjectNavHost(
             )
 
             deleteAccountRoute(
+                navHostController = navHostController
+            )
+
+            linkAccountRoute(
+                navHostController = navHostController
+            )
+
+            linkAccountWithEmailRoute(
                 navHostController = navHostController
             )
         }

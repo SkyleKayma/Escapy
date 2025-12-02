@@ -50,7 +50,7 @@ import fr.skyle.escapy.utils.format
 
 @Composable
 fun ProfileScreen(
-    profileState: ProfileViewModel.ProfileState,
+    state: ProfileViewModel.State,
     onEditAvatarClicked: () -> Unit,
     onLinkAccountClicked: () -> Unit,
     onChangeEmailClicked: () -> Unit,
@@ -81,11 +81,11 @@ fun ProfileScreen(
         ProfileScreenContent(
             modifier = Modifier.fillMaxSize(),
             innerPadding = innerPadding,
-            username = profileState.username,
-            email = profileState.email,
-            createdAt = profileState.createdAt,
-            avatar = profileState.avatar,
-            authProvider = profileState.authProvider,
+            username = state.username,
+            email = state.email,
+            createdAt = state.createdAt,
+            avatar = state.avatar,
+            authProvider = state.authProvider,
             onEditAvatarClicked = onEditAvatarClicked,
             onLinkAccountClicked = onLinkAccountClicked,
             onChangeEmailClicked = onChangeEmailClicked,
@@ -228,7 +228,7 @@ private fun ProfileScreenContent(
 private fun ProfileScreenPreview() {
     ProjectTheme {
         ProfileScreen(
-            profileState = ProfileViewModel.ProfileState(
+            state = ProfileViewModel.State(
                 username = "John Doe",
                 avatar = Avatar.AVATAR_01,
             ),

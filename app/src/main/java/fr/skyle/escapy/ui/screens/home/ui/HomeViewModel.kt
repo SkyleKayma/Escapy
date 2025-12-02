@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,23 +18,22 @@ class HomeViewModel @Inject constructor(
     watchCurrentUserUseCase: WatchCurrentUserUseCase
 ) : ViewModel() {
 
-    private val _homeState = MutableStateFlow<HomeState>(HomeState())
-    val homeState: StateFlow<HomeState> by lazy { _homeState.asStateFlow() }
+    private val _state = MutableStateFlow<State>(State())
+    val state: StateFlow<State> by lazy { _state.asStateFlow() }
 
     init {
         viewModelScope.launch {
             watchCurrentUserUseCase()
-                .map { it.user }
                 .filterNotNull()
                 .collectLatest { user ->
-                    _homeState.update {
+                    _state.update {
                         it.copy(username = user.username)
                     }
                 }
         }
     }
 
-    data class HomeState(
+    data class State(
         val username: String? = null
     )
 }

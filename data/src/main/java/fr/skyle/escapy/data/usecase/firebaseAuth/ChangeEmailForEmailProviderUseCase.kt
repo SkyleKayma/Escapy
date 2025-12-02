@@ -1,4 +1,4 @@
-package fr.skyle.escapy.data.usecase.account
+package fr.skyle.escapy.data.usecase.firebaseAuth
 
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import fr.skyle.escapy.data.repository.auth.api.AuthRepository
@@ -22,7 +22,10 @@ class ChangeEmailForEmailProviderUseCaseImpl @Inject constructor(
         currentPassword: String
     ): ChangeEmailForEmailProviderUseCaseResponse {
         return try {
-            authRepository.sendMailForEmailProvider(newEmail, currentPassword).getOrThrow()
+            authRepository.sendMailForEmailProvider(
+                newMail = newEmail,
+                currentPassword = currentPassword
+            ).getOrThrow()
 
             ChangeEmailForEmailProviderUseCaseResponse.EmailVerificationSent
         } catch (e: CancellationException) {

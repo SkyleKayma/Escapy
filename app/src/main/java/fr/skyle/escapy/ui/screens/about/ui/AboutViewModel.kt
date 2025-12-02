@@ -21,8 +21,8 @@ class AboutViewModel @Inject constructor(
     private val githubRepository: GithubRepository
 ) : ViewModel() {
 
-    private val _aboutState = MutableStateFlow<AboutState>(AboutState())
-    val aboutState: StateFlow<AboutState> by lazy { _aboutState.asStateFlow() }
+    private val _state = MutableStateFlow<State>(State())
+    val state: StateFlow<State> by lazy { _state.asStateFlow() }
 
     init {
         fetchContributors()
@@ -33,7 +33,7 @@ class AboutViewModel @Inject constructor(
             // Start a delayed job to show the loading state only if api call is slow
             val showLoadingJob = launch {
                 delay(MIN_DELAY_BEFORE_SHOWING_SCREEN_LOADER)
-                _aboutState.update {
+                _state.update {
                     it.copy(isContributorsLoading = true)
                 }
             }
@@ -43,7 +43,7 @@ class AboutViewModel @Inject constructor(
 
                 showLoadingJob.cancel()
 
-                _aboutState.update {
+                _state.update {
                     it.copy(contributors = contributors.sortedByDescending { it.nbContributions })
                 }
             } catch (e: CancellationException) {
@@ -51,14 +51,14 @@ class AboutViewModel @Inject constructor(
             } catch (e: Exception) {
                 Timber.e(e)
             } finally {
-                _aboutState.update {
+                _state.update {
                     it.copy(isContributorsLoading = false)
                 }
             }
         }
     }
 
-    data class AboutState(
+    data class State(
         val isContributorsLoading: Boolean = true,
         val contributors: List<GithubContributor> = listOf(),
     )

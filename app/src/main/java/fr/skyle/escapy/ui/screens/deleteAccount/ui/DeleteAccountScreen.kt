@@ -45,7 +45,7 @@ import fr.skyle.escapy.utils.ProjectScreenPreview
 @Composable
 fun DeleteAccountScreen(
     snackbarState: ProjectSnackbarState,
-    deleteAccountState: DeleteAccountViewModel.DeleteAccountState,
+    state: DeleteAccountViewModel.State,
     password: String,
     onPasswordChange: (password: String) -> Unit,
     onDeleteAccountClicked: () -> Unit,
@@ -72,8 +72,8 @@ fun DeleteAccountScreen(
         DeleteAccountScreenContent(
             modifier = Modifier.fillMaxSize(),
             innerPadding = innerPadding,
-            authProvider = deleteAccountState.authProvider,
-            isButtonLoading = deleteAccountState.isButtonLoading,
+            authProvider = state.authProvider,
+            isButtonLoading = state.isButtonLoading,
             password = password,
             onPasswordChange = onPasswordChange,
             onDeleteAccountClicked = onDeleteAccountClicked,
@@ -153,7 +153,7 @@ private fun DeleteAccountScreenContent(
             },
             text = stringResource(R.string.generic_action_delete),
             style = ProjectButtonDefaults.Style.FILLED,
-            tint = ProjectButtonDefaults.Tint.ERROR,
+            tint = ProjectButtonDefaults.Tint.PRIMARY,
             size = ProjectButtonDefaults.Size.LARGE,
             isLoading = isButtonLoading,
             isEnabled = if (shouldShowPasswordField) {
@@ -173,7 +173,7 @@ private fun ChangeEmailScreenPreview() {
     ProjectTheme {
         DeleteAccountScreen(
             snackbarState = rememberProjectSnackbarState(),
-            deleteAccountState = DeleteAccountViewModel.DeleteAccountState(),
+            state = DeleteAccountViewModel.State(),
             password = "",
             onPasswordChange = {},
             onDeleteAccountClicked = {},

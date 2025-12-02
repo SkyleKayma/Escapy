@@ -62,7 +62,7 @@ import fr.skyle.escapy.utils.buildAnnotatedString
 @Composable
 fun SignInScreen(
     snackbarState: ProjectSnackbarState,
-    signInState: SignInViewModel.SignInState,
+    state: SignInViewModel.State,
     onSignInClicked: (String, String) -> Unit,
     onSignUpClicked: (String, String) -> Unit,
     onGoogleSignInClicked: () -> Unit,
@@ -77,8 +77,8 @@ fun SignInScreen(
         SignInScreenContent(
             modifier = Modifier.fillMaxSize(),
             innerPadding = innerPadding,
-            authType = signInState.authType,
-            isButtonLoading = signInState.isButtonLoading,
+            authType = state.authType,
+            isButtonLoading = state.isButtonLoading,
             onSignInClicked = onSignInClicked,
             onSignUpClicked = onSignUpClicked,
             onGoogleSignInClicked = onGoogleSignInClicked,
@@ -289,7 +289,7 @@ private fun SignInScreenPreview() {
     ProjectTheme {
         SignInScreen(
             snackbarState = rememberProjectSnackbarState(),
-            signInState = SignInViewModel.SignInState(),
+            state = SignInViewModel.State(),
             onSignInClicked = { _, _ -> },
             onSignUpClicked = { _, _ -> },
             onGoogleSignInClicked = {},

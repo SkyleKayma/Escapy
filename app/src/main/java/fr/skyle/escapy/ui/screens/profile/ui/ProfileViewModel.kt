@@ -5,15 +5,15 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.skyle.escapy.data.enums.AuthProvider
 import fr.skyle.escapy.data.enums.Avatar
-import fr.skyle.escapy.data.usecase.account.SignOutUseCase
-import fr.skyle.escapy.data.usecase.account.SignOutUseCaseResponse
+import fr.skyle.escapy.data.usecase.firebaseAuth.SignOutUseCase
+import fr.skyle.escapy.data.usecase.firebaseAuth.SignOutUseCaseResponse
 import fr.skyle.escapy.data.usecase.user.WatchCurrentUserUseCase
-import fr.skyle.escapy.data.utils.FirebaseAuthHelper
+import fr.skyle.escapy.data.utils.FirebaseAuthManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -21,37 +21,37 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    firebaseAuthHelper: FirebaseAuthHelper,
     private val signOutUseCase: SignOutUseCase,
-    private val watchCurrentUserUseCase: WatchCurrentUserUseCase
+    private val firebaseAuthManager: FirebaseAuthManager,
+    private val watchCurrentUserUseCase: WatchCurrentUserUseCase,
 ) : ViewModel() {
 
-    private val _profileState = MutableStateFlow<ProfileState>(ProfileState())
-    val profileState: StateFlow<ProfileState> by lazy { _profileState.asStateFlow() }
+    private val _state = MutableStateFlow<State>(State())
+    val state: StateFlow<State> by lazy { _state.asStateFlow() }
 
     init {
         viewModelScope.launch {
-            watchCurrentUserUseCase()
-                .map { it.user }
-                .filterNotNull()
-                .collectLatest { user ->
-                    _profileState.update {
-                        it.copy(
-                            username = user.username,
-                            email = firebaseAuthHelper.getAccountEmail(),
-                            createdAt = user.createdAt,
-                            avatar = Avatar.fromType(user.avatarType),
-                            authProvider = firebaseAuthHelper.getAccountAuthProvider()
-                        )
-                    }
+            combine(
+                firebaseAuthManager.state.map { it.user },
+                watchCurrentUserUseCase()
+            ) { firebaseUser, user ->
+                _state.update {
+                    it.copy(
+                        username = user?.username,
+                        email = firebaseUser?.email,
+                        createdAt = user?.createdAt,
+                        avatar = Avatar.fromType(user?.avatarType),
+                        authProvider = firebaseUser?.authProvider ?: AuthProvider.ANONYMOUS
+                    )
                 }
+            }.collect()
         }
     }
 
     fun signOut() {
         when (signOutUseCase()) {
             SignOutUseCaseResponse.Success -> {
-                _profileState.update {
+                _state.update {
                     it.copy(
                         event = ProfileEvent.SignOutSuccess
                     )
@@ -62,13 +62,13 @@ class ProfileViewModel @Inject constructor(
 
     fun eventDelivered() {
         viewModelScope.launch {
-            _profileState.update {
+            _state.update {
                 it.copy(event = null)
             }
         }
     }
 
-    data class ProfileState(
+    data class State(
         val username: String? = null,
         val email: String? = null,
         val createdAt: Long? = null,

@@ -4,22 +4,24 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import fr.skyle.escapy.data.usecase.account.ChangeEmailForEmailProviderUseCase
-import fr.skyle.escapy.data.usecase.account.ChangeEmailForEmailProviderUseCaseImpl
-import fr.skyle.escapy.data.usecase.account.ChangePasswordForEmailProviderUseCase
-import fr.skyle.escapy.data.usecase.account.ChangePasswordForEmailProviderUseCaseImpl
-import fr.skyle.escapy.data.usecase.account.DeleteAccountFromAnonymousProviderUseCase
-import fr.skyle.escapy.data.usecase.account.DeleteAccountFromAnonymousProviderUseCaseImpl
-import fr.skyle.escapy.data.usecase.account.DeleteAccountFromEmailProviderUseCase
-import fr.skyle.escapy.data.usecase.account.DeleteAccountFromEmailProviderUseCaseImpl
-import fr.skyle.escapy.data.usecase.account.SignInAsGuestUseCase
-import fr.skyle.escapy.data.usecase.account.SignInAsGuestUseCaseImpl
-import fr.skyle.escapy.data.usecase.account.SignInFromEmailProviderUseCase
-import fr.skyle.escapy.data.usecase.account.SignInFromEmailProviderUseCaseImpl
-import fr.skyle.escapy.data.usecase.account.SignOutUseCase
-import fr.skyle.escapy.data.usecase.account.SignOutUseCaseImpl
-import fr.skyle.escapy.data.usecase.account.SignUpUseCase
-import fr.skyle.escapy.data.usecase.account.SignUpUseCaseImpl
+import fr.skyle.escapy.data.usecase.firebaseAuth.ChangeEmailForEmailProviderUseCase
+import fr.skyle.escapy.data.usecase.firebaseAuth.ChangeEmailForEmailProviderUseCaseImpl
+import fr.skyle.escapy.data.usecase.firebaseAuth.ChangePasswordForEmailProviderUseCase
+import fr.skyle.escapy.data.usecase.firebaseAuth.ChangePasswordForEmailProviderUseCaseImpl
+import fr.skyle.escapy.data.usecase.firebaseAuth.DeleteAccountFromAnonymousProviderUseCase
+import fr.skyle.escapy.data.usecase.firebaseAuth.DeleteAccountFromAnonymousProviderUseCaseImpl
+import fr.skyle.escapy.data.usecase.firebaseAuth.DeleteAccountFromEmailProviderUseCase
+import fr.skyle.escapy.data.usecase.firebaseAuth.DeleteAccountFromEmailProviderUseCaseImpl
+import fr.skyle.escapy.data.usecase.firebaseAuth.LinkAccountWithEmailProviderUseCase
+import fr.skyle.escapy.data.usecase.firebaseAuth.LinkAccountWithEmailProviderUseCaseImpl
+import fr.skyle.escapy.data.usecase.firebaseAuth.SignInAsGuestUseCase
+import fr.skyle.escapy.data.usecase.firebaseAuth.SignInAsGuestUseCaseImpl
+import fr.skyle.escapy.data.usecase.firebaseAuth.SignInFromEmailProviderUseCase
+import fr.skyle.escapy.data.usecase.firebaseAuth.SignInFromEmailProviderUseCaseImpl
+import fr.skyle.escapy.data.usecase.firebaseAuth.SignOutUseCase
+import fr.skyle.escapy.data.usecase.firebaseAuth.SignOutUseCaseImpl
+import fr.skyle.escapy.data.usecase.firebaseAuth.SignUpUseCase
+import fr.skyle.escapy.data.usecase.firebaseAuth.SignUpUseCaseImpl
 import fr.skyle.escapy.data.usecase.user.FetchCurrentUserUseCase
 import fr.skyle.escapy.data.usecase.user.FetchCurrentUserUseCaseImpl
 import fr.skyle.escapy.data.usecase.user.FetchUserUseCase
@@ -113,4 +115,10 @@ interface UseCaseModule {
     fun bindsWatchCurrentUserUseCase(
         watchCurrentUserUseCaseImpl: WatchCurrentUserUseCaseImpl,
     ): WatchCurrentUserUseCase
+
+    @Binds
+    @Singleton
+    fun bindsLinkAccountWithEmailProviderUseCase(
+        linkAccountWithEmailProviderUseCaseImpl: LinkAccountWithEmailProviderUseCaseImpl,
+    ): LinkAccountWithEmailProviderUseCase
 }

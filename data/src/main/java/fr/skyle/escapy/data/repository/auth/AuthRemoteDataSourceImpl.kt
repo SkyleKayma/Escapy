@@ -3,6 +3,7 @@ package fr.skyle.escapy.data.repository.auth
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.EmailAuthProvider
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import fr.skyle.escapy.data.FirebaseNode
@@ -14,7 +15,6 @@ import fr.skyle.escapy.data.enums.AuthProvider
 import fr.skyle.escapy.data.ext.awaitWithTimeout
 import fr.skyle.escapy.data.repository.auth.api.AuthRemoteDataSource
 import fr.skyle.escapy.data.rest.firebase.UserRequestDTO
-import fr.skyle.escapy.data.utils.FirebaseAuthHelper
 import fr.skyle.escapy.data.utils.ProjectDataStore
 import fr.skyle.escapy.data.utils.getAuthProvider
 import fr.skyle.escapy.data.utils.readOnce
@@ -29,7 +29,7 @@ import javax.inject.Singleton
 
 @Singleton
 class AuthRemoteDataSourceImpl @Inject constructor(
-    private val firebaseAuthHelper: FirebaseAuthHelper,
+    private val firebaseAuth: FirebaseAuth,
     private val database: ProjectDatabase,
     private val dataStore: ProjectDataStore,
     private val dbRef: DatabaseReference,
@@ -84,7 +84,7 @@ class AuthRemoteDataSourceImpl @Inject constructor(
     }
 
     override suspend fun signUpAsGuest() {
-        val authResult = firebaseAuthHelper.signInAnonymously().awaitWithTimeout()
+        val authResult = firebaseAuth.signInAnonymously().awaitWithTimeout()
         postAuthOperations(
             authResult = authResult,
             isSignUp = true
@@ -96,10 +96,7 @@ class AuthRemoteDataSourceImpl @Inject constructor(
         password: String
     ) {
         val authResult =
-            firebaseAuthHelper.createUserWithEmailAndPassword(
-                email = email,
-                password = password
-            ).awaitWithTimeout()
+            firebaseAuth.createUserWithEmailAndPassword(email, password).awaitWithTimeout()
         postAuthOperations(
             authResult = authResult,
             isSignUp = true
@@ -111,10 +108,7 @@ class AuthRemoteDataSourceImpl @Inject constructor(
         password: String
     ) {
         val authResult =
-            firebaseAuthHelper.signInWithEmailAndPassword(
-                email = email,
-                password = password
-            ).awaitWithTimeout()
+            firebaseAuth.signInWithEmailAndPassword(email, password).awaitWithTimeout()
         postAuthOperations(
             authResult = authResult,
             isSignUp = false
@@ -122,11 +116,13 @@ class AuthRemoteDataSourceImpl @Inject constructor(
     }
 
     override fun signOut() {
-        firebaseAuthHelper.signOut()
+        firebaseAuth.signOut()
     }
 
-    private fun FirebaseUser.reauthenticateForEmailProvider(currentPassword: String): Task<Void> {
-        val currentEmail = requireNotNull(email)
+    private fun FirebaseUser.reauthenticateForEmailProvider(
+        currentEmail: String,
+        currentPassword: String
+    ): Task<Void> {
         val credential = EmailAuthProvider.getCredential(currentEmail, currentPassword)
         return reauthenticate(credential)
     }
@@ -135,10 +131,17 @@ class AuthRemoteDataSourceImpl @Inject constructor(
         newMail: String,
         currentPassword: String
     ) {
-        val user = requireNotNull(firebaseAuthHelper.getCurrentUser())
+        val user = requireNotNull(firebaseAuth.currentUser)
+        val currentEmail = requireNotNull(user.email)
+
+        // Mandatory to get the most updated email
+        user.reload().awaitWithTimeout()
 
         // Reauthenticate
-        user.reauthenticateForEmailProvider(currentPassword).awaitWithTimeout()
+        user.reauthenticateForEmailProvider(
+            currentEmail = currentEmail,
+            currentPassword = currentPassword
+        ).awaitWithTimeout()
 
         // Send mail
         user.verifyBeforeUpdateEmail(newMail).awaitWithTimeout()
@@ -148,29 +151,52 @@ class AuthRemoteDataSourceImpl @Inject constructor(
         currentPassword: String,
         newPassword: String
     ) {
-        val user = requireNotNull(firebaseAuthHelper.getCurrentUser())
+        val user = requireNotNull(firebaseAuth.currentUser)
+        val currentEmail = requireNotNull(user.email)
+
+        // Mandatory to get the most updated email
+        user.reload().awaitWithTimeout()
 
         // Reauthenticate
-        user.reauthenticateForEmailProvider(currentPassword).awaitWithTimeout()
+        user.reauthenticateForEmailProvider(
+            currentEmail = currentEmail,
+            currentPassword = currentPassword
+        ).awaitWithTimeout()
 
         // Update password
         user.updatePassword(newPassword).awaitWithTimeout()
     }
 
     override suspend fun deleteAccountFromEmailProvider(currentPassword: String) {
-        val user = requireNotNull(firebaseAuthHelper.getCurrentUser())
+        val user = requireNotNull(firebaseAuth.currentUser)
+        val currentEmail = requireNotNull(user.email)
+
+        // Mandatory to get the most updated email
+        user.reload().awaitWithTimeout()
 
         // Reauthenticate
-        user.reauthenticateForEmailProvider(currentPassword).awaitWithTimeout()
+        user.reauthenticateForEmailProvider(
+            currentEmail = currentEmail,
+            currentPassword = currentPassword
+        ).awaitWithTimeout()
 
         // Delete the account
         user.delete().awaitWithTimeout()
     }
 
     override suspend fun deleteAccountFromAnonymousProvider() {
-        val user = requireNotNull(firebaseAuthHelper.getCurrentUser())
+        val user = requireNotNull(firebaseAuth.currentUser)
 
         // Delete the account
         user.delete().awaitWithTimeout()
+    }
+
+    override suspend fun linkAccountWithEmailProvider(
+        email: String,
+        password: String,
+    ) {
+        val user = requireNotNull(firebaseAuth.currentUser)
+        val credential = EmailAuthProvider.getCredential(email, password)
+        user.linkWithCredential(credential).awaitWithTimeout()
     }
 }

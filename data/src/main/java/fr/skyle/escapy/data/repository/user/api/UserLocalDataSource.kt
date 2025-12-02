@@ -8,6 +8,4 @@ interface UserLocalDataSource {
     suspend fun insertUser(user: User)
 
     fun watchUser(userId: String): Flow<User?>
-
-    fun watchCurrentUser(): Flow<User?>
 }

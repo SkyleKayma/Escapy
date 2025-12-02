@@ -1,7 +1,7 @@
 package fr.skyle.escapy.data.repository.auth
 
-import fr.skyle.escapy.data.repository.auth.api.AuthRepository
 import fr.skyle.escapy.data.repository.auth.api.AuthRemoteDataSource
+import fr.skyle.escapy.data.repository.auth.api.AuthRepository
 import kotlinx.coroutines.CancellationException
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -92,6 +92,17 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun deleteAccountFromAnonymousProvider(): Result<Unit> {
         authRemoteDataSource.deleteAccountFromAnonymousProvider()
+        return Result.success(Unit)
+    }
+
+    override suspend fun linkAccountWithEmailProvider(
+        email: String,
+        password: String,
+    ): Result<Unit> {
+        authRemoteDataSource.linkAccountWithEmailProvider(
+            email = email,
+            password = password
+        )
         return Result.success(Unit)
     }
 }

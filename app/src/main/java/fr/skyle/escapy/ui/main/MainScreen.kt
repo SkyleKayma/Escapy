@@ -26,24 +26,20 @@ fun MainScreen(
 ) {
     val navHostController = rememberNavController()
 
-    val mainState by mainViewModel.mainState.collectAsStateWithLifecycle()
+    val mainState by mainViewModel.state.collectAsStateWithLifecycle()
 
-    val isUserLoggedIn = remember {
-        mainViewModel.isUserLoggedIn()
-    }
-
-    val startDestination = remember(isUserLoggedIn) {
-        if (isUserLoggedIn) {
+    val startDestination = remember(mainState.isUserLoggedIn) {
+        if (mainState.isUserLoggedIn) {
             Graph.Main
         } else {
             Graph.Auth
         }
     }
 
-    LaunchedEffect(mainState.authenticatorEvent) {
-        mainState.authenticatorEvent?.let { event ->
+    LaunchedEffect(mainState.event) {
+        mainState.event?.let { event ->
             when (event) {
-                MainViewModel.AuthenticatorEvent.LogoutEvent -> {
+                MainViewModel.MainEvent.LogoutEvent -> {
                     navHostController.navigateToDestinationAndPopUpTo<Graph.Main>(
                         Route.SignIn(
                             reason = SignInReason.SESSION_EXPIRED

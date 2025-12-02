@@ -11,7 +11,7 @@ import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameter
 import fr.skyle.escapy.R
 import fr.skyle.escapy.data.enums.AuthProvider
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
-import fr.skyle.escapy.ext.displayText
+import fr.skyle.escapy.ext.displayTextShort
 import fr.skyle.escapy.utils.AnnotatedData
 import fr.skyle.escapy.utils.ProjectComponentPreview
 import fr.skyle.escapy.utils.buildAnnotatedString
@@ -36,10 +36,10 @@ fun ProfileAccountStructure(
                         title = buildAnnotatedString(
                             fullText = stringResource(
                                 R.string.profile_auth_provider_format,
-                                authProvider.displayText
+                                authProvider.displayTextShort
                             ),
                             AnnotatedData(
-                                text = authProvider.displayText,
+                                text = authProvider.displayTextShort,
                                 spanStyle = SpanStyle(
                                     color = ProjectTheme.colors.warning,
                                 )

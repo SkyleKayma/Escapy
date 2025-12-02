@@ -1,4 +1,4 @@
-package fr.skyle.escapy.data.usecase.account
+package fr.skyle.escapy.data.usecase.firebaseAuth
 
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import fr.skyle.escapy.data.repository.auth.api.AuthRepository

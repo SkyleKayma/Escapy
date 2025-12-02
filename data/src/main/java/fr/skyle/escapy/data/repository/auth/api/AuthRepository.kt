@@ -31,4 +31,9 @@ interface AuthRepository {
     ): Result<Unit>
 
     suspend fun deleteAccountFromAnonymousProvider(): Result<Unit>
+
+    suspend fun linkAccountWithEmailProvider(
+        email: String,
+        password: String,
+    ): Result<Unit>
 }

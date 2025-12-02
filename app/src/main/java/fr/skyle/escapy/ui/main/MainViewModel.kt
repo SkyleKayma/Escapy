@@ -3,58 +3,58 @@ package fr.skyle.escapy.ui.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fr.skyle.escapy.data.utils.AuthenticatorHandler
-import fr.skyle.escapy.data.utils.FirebaseAuthHelper
+import fr.skyle.escapy.data.utils.FirebaseAuthManager
+import fr.skyle.escapy.data.utils.model.FirebaseConnectionState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val firebaseAuthHelper: FirebaseAuthHelper,
-    private val authenticatorHandler: AuthenticatorHandler,
+    private val firebaseAuthManager: FirebaseAuthManager,
 ) : ViewModel() {
 
-    private val _mainState: MutableStateFlow<MainState> = MutableStateFlow(MainState())
-    val mainState: StateFlow<MainState> by lazy { _mainState.asStateFlow() }
+    private val _state: MutableStateFlow<State> = MutableStateFlow(State())
+    val state: StateFlow<State> by lazy { _state.asStateFlow() }
 
     init {
         viewModelScope.launch {
-            authenticatorHandler.authenticatorEvent
-                .collectLatest { event ->
-                    _mainState.update {
-                        it.copy(
-                            authenticatorEvent = when (event) {
-                                AuthenticatorHandler.AuthenticatorEvent.Logout -> {
-                                    AuthenticatorEvent.LogoutEvent
-                                }
+            _state.update {
+                it.copy(isUserLoggedIn = firebaseAuthManager.state.firstOrNull()?.user != null)
+            }
+        }
 
-                                null -> null
-                            }
-                        )
+        viewModelScope.launch {
+            firebaseAuthManager.state
+                .filter { it.connectionState == FirebaseConnectionState.EXPIRED }
+                .collectLatest {
+                    _state.update {
+                        it.copy(event = MainEvent.LogoutEvent)
                     }
                 }
         }
     }
 
-    fun isUserLoggedIn(): Boolean =
-        firebaseAuthHelper.isUserLoggedIn()
-
     fun authenticatorEventDelivered() {
         viewModelScope.launch {
-            authenticatorHandler.eventDelivered()
+            _state.update {
+                it.copy(event = null)
+            }
         }
     }
 
-    data class MainState(
-        val authenticatorEvent: AuthenticatorEvent? = null
+    data class State(
+        val isUserLoggedIn: Boolean = false,
+        val event: MainEvent? = null
     )
 
-    sealed interface AuthenticatorEvent {
-        data object LogoutEvent : AuthenticatorEvent
+    sealed interface MainEvent {
+        data object LogoutEvent : MainEvent
     }
 }

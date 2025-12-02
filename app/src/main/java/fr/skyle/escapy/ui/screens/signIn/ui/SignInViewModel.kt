@@ -5,12 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fr.skyle.escapy.data.usecase.account.SignInAsGuestUseCase
-import fr.skyle.escapy.data.usecase.account.SignInAsGuestUseCaseResponse
-import fr.skyle.escapy.data.usecase.account.SignInFromEmailProviderUseCase
-import fr.skyle.escapy.data.usecase.account.SignInFromEmailProviderUseCaseResponse
-import fr.skyle.escapy.data.usecase.account.SignUpUseCase
-import fr.skyle.escapy.data.usecase.account.SignUpUseCaseResponse
+import fr.skyle.escapy.data.usecase.firebaseAuth.SignInAsGuestUseCase
+import fr.skyle.escapy.data.usecase.firebaseAuth.SignInAsGuestUseCaseResponse
+import fr.skyle.escapy.data.usecase.firebaseAuth.SignInFromEmailProviderUseCase
+import fr.skyle.escapy.data.usecase.firebaseAuth.SignInFromEmailProviderUseCaseResponse
+import fr.skyle.escapy.data.usecase.firebaseAuth.SignUpUseCase
+import fr.skyle.escapy.data.usecase.firebaseAuth.SignUpUseCaseResponse
 import fr.skyle.escapy.ui.main.navigation.Route
 import fr.skyle.escapy.ui.screens.signIn.ui.enums.AuthType
 import fr.skyle.escapy.ui.screens.signIn.ui.enums.SignInReason
@@ -31,16 +31,16 @@ class SignInViewModel @Inject constructor(
 
     private val route = savedStateHandle.toRoute<Route.SignIn>()
 
-    private val _signInState = MutableStateFlow<SignInState>(
-        SignInState(
+    private val _state = MutableStateFlow<State>(
+        State(
             signInReasonEvent = route.reason?.let { SignInReasonEvent.FromReason(it) }
         )
     )
-    val signInState: StateFlow<SignInState> by lazy { _signInState.asStateFlow() }
+    val state: StateFlow<State> by lazy { _state.asStateFlow() }
 
     fun signIn(email: String, password: String) {
         viewModelScope.launch {
-            _signInState.update {
+            _state.update {
                 it.copy(isButtonLoading = true)
             }
 
@@ -51,7 +51,7 @@ class SignInViewModel @Inject constructor(
 
             when (response) {
                 is SignInFromEmailProviderUseCaseResponse.Error -> {
-                    _signInState.update {
+                    _state.update {
                         it.copy(
                             event = SignInEvent.SignInError(response.message),
                         )
@@ -59,7 +59,7 @@ class SignInViewModel @Inject constructor(
                 }
 
                 SignInFromEmailProviderUseCaseResponse.Success -> {
-                    _signInState.update {
+                    _state.update {
                         it.copy(
                             event = SignInEvent.SignInSuccess
                         )
@@ -67,7 +67,7 @@ class SignInViewModel @Inject constructor(
                 }
             }
 
-            _signInState.update {
+            _state.update {
                 it.copy(isButtonLoading = false)
             }
         }
@@ -75,25 +75,25 @@ class SignInViewModel @Inject constructor(
 
     fun signInAsGuest() {
         viewModelScope.launch {
-            _signInState.update {
+            _state.update {
                 it.copy(isButtonLoading = true)
             }
 
             when (val response = signInAsGuestUseCase()) {
                 is SignInAsGuestUseCaseResponse.Error -> {
-                    _signInState.update {
+                    _state.update {
                         it.copy(event = SignInEvent.SignUpError(response.message))
                     }
                 }
 
                 SignInAsGuestUseCaseResponse.Success -> {
-                    _signInState.update {
+                    _state.update {
                         it.copy(event = SignInEvent.SignUpSuccess)
                     }
                 }
             }
 
-            _signInState.update {
+            _state.update {
                 it.copy(isButtonLoading = false)
             }
         }
@@ -110,7 +110,7 @@ class SignInViewModel @Inject constructor(
         password: String
     ) {
         viewModelScope.launch {
-            _signInState.update {
+            _state.update {
                 it.copy(isButtonLoading = true)
             }
 
@@ -121,7 +121,7 @@ class SignInViewModel @Inject constructor(
 
             when (response) {
                 is SignUpUseCaseResponse.Error -> {
-                    _signInState.update {
+                    _state.update {
                         it.copy(
                             event = SignInEvent.SignUpError(response.message),
                         )
@@ -129,7 +129,7 @@ class SignInViewModel @Inject constructor(
                 }
 
                 SignUpUseCaseResponse.Success -> {
-                    _signInState.update {
+                    _state.update {
                         it.copy(
                             event = SignInEvent.SignUpSuccess
                         )
@@ -137,19 +137,19 @@ class SignInViewModel @Inject constructor(
                 }
             }
 
-            _signInState.update {
+            _state.update {
                 it.copy(isButtonLoading = false)
             }
         }
     }
 
     fun changeAuthType() {
-        val newAuthType = when (_signInState.value.authType) {
+        val newAuthType = when (_state.value.authType) {
             AuthType.SIGN_IN -> AuthType.SIGN_UP
             AuthType.SIGN_UP -> AuthType.SIGN_IN
         }
 
-        _signInState.update {
+        _state.update {
             it.copy(
                 authType = newAuthType
             )
@@ -158,7 +158,7 @@ class SignInViewModel @Inject constructor(
 
     fun eventDelivered() {
         viewModelScope.launch {
-            _signInState.update {
+            _state.update {
                 it.copy(event = null)
             }
         }
@@ -166,13 +166,13 @@ class SignInViewModel @Inject constructor(
 
     fun signInReasonEventDelivered() {
         viewModelScope.launch {
-            _signInState.update {
+            _state.update {
                 it.copy(signInReasonEvent = null)
             }
         }
     }
 
-    data class SignInState(
+    data class State(
         val authType: AuthType = AuthType.SIGN_IN,
         val isButtonLoading: Boolean = false,
         val event: SignInEvent? = null,

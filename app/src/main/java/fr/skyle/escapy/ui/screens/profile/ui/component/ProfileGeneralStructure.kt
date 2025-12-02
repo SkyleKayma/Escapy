@@ -73,7 +73,6 @@ fun ProfileGeneralStructure(
                         AnnotatedData(
                             text = stringResource(R.string.profile_sign_out),
                             spanStyle = SpanStyle(
-                                fontWeight = FontWeight.Bold,
                                 color = ProjectTheme.colors.error,
                             )
                         )
@@ -92,7 +91,6 @@ fun ProfileGeneralStructure(
                         AnnotatedData(
                             text = stringResource(R.string.profile_delete_account),
                             spanStyle = SpanStyle(
-                                fontWeight = FontWeight.Bold,
                                 color = ProjectTheme.colors.error,
                             )
                         )

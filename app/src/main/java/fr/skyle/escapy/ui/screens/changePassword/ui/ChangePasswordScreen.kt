@@ -33,7 +33,7 @@ import fr.skyle.escapy.designsystem.core.textField.ProjectTextField
 import fr.skyle.escapy.designsystem.core.topAppBar.ProjectTopAppBar
 import fr.skyle.escapy.designsystem.core.topAppBar.component.ProjectTopAppBarItem
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
-import fr.skyle.escapy.ui.core.form.PasswordFormValidationRow
+import fr.skyle.escapy.ui.core.form.PasswordFormValidation
 import fr.skyle.escapy.ui.core.structure.ProjectScreenStructure
 import fr.skyle.escapy.utils.ProjectComponentPreview
 import fr.skyle.escapy.utils.ProjectScreenPreview
@@ -41,7 +41,7 @@ import fr.skyle.escapy.utils.ProjectScreenPreview
 @Composable
 fun ChangePasswordScreen(
     snackbarState: ProjectSnackbarState,
-    changePasswordState: ChangePasswordViewModel.ChangePasswordState,
+    state: ChangePasswordViewModel.State,
     onCurrentPasswordChange: (currentPassword: String) -> Unit,
     onNewPasswordChange: (newPassword: String) -> Unit,
     onNewPasswordConfirmationChange: (newPasswordConfirmation: String) -> Unit,
@@ -69,13 +69,13 @@ fun ChangePasswordScreen(
         ChangePasswordScreenContent(
             modifier = Modifier.fillMaxSize(),
             innerPadding = innerPadding,
-            isButtonLoading = changePasswordState.isButtonLoading,
-            currentPassword = changePasswordState.currentPassword,
-            newPassword = changePasswordState.newPassword,
-            newPasswordConfirmation = changePasswordState.newPasswordConfirmation,
-            currentPasswordValidationState = changePasswordState.currentPasswordValidationState,
-            newPasswordValidationState = changePasswordState.newPasswordValidationState,
-            newPasswordConfirmationValidationState = changePasswordState.newPasswordConfirmationValidationState,
+            isButtonLoading = state.isButtonLoading,
+            currentPassword = state.currentPassword,
+            newPassword = state.newPassword,
+            newPasswordConfirmation = state.newPasswordConfirmation,
+            currentPasswordValidationState = state.currentPasswordValidationState,
+            newPasswordValidationState = state.newPasswordValidationState,
+            newPasswordConfirmationValidationState = state.newPasswordConfirmationValidationState,
             onCurrentPasswordChange = onCurrentPasswordChange,
             onNewPasswordChange = onNewPasswordChange,
             onNewPasswordConfirmationChange = onNewPasswordConfirmationChange,
@@ -141,34 +141,12 @@ private fun ChangePasswordScreenContent(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        PasswordFormValidationRow(
+        PasswordFormValidation(
             modifier = Modifier.fillMaxWidth(),
-            isValid = newPasswordValidationState.containsUppercase,
-            text = stringResource(id = R.string.generic_password_rule_uppercase)
-        )
-
-        Spacer(modifier = Modifier.height(4.dp))
-
-        PasswordFormValidationRow(
-            modifier = Modifier.fillMaxWidth(),
-            isValid = newPasswordValidationState.isLongEnough,
-            text = stringResource(id = R.string.generic_password_rule_min_length)
-        )
-
-        Spacer(modifier = Modifier.height(4.dp))
-
-        PasswordFormValidationRow(
-            modifier = Modifier.fillMaxWidth(),
-            isValid = newPasswordValidationState.containsDigit,
-            text = stringResource(id = R.string.generic_password_rule_digit)
-        )
-
-        Spacer(modifier = Modifier.height(4.dp))
-
-        PasswordFormValidationRow(
-            modifier = Modifier.fillMaxWidth(),
-            isValid = newPasswordValidationState.containsSpecialCharacter,
-            text = stringResource(id = R.string.generic_password_rule_special)
+            containsUppercase = newPasswordValidationState.containsUppercase,
+            isLongEnough = newPasswordValidationState.isLongEnough,
+            containsDigit = newPasswordValidationState.containsDigit,
+            containsSpecialCharacter = newPasswordValidationState.containsSpecialCharacter,
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -218,7 +196,7 @@ private fun ChangePasswordScreenPreview() {
     ProjectTheme {
         ChangePasswordScreen(
             snackbarState = rememberProjectSnackbarState(),
-            changePasswordState = ChangePasswordViewModel.ChangePasswordState(),
+            state = ChangePasswordViewModel.State(),
             navigateBack = {},
             onCurrentPasswordChange = {},
             onNewPasswordChange = {},

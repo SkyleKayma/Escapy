@@ -31,4 +31,9 @@ interface AuthRemoteDataSource {
     )
 
     suspend fun deleteAccountFromAnonymousProvider()
+
+    suspend fun linkAccountWithEmailProvider(
+        email: String,
+        password: String,
+    )
 }

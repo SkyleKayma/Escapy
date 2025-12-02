@@ -1,4 +1,4 @@
-package fr.skyle.escapy.ui.screens.bottomsheets.editAvatar.component
+package fr.skyle.escapy.ui.screens.editAvatar.component
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable

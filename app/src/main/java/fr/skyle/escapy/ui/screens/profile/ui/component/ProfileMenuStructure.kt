@@ -27,7 +27,7 @@ import fr.skyle.escapy.R
 import fr.skyle.escapy.data.enums.AuthProvider
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
 import fr.skyle.escapy.ext.boxCardStyle
-import fr.skyle.escapy.ext.displayText
+import fr.skyle.escapy.ext.displayTextShort
 import fr.skyle.escapy.utils.AnnotatedData
 import fr.skyle.escapy.utils.ProjectComponentPreview
 import fr.skyle.escapy.utils.buildAnnotatedString
@@ -238,10 +238,10 @@ private fun ProfileMenuStructureItemWithSubtitleAndActionPreview() {
                 title = buildAnnotatedString(
                     fullText = stringResource(
                         R.string.profile_auth_provider_format,
-                        AuthProvider.ANONYMOUS.displayText
+                        AuthProvider.ANONYMOUS.displayTextShort
                     ),
                     AnnotatedData(
-                        text = AuthProvider.ANONYMOUS.displayText,
+                        text = AuthProvider.ANONYMOUS.displayTextShort,
                         spanStyle = SpanStyle(
                             color = ProjectTheme.colors.warning,
                         )

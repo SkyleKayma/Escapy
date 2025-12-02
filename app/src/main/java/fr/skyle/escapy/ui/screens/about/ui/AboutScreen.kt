@@ -39,7 +39,7 @@ private const val KEY_VIEW_TYPE_CONTRIBUTORS_TITLE = "ContributorsTitle"
 
 @Composable
 fun AboutScreen(
-    aboutState: AboutViewModel.AboutState,
+    state: AboutViewModel.State,
     navigateBack: () -> Unit,
 ) {
     ProjectScreenStructure(
@@ -62,8 +62,8 @@ fun AboutScreen(
         AboutScreenContent(
             modifier = Modifier.fillMaxSize(),
             innerPadding = innerPadding,
-            isContributorsLoading = aboutState.isContributorsLoading,
-            contributors = aboutState.contributors
+            isContributorsLoading = state.isContributorsLoading,
+            contributors = state.contributors
         )
     }
 }
@@ -146,15 +146,7 @@ private fun AboutScreenContent(
 private fun AboutScreenPreview() {
     ProjectTheme {
         AboutScreen(
-            aboutState = AboutViewModel.AboutState(
-                isContributorsLoading = false,
-                contributors = listOf(
-                    GithubContributor(
-                        id = 1,
-                        username = "SkyleKayma",
-                    )
-                ),
-            ),
+            state = AboutViewModel.State(),
             navigateBack = {},
         )
     }

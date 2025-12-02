@@ -16,7 +16,7 @@ fun NavGraphBuilder.profileRoute(
     composable<Route.Profile> {
         ProfileRoute(
             navigateLinkAccount = {
-                // TODO
+                navHostController.navigateWithLifecycle(Route.LinkAccount)
             },
             navigateChangeEmail = {
                 navHostController.navigateWithLifecycle(Route.ChangeEmail)

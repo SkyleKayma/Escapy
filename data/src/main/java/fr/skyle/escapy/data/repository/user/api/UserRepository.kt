@@ -12,7 +12,7 @@ interface UserRepository {
 
     suspend fun updateAvatar(avatar: Avatar): Result<Unit>
 
-    fun watchCurrentUser(): Flow<User?>
-
     fun watchUser(userId: String): Flow<User?>
+
+    fun watchCurrentUser(): Flow<User?>
 }

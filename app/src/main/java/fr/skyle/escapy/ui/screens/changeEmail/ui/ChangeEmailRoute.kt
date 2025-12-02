@@ -21,7 +21,7 @@ fun ChangeEmailRoute(
 ) {
     val context = LocalContext.current
 
-    val changeEmailState by changeEmailViewModel.changeEmailState.collectAsStateWithLifecycle()
+    val changeEmailState by changeEmailViewModel.state.collectAsStateWithLifecycle()
 
     val projectSnackbarState = rememberProjectSnackbarState()
 
@@ -65,7 +65,7 @@ fun ChangeEmailRoute(
 
     ChangeEmailScreen(
         snackbarState = projectSnackbarState,
-        changeEmailState = changeEmailState,
+        state = changeEmailState,
         onCurrentPasswordChange = changeEmailViewModel::setCurrentPassword,
         onNewEmailChanged = changeEmailViewModel::setNewEmail,
         onSaveProfile = changeEmailViewModel::saveProfile,

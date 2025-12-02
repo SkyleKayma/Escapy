@@ -15,7 +15,7 @@ val SurfaceContainerLow = Color(0xFF23272A)
 val OnSurface = Color(0xFFFFFFFF)
 
 val Error = Color(0xffEA3A24)
-val Warning = Color(0xFF664D03)
+val Warning = Color(0xffd86715)
 val Success = Color(0xFF0F9C4D)
 
 val White = Color(0xFFFFFFFF)

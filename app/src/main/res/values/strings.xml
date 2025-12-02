@@ -18,6 +18,7 @@
     <string name="generic_error_format">Une erreur est survenue (%s)</string>
     <string name="generic_error_invalid_fields">Certains champs sont invalides</string>
     <string name="generic_error_invalid_current_password">Votre mot de passe actuel est invalide</string>
+    <string name="generic_error_email_already_used">L\'email est déjà utilisé</string>
 
     <!-- Generic Password Rule -->
     <string name="generic_password_rule_uppercase">Contient une majuscule</string>
@@ -42,7 +43,7 @@
     <string name="sign_in_up_subtitle">Renseignez vos identifiants</string>
     <string name="sign_in_up_email">Email</string>
     <string name="sign_in_up_password">Mot de passe</string>
-    <string name="sign_in_up_or_sign_in_with">Ou connectez-vous avec</string>
+    <string name="sign_in_up_or_sign_in_with">Ou continuez avec</string>
     <string name="sign_in_up_continue_as_guest">Continuer en tant qu\'invité</string>
 
     <!-- Home -->
@@ -56,9 +57,12 @@
     <string name="home_no_game_in_progress">Aucune partie en cours</string>
 
     <!-- Auth Provider -->
-    <string name="auth_provider_email">Email</string>
-    <string name="auth_provider_google">Google</string>
-    <string name="auth_provider_anonymous">Anonyme</string>
+    <string name="auth_provider_email_short">Email</string>
+    <string name="auth_provider_google_short">Google</string>
+    <string name="auth_provider_anonymous_short">Anonyme</string>
+    <string name="auth_provider_email_long">Email + Mot de passe</string>
+    <string name="auth_provider_google_long">Google</string>
+    <string name="auth_provider_anonymous_long">Anonyme</string>
 
     <!-- Profile -->
     <string name="profile_title">Profil</string>
@@ -101,7 +105,7 @@
 
     <!-- Email Verification Sent Dialog -->
     <string name="email_verification_sent_dialog_title">Un mail de vérification a été envoyé</string>
-    <string name="email_verification_sent_dialog_subtitle">Veuillez cliquer sur le lien reçu par mail pour valider le changement de votre adresse email.</string>
+    <string name="email_verification_sent_dialog_subtitle">Un email de vérification sera envoyé uniquement si l\'adresse n\'est associée à aucun compte. Cliquez sur le lien reçu pour finaliser le changement.</string>
 
     <!-- Edit Avatar -->
     <string name="edit_avatar_title">Modifier votre avatar</string>
@@ -118,5 +122,17 @@
     <!-- Delete Account Confirmation Dialog -->
     <string name="delete_account_confirmation_dialog_title">Etes-vous sûr de vouloir supprimer votre compte ?</string>
     <string name="delete_account_confirmation_dialog_subtitle">Toutes les données de votre compte seront supprimées. Cette action est irréversible.</string>
+
+    <!-- Link Account -->
+    <string name="link_account_title">Lier votre compte</string>
+    <string name="link_account_why_to_link">Lier son compte permet de sécuriser son profil et d\'éviter la perte de données. Cela transforme un compte temporaire en compte permanent, tout en conservant votre historique, votre avatar, vos préférences, etc.</string>
+    <string name="link_account_select_link_type">Par quel moyen souhaitez-vous lier votre compte ?</string>
+
+    <!-- Link Account With Email -->
+    <string name="link_account_with_email_title">Lier par email</string>
+    <string name="link_account_with_email_please_fill_account_information">Veuillez renseigner les informations de votre compte:</string>
+    <string name="link_account_with_email_email">Email</string>
+    <string name="link_account_with_email_password">Mot de passe</string>
+    <string name="link_account_with_email_password_confirmation">Confirmation du mot de passe</string>
 
 </resources>

@@ -40,7 +40,7 @@ import fr.skyle.escapy.utils.ProjectScreenPreview
 @Composable
 fun ChangeEmailScreen(
     snackbarState: ProjectSnackbarState,
-    changeEmailState: ChangeEmailViewModel.ChangeEmailState,
+    state: ChangeEmailViewModel.State,
     onCurrentPasswordChange: (currentPassword: String) -> Unit,
     onNewEmailChanged: (newEmail: String) -> Unit,
     onSaveProfile: () -> Unit,
@@ -67,11 +67,11 @@ fun ChangeEmailScreen(
         ChangeEmailScreenContent(
             modifier = Modifier.fillMaxSize(),
             innerPadding = innerPadding,
-            isButtonLoading = changeEmailState.isButtonLoading,
-            newEmail = changeEmailState.newEmail,
-            currentPassword = changeEmailState.currentPassword,
-            newEmailValidationState = changeEmailState.newEmailValidationState,
-            currentPasswordValidationState = changeEmailState.currentPasswordValidationState,
+            isButtonLoading = state.isButtonLoading,
+            newEmail = state.newEmail,
+            currentPassword = state.currentPassword,
+            newEmailValidationState = state.newEmailValidationState,
+            currentPasswordValidationState = state.currentPasswordValidationState,
             onNewEmailChange = onNewEmailChanged,
             onCurrentPasswordChange = onCurrentPasswordChange,
             onChangeEmail = onSaveProfile,
@@ -161,7 +161,7 @@ private fun ChangeEmailScreenPreview() {
     ProjectTheme {
         ChangeEmailScreen(
             snackbarState = rememberProjectSnackbarState(),
-            changeEmailState = ChangeEmailViewModel.ChangeEmailState(),
+            state = ChangeEmailViewModel.State(),
             onNewEmailChanged = {},
             onCurrentPasswordChange = {},
             onSaveProfile = {},

@@ -43,7 +43,7 @@ import fr.skyle.escapy.utils.buildAnnotatedString
 
 @Composable
 fun HomeScreen(
-    homeState: HomeViewModel.HomeState,
+    state: HomeViewModel.State,
     onProfileClicked: () -> Unit
 ) {
     ProjectScreenStructure(
@@ -84,7 +84,7 @@ fun HomeScreen(
         HomeScreenContent(
             modifier = Modifier.fillMaxSize(),
             innerPadding = innerPadding,
-            username = homeState.username,
+            username = state.username,
         )
     }
 }
@@ -211,7 +211,7 @@ private fun HomeScreenContent(
 private fun HomeScreenPreview() {
     ProjectTheme {
         HomeScreen(
-            homeState = HomeViewModel.HomeState(
+            state = HomeViewModel.State(
                 username = "John Doe"
             ),
             onProfileClicked = {}

@@ -10,10 +10,10 @@ fun HomeRoute(
     navigateToProfile: () -> Unit,
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
-    val homeState by homeViewModel.homeState.collectAsStateWithLifecycle()
+    val homeState by homeViewModel.state.collectAsStateWithLifecycle()
 
     HomeScreen(
-        homeState = homeState,
+        state = homeState,
         onProfileClicked = navigateToProfile
     )
 }

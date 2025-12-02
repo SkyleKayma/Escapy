@@ -21,7 +21,7 @@ fun ChangePasswordRoute(
 ) {
     val context = LocalContext.current
 
-    val changePasswordState by changePasswordViewModel.changePasswordState.collectAsStateWithLifecycle()
+    val changePasswordState by changePasswordViewModel.state.collectAsStateWithLifecycle()
 
     val projectSnackbarState = rememberProjectSnackbarState()
 
@@ -65,7 +65,7 @@ fun ChangePasswordRoute(
 
     ChangePasswordScreen(
         snackbarState = projectSnackbarState,
-        changePasswordState = changePasswordState,
+        state = changePasswordState,
         onCurrentPasswordChange = changePasswordViewModel::setCurrentPassword,
         onNewPasswordChange = changePasswordViewModel::setNewPassword,
         onNewPasswordConfirmationChange = changePasswordViewModel::setNewPasswordConfirmation,
