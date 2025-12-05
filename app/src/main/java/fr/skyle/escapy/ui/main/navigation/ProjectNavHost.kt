@@ -10,6 +10,7 @@ import androidx.navigation.navigation
 import fr.skyle.escapy.ui.screens.about.impl.aboutRoute
 import fr.skyle.escapy.ui.screens.changeEmail.impl.changeEmailRoute
 import fr.skyle.escapy.ui.screens.changePassword.impl.changePasswordRoute
+import fr.skyle.escapy.ui.screens.createLobby.impl.createLobbyRoute
 import fr.skyle.escapy.ui.screens.deleteAccount.impl.deleteAccountRoute
 import fr.skyle.escapy.ui.screens.home.impl.homeRoute
 import fr.skyle.escapy.ui.screens.linkAccount.impl.linkAccountRoute
@@ -92,6 +93,10 @@ fun ProjectNavHost(
             )
 
             linkAccountWithEmailRoute(
+                navHostController = navHostController
+            )
+
+            createLobbyRoute(
                 navHostController = navHostController
             )
         }

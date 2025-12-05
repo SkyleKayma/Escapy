@@ -47,6 +47,9 @@ fun NavGraphBuilder.homeRoute(
         HomeRoute(
             navigateToProfile = {
                 navHostController.navigateWithLifecycle(Route.Profile)
+            },
+            navigateToCreateLobby = {
+                navHostController.navigateWithLifecycle(Route.CreateLobby)
             }
         )
     }

@@ -67,7 +67,7 @@ fun ProfileScreen(
         topContent = {
             ProjectTopAppBar(
                 modifier = Modifier.fillMaxWidth(),
-                title = stringResource(R.string.profile_title),
+                title = stringResource(R.string.profile_screen_title),
                 leadingContent = {
                     ProjectTopAppBarItem(
                         icon = rememberVectorPainter(Icons.AutoMirrored.Filled.ArrowBack),

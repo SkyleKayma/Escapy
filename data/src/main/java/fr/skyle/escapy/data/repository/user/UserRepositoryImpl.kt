@@ -6,7 +6,7 @@ import fr.skyle.escapy.data.repository.user.api.UserLocalDataSource
 import fr.skyle.escapy.data.repository.user.api.UserRemoteDataSource
 import fr.skyle.escapy.data.repository.user.api.UserRepository
 import fr.skyle.escapy.data.vo.User
-import fr.skyle.escapy.data.vo.adapter.toUser
+import fr.skyle.escapy.data.vo.mapper.toUser
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton

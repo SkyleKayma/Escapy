@@ -1,8 +1,10 @@
 package fr.skyle.escapy.designsystem.core.textField
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -17,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.takeOrElse
@@ -39,6 +42,8 @@ fun ProjectTextField(
     trailingContent: @Composable (ProjectTextFieldSideContentScope.() -> Unit)? = null,
     label: String? = null,
     placeholder: String? = null,
+    onClick: (() -> Unit)? = null,
+    isClickable: Boolean = false,
     isEnabled: Boolean = true,
     isError: Boolean = false,
     isReadOnly: Boolean = false,
@@ -59,13 +64,12 @@ fun ProjectTextField(
     shape: ProjectTextFieldDefaults.TextFieldShape = ProjectTextFieldDefaults.TextFieldShape.RECTANGLE,
     colors: ProjectTextFieldDefaults.Colors = ProjectTextFieldDefaults.Colors.default()
 ) {
-    val textStyle = ProjectTheme.typography.p1
     val interactionSource = remember { MutableInteractionSource() }
     val textFieldColors = colors.toTextFieldColors()
 
     val isFocused = interactionSource.collectIsFocusedAsState().value
 
-    val textColor = textStyle.color.takeOrElse {
+    val textColor = ProjectTextFieldDefaults.textStyle.color.takeOrElse {
         textFieldColors.textColor(
             enabled = isEnabled,
             isError = isError,
@@ -74,15 +78,17 @@ fun ProjectTextField(
     }
 
     BasicTextField(
-        modifier = modifier.defaultMinSize(
-            minWidth = ProjectTextFieldDefaults.textFieldMinWidth,
-            minHeight = ProjectTextFieldDefaults.textFieldMinHeight
-        ),
+        modifier = modifier
+            .padding(top = ProjectTextFieldDefaults.minimizedLabelHalfHeight())
+            .defaultMinSize(
+                minWidth = ProjectTextFieldDefaults.textFieldMinWidth,
+                minHeight = ProjectTextFieldDefaults.textFieldMinHeight
+            ),
         value = value,
         onValueChange = onValueChange,
         enabled = isEnabled,
         readOnly = isReadOnly,
-        textStyle = textStyle.merge(
+        textStyle = ProjectTextFieldDefaults.textStyle.merge(
             other = TextStyle(color = textColor)
         ),
         cursorBrush = SolidColor(
@@ -143,6 +149,15 @@ fun ProjectTextField(
                     colors = textFieldColors,
                     container = @Composable {
                         OutlinedTextFieldDefaults.Container(
+                            modifier = Modifier
+                                .clip(shape.shape)
+                                .then(
+                                    if (onClick != null) {
+                                        Modifier.clickable(enabled = isClickable) { onClick() }
+                                    } else {
+                                        Modifier
+                                    }
+                                ),
                             enabled = isEnabled,
                             isError = isError,
                             interactionSource = interactionSource,

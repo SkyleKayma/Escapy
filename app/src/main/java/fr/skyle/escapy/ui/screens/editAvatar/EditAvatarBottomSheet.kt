@@ -1,5 +1,6 @@
 package fr.skyle.escapy.ui.screens.editAvatar
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -65,7 +66,31 @@ fun EditAvatarBottomSheet(
             when (event) {
                 is EditAvatarViewModel.EditAvatarEvent.Error -> {
                     projectSnackbarState.showSnackbar(
-                        message = context.getString(R.string.generic_error_format, event.message),
+                        message = context.getString(
+                            R.string.generic_error_format,
+                            event.message ?: "-"
+                        ),
+                        type = ProjectSnackbarDefaults.ProjectSnackbarType.ERROR
+                    )
+                }
+
+                EditAvatarViewModel.EditAvatarEvent.Success -> {
+                    animateToDismiss()
+                }
+            }
+
+            editAvatarViewModel.eventDelivered()
+        }
+    }
+
+    val errorFormat = stringResource(R.string.generic_error_format)
+
+    LaunchedEffect(state.event) {
+        state.event?.let { event ->
+            when (event) {
+                is EditAvatarViewModel.EditAvatarEvent.Error -> {
+                    projectSnackbarState.showSnackbar(
+                        message = errorFormat.format(event.message ?: "-"),
                         type = ProjectSnackbarDefaults.ProjectSnackbarType.ERROR
                     )
                 }
@@ -112,7 +137,7 @@ private fun EditAvatarBottomSheetContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp),
-            text = stringResource(R.string.edit_avatar_title),
+            text = stringResource(R.string.edit_avatar_screen_title),
             style = ProjectTheme.typography.b1,
             color = ProjectTheme.colors.onSurface
         )
@@ -126,7 +151,10 @@ private fun EditAvatarBottomSheetContent(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(start = 24.dp, end = 24.dp, bottom = 24.dp)
         ) {
-            items(Avatar.entries) { avatar ->
+            items(
+                items = Avatar.entries,
+                key = { it.type }
+            ) { avatar ->
                 EditAvatarItem(
                     avatar = avatar,
                     isSelected = avatar == currentAvatar,

@@ -153,7 +153,7 @@ private fun SignInScreenContent(
             isEnabled = !isButtonLoading
         )
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(4.dp))
 
         ProjectTextField(
             modifier = Modifier.fillMaxWidth(),

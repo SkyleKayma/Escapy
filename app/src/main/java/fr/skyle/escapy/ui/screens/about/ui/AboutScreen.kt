@@ -48,7 +48,7 @@ fun AboutScreen(
         topContent = {
             ProjectTopAppBar(
                 modifier = Modifier.fillMaxWidth(),
-                title = stringResource(R.string.about_title),
+                title = stringResource(R.string.about_screen_title),
                 leadingContent = {
                     ProjectTopAppBarItem(
                         icon = rememberVectorPainter(Icons.AutoMirrored.Filled.ArrowBack),

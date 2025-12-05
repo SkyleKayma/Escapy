@@ -67,7 +67,7 @@ fun ChangeEmailRoute(
         snackbarState = projectSnackbarState,
         state = changeEmailState,
         onCurrentPasswordChange = changeEmailViewModel::setCurrentPassword,
-        onNewEmailChanged = changeEmailViewModel::setNewEmail,
+        onNewEmailChange = changeEmailViewModel::setNewEmail,
         onSaveProfile = changeEmailViewModel::saveProfile,
         navigateBack = navigateBack,
     )

@@ -6,6 +6,8 @@ import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import fr.skyle.escapy.designsystem.theme.MediumShapeToken
@@ -19,6 +21,10 @@ object ProjectTextFieldDefaults {
 
     val textFieldMinHeight: Dp = OutlinedTextFieldDefaults.MinHeight
     val textFieldMinWidth: Dp = OutlinedTextFieldDefaults.MinWidth
+
+    val textStyle: TextStyle
+        @Composable
+        get() = ProjectTheme.typography.p1
 
     val defaultContainerColor: Color
         @Composable
@@ -99,6 +105,12 @@ object ProjectTextFieldDefaults {
                     )
                 }
             }
+    }
+
+    @Composable
+    fun minimizedLabelHalfHeight(): Dp {
+        val lineHeightValue = textStyle.lineHeight
+        return with(LocalDensity.current) { lineHeightValue.toDp() / 2 }
     }
 
     @ConsistentCopyVisibility

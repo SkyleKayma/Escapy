@@ -1,4 +1,4 @@
-package fr.skyle.escapy.data.vo.adapter
+package fr.skyle.escapy.data.vo.mapper
 
 import fr.skyle.escapy.data.rest.github.response.GithubContributorResponseDTO
 import fr.skyle.escapy.data.vo.GithubContributor

@@ -44,7 +44,8 @@ import fr.skyle.escapy.utils.buildAnnotatedString
 @Composable
 fun HomeScreen(
     state: HomeViewModel.State,
-    onProfileClicked: () -> Unit
+    onProfileClicked: () -> Unit,
+    onCreateLobby: () -> Unit,
 ) {
     ProjectScreenStructure(
         modifier = Modifier.fillMaxSize(),
@@ -68,9 +69,7 @@ fun HomeScreen(
             FloatingActionButton(
                 modifier = Modifier.size(56.dp),
                 containerColor = ProjectTheme.colors.primary,
-                onClick = {
-                    // TODO
-                }
+                onClick = onCreateLobby
             ) {
                 Icon(
                     modifier = Modifier.size(24.dp),
@@ -214,7 +213,8 @@ private fun HomeScreenPreview() {
             state = HomeViewModel.State(
                 username = "John Doe"
             ),
-            onProfileClicked = {}
+            onProfileClicked = {},
+            onCreateLobby = {}
         )
     }
 }

@@ -20,8 +20,8 @@ import fr.skyle.escapy.data.utils.getAuthProvider
 import fr.skyle.escapy.data.utils.readOnce
 import fr.skyle.escapy.data.utils.requireUser
 import fr.skyle.escapy.data.vo.User
-import fr.skyle.escapy.data.vo.adapter.toUser
-import fr.skyle.escapy.data.vo.adapter.toUserRequestDTO
+import fr.skyle.escapy.data.vo.mapper.toUser
+import fr.skyle.escapy.data.vo.mapper.toUserRequestDTO
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

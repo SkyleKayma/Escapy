@@ -56,7 +56,7 @@ fun LinkAccountWithEmailScreen(
         topContent = {
             ProjectTopAppBar(
                 modifier = Modifier.fillMaxWidth(),
-                title = stringResource(R.string.link_account_with_email_title),
+                title = stringResource(R.string.link_account_with_email_screen_title),
                 leadingContent = {
                     ProjectTopAppBarItem(
                         icon = rememberVectorPainter(Icons.AutoMirrored.Filled.ArrowBack),
@@ -132,7 +132,7 @@ private fun LinkAccountWithEmailScreenContent(
             isError = !emailValidationState.isValid && emailValidationState.hasBeenChecked
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(4.dp))
 
         ProjectTextField(
             modifier = Modifier.fillMaxWidth(),
@@ -158,7 +158,7 @@ private fun LinkAccountWithEmailScreenContent(
             containsSpecialCharacter = passwordValidationState.containsSpecialCharacter,
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(4.dp))
 
         ProjectTextField(
             modifier = Modifier.fillMaxWidth(),

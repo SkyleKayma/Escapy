@@ -58,7 +58,7 @@ fun DeleteAccountScreen(
         topContent = {
             ProjectTopAppBar(
                 modifier = Modifier.fillMaxWidth(),
-                title = stringResource(R.string.delete_account_title),
+                title = stringResource(R.string.delete_account_screen_title),
                 leadingContent = {
                     ProjectTopAppBarItem(
                         icon = rememberVectorPainter(Icons.AutoMirrored.Filled.ArrowBack),
@@ -102,7 +102,29 @@ private fun DeleteAccountScreenContent(
             .padding(24.dp)
             .imePadding()
     ) {
+
+        Text(
+            modifier = Modifier.fillMaxWidth(),
+            text = stringResource(R.string.delete_account_warning_delete_account),
+            style = ProjectTheme.typography.p2,
+            color = ProjectTheme.colors.onSurface
+        )
+
+        if (authProvider == AuthProvider.ANONYMOUS) {
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(R.string.delete_account_warning_delete_account_anonymous),
+                style = ProjectTheme.typography.p3,
+                color = ProjectTheme.colors.error
+            )
+        }
+
+
         if (shouldShowPasswordField) {
+            Spacer(modifier = Modifier.height(12.dp))
+
             ProjectTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = password,
@@ -120,26 +142,6 @@ private fun DeleteAccountScreenContent(
                     }
                 ),
                 isEnabled = !isButtonLoading
-            )
-
-            Spacer(modifier = Modifier.height(24.dp))
-        }
-
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = stringResource(R.string.delete_account_warning_delete_account),
-            style = ProjectTheme.typography.p2,
-            color = ProjectTheme.colors.onSurface
-        )
-
-        if (authProvider == AuthProvider.ANONYMOUS) {
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = stringResource(R.string.delete_account_warning_delete_account_anonymous),
-                style = ProjectTheme.typography.p3,
-                color = ProjectTheme.colors.error
             )
         }
 

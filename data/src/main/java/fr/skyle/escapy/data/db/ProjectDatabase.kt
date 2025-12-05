@@ -4,18 +4,25 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import fr.skyle.escapy.data.db.converter.StringListConverter
+import fr.skyle.escapy.data.db.dao.LobbyDao
 import fr.skyle.escapy.data.db.dao.UserDao
+import fr.skyle.escapy.data.vo.Lobby
 import fr.skyle.escapy.data.vo.User
 
 @Database(
     entities = [
         User::class,
+        Lobby::class,
     ],
     version = 1
 )
+@TypeConverters(StringListConverter::class)
 abstract class ProjectDatabase : RoomDatabase() {
 
-    abstract fun currentUserDao(): UserDao
+    abstract fun userDao(): UserDao
+    abstract fun lobbyDao(): LobbyDao
 
     companion object {
         fun databaseBuilder(context: Context) =

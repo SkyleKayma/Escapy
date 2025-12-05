@@ -55,7 +55,7 @@ fun ChangePasswordScreen(
         topContent = {
             ProjectTopAppBar(
                 modifier = Modifier.fillMaxWidth(),
-                title = stringResource(R.string.change_password_title),
+                title = stringResource(R.string.change_password_screen_title),
                 leadingContent = {
                     ProjectTopAppBarItem(
                         icon = rememberVectorPainter(Icons.AutoMirrored.Filled.ArrowBack),
@@ -123,7 +123,7 @@ private fun ChangePasswordScreenContent(
             isError = !currentPasswordValidationState.isValid && currentPasswordValidationState.hasBeenChecked
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(4.dp))
 
         ProjectTextField(
             modifier = Modifier.fillMaxWidth(),
@@ -149,7 +149,7 @@ private fun ChangePasswordScreenContent(
             containsSpecialCharacter = newPasswordValidationState.containsSpecialCharacter,
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(4.dp))
 
         ProjectTextField(
             modifier = Modifier.fillMaxWidth(),

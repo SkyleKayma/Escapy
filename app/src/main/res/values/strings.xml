@@ -6,6 +6,9 @@
     <string name="openium_url" translatable="false">https://www.openium.fr</string>
     <string name="data_privacy_url" translatable="false">https://skylekayma.github.io/Escapy/docs/privacy-policy.html</string>
 
+    <!-- Generic format -->
+    <string name="generic_format_duration">%02dh %02dm</string>
+
     <!-- Generic Action -->
     <string name="generic_action_ok">OK</string>
     <string name="generic_action_yes">Oui</string>
@@ -13,6 +16,8 @@
     <string name="generic_action_modify">Modifier</string>
     <string name="generic_action_delete">Supprimer</string>
     <string name="generic_action_cancel">Annuler</string>
+    <string name="generic_action_confirm">Confirmer</string>
+    <string name="generic_action_dismiss">Annuler</string>
 
     <!-- Generic Error -->
     <string name="generic_error_format">Une erreur est survenue (%s)</string>
@@ -49,7 +54,7 @@
     <!-- Home -->
     <string name="home_welcome_format">Bienvenue,\n%s !</string>
     <string name="home_welcome">Bienvenue !</string>
-    <string name="home_join_a_room">Rejoindre une salle</string>
+    <string name="home_join_a_room">Rejoindre un salon</string>
     <string name="home_join_a_room_via_qrcode">Par QRcode</string>
     <string name="home_join_a_room_via_id">Par ID</string>
     <string name="home_history">Historique des parties</string>
@@ -65,7 +70,7 @@
     <string name="auth_provider_anonymous_long">Anonyme</string>
 
     <!-- Profile -->
-    <string name="profile_title">Profil</string>
+    <string name="profile_screen_title">Profil</string>
     <string name="profile_created_at_format">Crée le %s</string>
     <string name="profile_auth_provider_format">Authentifié: %s</string>
     <string name="profile_warning_guest">Vous utilisez actuellement un compte \"invité\". Sans lier votre compte, vous risquez une perte de données (historique, stats, etc.).</string>
@@ -86,11 +91,11 @@
     <string name="sign_out_confirmation_dialog_subtitle">Souhaitez-vous vraiment vous déconnecter \?</string>
 
     <!-- About -->
-    <string name="about_title">À propos</string>
+    <string name="about_screen_title">À propos</string>
     <string name="about_contributors">Contributeurs</string>
 
     <!-- Change Password -->
-    <string name="change_password_title">Mot de passe</string>
+    <string name="change_password_screen_title">Mot de passe</string>
     <string name="change_password_current_password">Mot de passe actuel</string>
     <string name="change_password_new_password">Nouveau mot de passe</string>
     <string name="change_password_new_password_confirmation">Confirmation du mot de passe</string>
@@ -99,7 +104,7 @@
     <string name="password_changed_dialog_title">Votre mot de passe a été modifié avec succès</string>
 
     <!-- Change Email -->
-    <string name="change_email_title">Email</string>
+    <string name="change_email_screen_title">Email</string>
     <string name="change_email_current_password">Mot de passe actuel</string>
     <string name="change_email_new_email">Nouvel email</string>
 
@@ -108,13 +113,13 @@
     <string name="email_verification_sent_dialog_subtitle">Un email de vérification sera envoyé uniquement si l\'adresse n\'est associée à aucun compte. Cliquez sur le lien reçu pour finaliser le changement.</string>
 
     <!-- Edit Avatar -->
-    <string name="edit_avatar_title">Modifier votre avatar</string>
+    <string name="edit_avatar_screen_title">Modifier votre avatar</string>
 
     <!-- Edit Avatar Loading -->
     <string name="edit_avatar_loading_dialog_title">Modification de votre avatar en cours...</string>
 
     <!-- Delete Account -->
-    <string name="delete_account_title">Supprimer mon compte</string>
+    <string name="delete_account_screen_title">Supprimer mon compte</string>
     <string name="delete_account_current_password">Mot de passe actuel</string>
     <string name="delete_account_warning_delete_account">Toutes vos données seront supprimées. Votre pseudo sera remplacé par un identifiant dans l\'historique des autres joueurs. Toute suppression est définitive.</string>
     <string name="delete_account_warning_delete_account_anonymous">Votre compte est un compte "invité", par conséquent votre compte sera supprimé au bout de 30jours sans action de votre part.</string>
@@ -124,15 +129,21 @@
     <string name="delete_account_confirmation_dialog_subtitle">Toutes les données de votre compte seront supprimées. Cette action est irréversible.</string>
 
     <!-- Link Account -->
-    <string name="link_account_title">Lier votre compte</string>
+    <string name="link_account_screen_title">Lier votre compte</string>
     <string name="link_account_why_to_link">Lier son compte permet de sécuriser son profil et d\'éviter la perte de données. Cela transforme un compte temporaire en compte permanent, tout en conservant votre historique, votre avatar, vos préférences, etc.</string>
     <string name="link_account_select_link_type">Par quel moyen souhaitez-vous lier votre compte ?</string>
 
     <!-- Link Account With Email -->
-    <string name="link_account_with_email_title">Lier par email</string>
+    <string name="link_account_with_email_screen_title">Lier par email</string>
     <string name="link_account_with_email_please_fill_account_information">Veuillez renseigner les informations de votre compte:</string>
     <string name="link_account_with_email_email">Email</string>
     <string name="link_account_with_email_password">Mot de passe</string>
     <string name="link_account_with_email_password_confirmation">Confirmation du mot de passe</string>
+
+    <!-- Create Lobby -->
+    <string name="create_lobby_screen_title">Créer un salon</string>
+    <string name="create_lobby_max_duration">Durée maximale</string>
+    <string name="create_lobby_title">Titre</string>
+    <string name="create_lobby_create">Créer</string>
 
 </resources>

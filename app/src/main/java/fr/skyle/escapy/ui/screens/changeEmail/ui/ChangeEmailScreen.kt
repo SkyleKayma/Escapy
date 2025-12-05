@@ -42,7 +42,7 @@ fun ChangeEmailScreen(
     snackbarState: ProjectSnackbarState,
     state: ChangeEmailViewModel.State,
     onCurrentPasswordChange: (currentPassword: String) -> Unit,
-    onNewEmailChanged: (newEmail: String) -> Unit,
+    onNewEmailChange: (newEmail: String) -> Unit,
     onSaveProfile: () -> Unit,
     navigateBack: () -> Unit,
 ) {
@@ -53,7 +53,7 @@ fun ChangeEmailScreen(
         topContent = {
             ProjectTopAppBar(
                 modifier = Modifier.fillMaxWidth(),
-                title = stringResource(R.string.change_email_title),
+                title = stringResource(R.string.change_email_screen_title),
                 leadingContent = {
                     ProjectTopAppBarItem(
                         icon = rememberVectorPainter(Icons.AutoMirrored.Filled.ArrowBack),
@@ -72,7 +72,7 @@ fun ChangeEmailScreen(
             currentPassword = state.currentPassword,
             newEmailValidationState = state.newEmailValidationState,
             currentPasswordValidationState = state.currentPasswordValidationState,
-            onNewEmailChange = onNewEmailChanged,
+            onNewEmailChange = onNewEmailChange,
             onCurrentPasswordChange = onCurrentPasswordChange,
             onChangeEmail = onSaveProfile,
         )
@@ -114,7 +114,7 @@ private fun ChangeEmailScreenContent(
             isError = !newEmailValidationState.isValid && newEmailValidationState.hasBeenChecked
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(4.dp))
 
         ProjectTextField(
             modifier = Modifier.fillMaxWidth(),
@@ -162,7 +162,7 @@ private fun ChangeEmailScreenPreview() {
         ChangeEmailScreen(
             snackbarState = rememberProjectSnackbarState(),
             state = ChangeEmailViewModel.State(),
-            onNewEmailChanged = {},
+            onNewEmailChange = {},
             onCurrentPasswordChange = {},
             onSaveProfile = {},
             navigateBack = {},

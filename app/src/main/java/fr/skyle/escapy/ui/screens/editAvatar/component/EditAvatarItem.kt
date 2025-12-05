@@ -54,7 +54,8 @@ fun EditAvatarItem(
             .build(),
         contentDescription = null,
         contentScale = ContentScale.Crop,
-        error = painterResource(R.drawable.avatar_default)
+        error = painterResource(R.drawable.avatar_default),
+        placeholder = painterResource(R.drawable.avatar_default),
     )
 }
 

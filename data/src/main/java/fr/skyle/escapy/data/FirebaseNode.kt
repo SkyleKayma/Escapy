@@ -7,8 +7,8 @@ object FirebaseNode {
         val path = "users"
     }
 
-    object Rooms {
+    object Lobbies {
 
-        val path = "rooms"
+        val path = "lobbies"
     }
 }

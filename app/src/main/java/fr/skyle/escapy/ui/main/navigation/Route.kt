@@ -32,6 +32,9 @@ sealed interface Route {
 
     @Serializable
     data object LinkAccountWithEmail : Route
+
+    @Serializable
+    data object CreateLobby : Route
 }
 
 @Serializable

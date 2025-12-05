@@ -22,6 +22,12 @@ import fr.skyle.escapy.data.usecase.firebaseAuth.SignOutUseCase
 import fr.skyle.escapy.data.usecase.firebaseAuth.SignOutUseCaseImpl
 import fr.skyle.escapy.data.usecase.firebaseAuth.SignUpUseCase
 import fr.skyle.escapy.data.usecase.firebaseAuth.SignUpUseCaseImpl
+import fr.skyle.escapy.data.usecase.lobby.CreateLobbyUseCase
+import fr.skyle.escapy.data.usecase.lobby.CreateLobbyUseCaseImpl
+import fr.skyle.escapy.data.usecase.lobby.FetchLobbiesForCurrentUserUseCase
+import fr.skyle.escapy.data.usecase.lobby.FetchLobbiesForCurrentUserUseCaseImpl
+import fr.skyle.escapy.data.usecase.lobby.FetchLobbyUseCase
+import fr.skyle.escapy.data.usecase.lobby.FetchLobbyUseCaseImpl
 import fr.skyle.escapy.data.usecase.user.FetchCurrentUserUseCase
 import fr.skyle.escapy.data.usecase.user.FetchCurrentUserUseCaseImpl
 import fr.skyle.escapy.data.usecase.user.FetchUserUseCase
@@ -121,4 +127,22 @@ interface UseCaseModule {
     fun bindsLinkAccountWithEmailProviderUseCase(
         linkAccountWithEmailProviderUseCaseImpl: LinkAccountWithEmailProviderUseCaseImpl,
     ): LinkAccountWithEmailProviderUseCase
+
+    @Binds
+    @Singleton
+    fun bindsCreateLobbyUseCase(
+        createLobbyUseCaseImpl: CreateLobbyUseCaseImpl,
+    ): CreateLobbyUseCase
+
+    @Binds
+    @Singleton
+    fun bindsFetchLobbyUseCase(
+        fetchLobbyUseCaseImpl: FetchLobbyUseCaseImpl,
+    ): FetchLobbyUseCase
+
+    @Binds
+    @Singleton
+    fun bindsFetchLobbiesForCurrentUserUseCase(
+        fetchLobbiesForCurrentUserUseCaseImpl: FetchLobbiesForCurrentUserUseCaseImpl,
+    ): FetchLobbiesForCurrentUserUseCase
 }

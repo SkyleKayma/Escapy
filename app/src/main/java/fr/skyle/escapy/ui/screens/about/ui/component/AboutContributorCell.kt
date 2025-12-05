@@ -56,7 +56,8 @@ fun AboutContributorCell(
                 .build(),
             contentDescription = null,
             contentScale = ContentScale.Crop,
-            error = defaultPainter
+            error = defaultPainter,
+            placeholder = defaultPainter,
         )
 
         Spacer(modifier = Modifier.width(12.dp))

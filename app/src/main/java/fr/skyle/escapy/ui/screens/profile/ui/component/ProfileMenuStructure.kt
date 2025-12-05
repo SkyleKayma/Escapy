@@ -32,15 +32,13 @@ import fr.skyle.escapy.utils.AnnotatedData
 import fr.skyle.escapy.utils.ProjectComponentPreview
 import fr.skyle.escapy.utils.buildAnnotatedString
 
-class ProfileMenuScope {
-    internal val groups = mutableListOf<Group>()
+data class ProfileMenuScope(val groups: MutableList<Group> = mutableListOf()) {
 
     fun group(content: Group.() -> Unit) {
         groups.add(Group().apply(content))
     }
 
-    class Group {
-        internal val items = mutableListOf<@Composable () -> Unit>()
+    data class Group(val items: MutableList<@Composable (() -> Unit)> = mutableListOf()) {
 
         fun item(content: @Composable () -> Unit) {
             items.add(content)
