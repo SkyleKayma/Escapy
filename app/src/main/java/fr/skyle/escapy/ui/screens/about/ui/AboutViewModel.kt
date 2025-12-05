@@ -5,7 +5,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.skyle.escapy.MIN_DELAY_BEFORE_SHOWING_SCREEN_LOADER
 import fr.skyle.escapy.data.repository.github.api.GithubRepository
-import fr.skyle.escapy.data.vo.GithubContributor
+import fr.skyle.escapy.ui.screens.about.ui.mapper.toGithubContributorUI
+import fr.skyle.escapy.ui.screens.about.ui.model.GithubContributorUI
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -39,12 +40,15 @@ class AboutViewModel @Inject constructor(
             }
 
             try {
-                val contributors = githubRepository.getGithubContributors().getOrThrow()
+                val contributorsUI = githubRepository.getGithubContributors()
+                    .getOrThrow()
+                    .sortedByDescending { it.nbContributions }
+                    .map { it.toGithubContributorUI() }
 
                 showLoadingJob.cancel()
 
                 _state.update {
-                    it.copy(contributors = contributors.sortedByDescending { it.nbContributions })
+                    it.copy(contributors = contributorsUI)
                 }
             } catch (e: CancellationException) {
                 throw e
@@ -60,6 +64,6 @@ class AboutViewModel @Inject constructor(
 
     data class State(
         val isContributorsLoading: Boolean = true,
-        val contributors: List<GithubContributor> = listOf(),
+        val contributors: List<GithubContributorUI> = listOf(),
     )
 }

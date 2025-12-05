@@ -20,7 +20,6 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import fr.skyle.escapy.R
-import fr.skyle.escapy.data.vo.GithubContributor
 import fr.skyle.escapy.designsystem.core.iconButton.ProjectIconButton
 import fr.skyle.escapy.designsystem.core.iconButton.ProjectIconButtonDefaults
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
@@ -30,7 +29,9 @@ import fr.skyle.escapy.utils.ProjectComponentPreview
 
 @Composable
 fun AboutContributorCell(
-    contributor: GithubContributor,
+    username: String,
+    avatarUrl: String?,
+    personalRepoUrl: String?,
     defaultPainter: Painter,
     modifier: Modifier = Modifier,
 ) {
@@ -51,7 +52,7 @@ fun AboutContributorCell(
                     backgroundColor = ProjectTheme.colors.surfaceContainerLow
                 ),
             model = ImageRequest.Builder(context)
-                .data(contributor.avatarUrl)
+                .data(avatarUrl)
                 .crossfade(true)
                 .build(),
             contentDescription = null,
@@ -64,16 +65,14 @@ fun AboutContributorCell(
 
         Text(
             modifier = Modifier.weight(1f),
-            text = contributor.username,
+            text = username,
             style = ProjectTheme.typography.p3,
             color = ProjectTheme.colors.onSurface,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1
         )
 
-        val repoUrl = contributor.personalRepoUrl
-
-        if (!repoUrl.isNullOrBlank()) {
+        if (!personalRepoUrl.isNullOrBlank()) {
             Spacer(modifier = Modifier.width(12.dp))
 
             ProjectIconButton(
@@ -82,7 +81,7 @@ fun AboutContributorCell(
                 tint = ProjectIconButtonDefaults.Tint.NEUTRAL,
                 size = ProjectIconButtonDefaults.Size.LARGE,
                 onClick = {
-                    context.navigateToLink(repoUrl)
+                    context.navigateToLink(personalRepoUrl)
                 }
             )
         }
@@ -94,10 +93,9 @@ fun AboutContributorCell(
 private fun AboutContributorCellPreview() {
     ProjectTheme {
         AboutContributorCell(
-            contributor = GithubContributor(
-                id = 1,
-                username = "SkyleKayma"
-            ),
+            username = "SkyleKayma",
+            avatarUrl = null,
+            personalRepoUrl = null,
             defaultPainter = painterResource(R.drawable.avatar_default)
         )
     }
@@ -108,11 +106,9 @@ private fun AboutContributorCellPreview() {
 private fun AboutContributorCellWithGithubUrlPreview() {
     ProjectTheme {
         AboutContributorCell(
-            contributor = GithubContributor(
-                id = 1,
-                username = "SkyleKayma",
-                personalRepoUrl = "https://github.com"
-            ),
+            username = "SkyleKayma",
+            avatarUrl = null,
+            personalRepoUrl = "https://github.com",
             defaultPainter = painterResource(R.drawable.avatar_default)
         )
     }
