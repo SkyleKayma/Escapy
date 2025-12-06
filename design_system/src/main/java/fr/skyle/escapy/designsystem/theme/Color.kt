@@ -5,17 +5,17 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
 val Primary = Color(0xFFF5B856)
-val OnPrimary = Color(0xFF000000)
-val Secondary = Color(0xff2b3033)
-val OnSecondary = Color(0xFFFFFFFF)
+val OnPrimary = Color(0xFF030401)
+val Secondary = Color(0xFF2B3033)
+val OnSecondary = Color(0xFFFAFAFA)
 
-val SurfaceContainerHigh = Color(0xff2b3033)
+val SurfaceContainerHigh = Color(0xFF2B3033)
 val SurfaceContainerLow = Color(0xFF23272A)
 
-val OnSurface = Color(0xFFFFFFFF)
+val OnSurface = Color(0xFFFAFAFA)
 
-val Error = Color(0xffEA3A24)
-val Warning = Color(0xffd86715)
+val Error = Color(0xFFEA3A24)
+val Warning = Color(0xFFD86715)
 val Success = Color(0xFF0F9C4D)
 
 val White = Color(0xFFFFFFFF)
