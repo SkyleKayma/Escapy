@@ -13,7 +13,7 @@ import fr.skyle.escapy.designsystem.theme.ProjectTheme
 
 @Composable
 fun Modifier.boxCardStyle(
-    elevation: Dp = 4.dp,
+    elevation: Dp = 2.dp,
     shape: Shape = ProjectTheme.shape.medium,
     backgroundColor: Color = ProjectTheme.colors.surfaceContainerHigh
 ): Modifier {
