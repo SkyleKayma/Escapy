@@ -28,6 +28,8 @@ import fr.skyle.escapy.data.usecase.lobby.FetchLobbiesForCurrentUserUseCase
 import fr.skyle.escapy.data.usecase.lobby.FetchLobbiesForCurrentUserUseCaseImpl
 import fr.skyle.escapy.data.usecase.lobby.FetchLobbyUseCase
 import fr.skyle.escapy.data.usecase.lobby.FetchLobbyUseCaseImpl
+import fr.skyle.escapy.data.usecase.lobby.WatchCurrentUserActiveLobbiesUseCase
+import fr.skyle.escapy.data.usecase.lobby.WatchCurrentUserActiveLobbiesUseCaseImpl
 import fr.skyle.escapy.data.usecase.user.FetchCurrentUserUseCase
 import fr.skyle.escapy.data.usecase.user.FetchCurrentUserUseCaseImpl
 import fr.skyle.escapy.data.usecase.user.FetchUserUseCase
@@ -145,4 +147,10 @@ interface UseCaseModule {
     fun bindsFetchLobbiesForCurrentUserUseCase(
         fetchLobbiesForCurrentUserUseCaseImpl: FetchLobbiesForCurrentUserUseCaseImpl,
     ): FetchLobbiesForCurrentUserUseCase
+
+    @Binds
+    @Singleton
+    fun bindsWatchCurrentUserActiveLobbiesUseCase(
+        watchCurrentUserActiveLobbiesUseCaseImpl: WatchCurrentUserActiveLobbiesUseCaseImpl,
+    ): WatchCurrentUserActiveLobbiesUseCase
 }

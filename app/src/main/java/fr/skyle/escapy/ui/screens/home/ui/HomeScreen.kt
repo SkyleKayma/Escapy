@@ -1,5 +1,6 @@
 package fr.skyle.escapy.ui.screens.home.ui
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -16,10 +17,12 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Person2
 import androidx.compose.material.icons.filled.QrCode
 import androidx.compose.material.icons.filled.TextFields
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
@@ -28,6 +31,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import fr.skyle.escapy.R
+import fr.skyle.escapy.data.enums.LobbyStatus
 import fr.skyle.escapy.designsystem.core.button.ProjectButton
 import fr.skyle.escapy.designsystem.core.button.ProjectButtonDefaults
 import fr.skyle.escapy.designsystem.core.iconButton.ProjectIconButton
@@ -36,16 +40,20 @@ import fr.skyle.escapy.designsystem.core.topAppBar.ProjectTopAppBar
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
 import fr.skyle.escapy.ui.core.structure.ProjectScreenStructure
 import fr.skyle.escapy.ui.screens.home.ui.component.HomeActionCell
+import fr.skyle.escapy.ui.screens.home.ui.component.HomeActiveLobbyCell
+import fr.skyle.escapy.ui.screens.home.ui.model.LobbyUI
 import fr.skyle.escapy.utils.AnnotatedData
 import fr.skyle.escapy.utils.ProjectComponentPreview
 import fr.skyle.escapy.utils.ProjectScreenPreview
 import fr.skyle.escapy.utils.buildAnnotatedString
+import kotlin.time.Duration.Companion.hours
 
 @Composable
 fun HomeScreen(
     state: HomeViewModel.State,
     onProfileClicked: () -> Unit,
     onCreateLobby: () -> Unit,
+    onHomeActiveLobbyClicked: (lobbyId: String) -> Unit,
 ) {
     ProjectScreenStructure(
         modifier = Modifier.fillMaxSize(),
@@ -84,6 +92,9 @@ fun HomeScreen(
             modifier = Modifier.fillMaxSize(),
             innerPadding = innerPadding,
             username = state.username,
+            isActiveLobbiesLoading = state.isActiveLobbiesLoading,
+            activeLobbies = state.activeLobbies,
+            onHomeActiveLobbyClicked = onHomeActiveLobbyClicked,
         )
     }
 }
@@ -92,6 +103,9 @@ fun HomeScreen(
 private fun HomeScreenContent(
     innerPadding: PaddingValues,
     username: String?,
+    isActiveLobbiesLoading: Boolean,
+    activeLobbies: List<LobbyUI>,
+    onHomeActiveLobbyClicked: (lobbyId: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -132,13 +146,49 @@ private fun HomeScreenContent(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = stringResource(R.string.home_no_game_in_progress),
-            style = ProjectTheme.typography.p2,
-            color = ProjectTheme.colors.onSurface,
-            textAlign = TextAlign.Center
-        )
+        if (isActiveLobbiesLoading) {
+            Box(modifier = Modifier.fillMaxWidth()) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .align(Alignment.Center),
+                    color = ProjectTheme.colors.primary,
+                    trackColor = ProjectTheme.colors.surfaceContainerHigh,
+                    strokeWidth = 3.dp
+                )
+            }
+        } else {
+            if (activeLobbies.isEmpty()) {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(R.string.home_no_game_in_progress),
+                    style = ProjectTheme.typography.p2,
+                    color = ProjectTheme.colors.onSurface,
+                    textAlign = TextAlign.Center
+                )
+            } else {
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    activeLobbies.forEachIndexed { index, activeLobby ->
+                        HomeActiveLobbyCell(
+                            modifier = Modifier.fillMaxWidth(),
+                            title = activeLobby.title,
+                            status = activeLobby.status,
+                            duration = activeLobby.duration,
+                            createdAt = activeLobby.createdAt,
+                            createdBy = activeLobby.createdBy,
+                            nbParticipants = activeLobby.nbParticipants,
+                            onClick = {
+                                onHomeActiveLobbyClicked(activeLobby.uid)
+                            }
+                        )
+
+                        if (index != activeLobbies.lastIndex) {
+                            Spacer(modifier = Modifier.height(12.dp))
+                        }
+                    }
+                }
+            }
+        }
 
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -214,7 +264,8 @@ private fun HomeScreenPreview() {
                 username = "John Doe"
             ),
             onProfileClicked = {},
-            onCreateLobby = {}
+            onCreateLobby = {},
+            onHomeActiveLobbyClicked = {},
         )
     }
 }
@@ -226,7 +277,42 @@ private fun HomeScreenContentPreview() {
         HomeScreenContent(
             innerPadding = PaddingValues(),
             username = "John Doe",
-            modifier = Modifier.fillMaxSize(),
+            isActiveLobbiesLoading = false,
+            activeLobbies = listOf(),
+            onHomeActiveLobbyClicked = {}
+        )
+    }
+}
+
+@ProjectComponentPreview
+@Composable
+private fun HomeScreenContentWithLobbiesPreview() {
+    ProjectTheme {
+        HomeScreenContent(
+            innerPadding = PaddingValues(),
+            username = "John Doe",
+            isActiveLobbiesLoading = false,
+            activeLobbies = listOf(
+                LobbyUI(
+                    uid = "1",
+                    title = "Lobby 1",
+                    status = LobbyStatus.NOT_STARTED,
+                    duration = 1.hours.inWholeMilliseconds,
+                    createdAt = System.currentTimeMillis(),
+                    createdBy = "John Doe",
+                    nbParticipants = 2
+                ),
+                LobbyUI(
+                    uid = "2",
+                    title = "Lobby 2",
+                    status = LobbyStatus.IN_PROGRESS,
+                    duration = 1.hours.inWholeMilliseconds,
+                    createdAt = System.currentTimeMillis(),
+                    createdBy = "John Doe",
+                    nbParticipants = 4
+                )
+            ),
+            onHomeActiveLobbyClicked = {}
         )
     }
 }

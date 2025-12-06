@@ -50,6 +50,9 @@ fun NavGraphBuilder.homeRoute(
             },
             navigateToCreateLobby = {
                 navHostController.navigateWithLifecycle(Route.CreateLobby)
+            },
+            navigateToLobby = { lobbyId ->
+                // TODO
             }
         )
     }

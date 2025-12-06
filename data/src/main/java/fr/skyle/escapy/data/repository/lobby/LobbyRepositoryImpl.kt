@@ -5,7 +5,9 @@ import fr.skyle.escapy.data.repository.lobby.api.LobbyLocalDataSource
 import fr.skyle.escapy.data.repository.lobby.api.LobbyRemoteDataSource
 import fr.skyle.escapy.data.repository.lobby.api.LobbyRepository
 import fr.skyle.escapy.data.repository.lobby.model.CreateLobbyRequest
+import fr.skyle.escapy.data.vo.Lobby
 import fr.skyle.escapy.data.vo.mapper.toLobby
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -74,6 +76,15 @@ class LobbyRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun watchActiveLobbiesForUser(userId: String): Flow<List<Lobby>> {
+        return lobbyLocalDataSource.watchActiveLobbiesForUser(userId)
+    }
+
+    override fun watchCurrentUserActiveLobbies(): Flow<List<Lobby>> {
+        val user = firebaseAuth.currentUser ?: throw Exception("No current user")
+        return watchActiveLobbiesForUser(user.uid)
+    }
+
 //    override suspend fun joinLobby(lobbyId: String): Result<Unit> {
 //        val user = firebaseAuth.currentUser ?: return Result.failure(Exception("Not authenticated"))
 //
@@ -128,7 +139,4 @@ class LobbyRepositoryImpl @Inject constructor(
 //
 //    override fun watchLobby(lobbyId: String): Flow<Lobby?> =
 //        lobbyLocalDataSource.watchLobby(lobbyId)
-//
-//    override fun watchActiveLobbies(): Flow<List<Lobby>> =
-//        lobbyLocalDataSource.watchActiveLobbies()
 }

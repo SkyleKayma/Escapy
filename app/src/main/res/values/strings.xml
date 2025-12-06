@@ -54,12 +54,17 @@
     <!-- Home -->
     <string name="home_welcome_format">Bienvenue,\n%s !</string>
     <string name="home_welcome">Bienvenue !</string>
+    <string name="home_game_in_progress">Parties en cours</string>
+    <string name="home_no_game_in_progress">Aucune partie en cours</string>
     <string name="home_join_a_room">Rejoindre un salon</string>
     <string name="home_join_a_room_via_qrcode">Par QRcode</string>
     <string name="home_join_a_room_via_id">Par ID</string>
     <string name="home_history">Historique des parties</string>
-    <string name="home_game_in_progress">Parties en cours</string>
-    <string name="home_no_game_in_progress">Aucune partie en cours</string>
+
+    <!-- Home Active Lobby Cell -->
+    <string name="home_active_lobby_cell_managed_by_format">Géré par: %s</string>
+    <string name="home_active_lobby_cell_at_format">Le: %s</string>
+    <string name="home_active_lobby_cell_duration_format">Durée: %s</string>
 
     <!-- Auth Provider -->
     <string name="auth_provider_email_short">Email</string>
@@ -145,5 +150,10 @@
     <string name="create_lobby_max_duration">Durée maximale</string>
     <string name="create_lobby_title">Titre</string>
     <string name="create_lobby_create">Créer</string>
+
+    <!-- LobbyStatus -->
+    <string name="lobby_status_not_started">En attente</string>
+    <string name="lobby_status_in_progress">En cours</string>
+    <string name="lobby_status_finished">Terminé</string>
 
 </resources>

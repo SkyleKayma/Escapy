@@ -35,6 +35,7 @@ import fr.skyle.escapy.designsystem.core.topAppBar.ProjectTopAppBar
 import fr.skyle.escapy.designsystem.core.topAppBar.component.ProjectTopAppBarItem
 import fr.skyle.escapy.designsystem.ext.values
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
+import fr.skyle.escapy.ext.formatDuration
 import fr.skyle.escapy.ui.core.structure.ProjectScreenStructure
 import fr.skyle.escapy.utils.ProjectComponentPreview
 import fr.skyle.escapy.utils.ProjectScreenPreview
@@ -152,13 +153,6 @@ private fun CreateLobbyScreenContent(
 
         Spacer(modifier = Modifier.height(innerPadding.calculateBottomPadding()))
     }
-}
-
-@Composable
-private fun formatDuration(duration: Long): String {
-    val hours = duration / 3600000
-    val minutes = (duration % 3600000) / 60000
-    return stringResource(R.string.generic_format_duration, hours, minutes)
 }
 
 @ProjectScreenPreview

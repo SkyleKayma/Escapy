@@ -26,7 +26,7 @@ fun LobbyRequestDTO.toLobby(id: String): Lobby =
         createdAt = createdAt ?: 0L,
         startedAt = startedAt,
         endedAt = endedAt,
-        status = status?.let { LobbyStatus.valueOf(it) } ?: LobbyStatus.WAITING,
+        status = status?.let { LobbyStatus.valueOf(it) } ?: LobbyStatus.NOT_STARTED,
         createdBy = createdBy.orEmpty(),
         participants = participants?.keys?.toList() ?: emptyList()
     )

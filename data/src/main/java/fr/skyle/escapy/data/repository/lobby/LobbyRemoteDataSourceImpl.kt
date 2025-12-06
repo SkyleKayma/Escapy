@@ -31,7 +31,7 @@ class LobbyRemoteDataSourceImpl @Inject constructor(
             createdAt = System.currentTimeMillis(),
             startedAt = null,
             endedAt = null,
-            status = LobbyStatus.WAITING.name,
+            status = LobbyStatus.NOT_STARTED.name,
             createdBy = request.createdBy,
             participants = mapOf(request.createdBy to true)
         )

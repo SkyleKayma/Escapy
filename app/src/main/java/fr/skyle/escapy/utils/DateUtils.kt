@@ -12,7 +12,8 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 enum class DateFormat(val pattern: String) {
-    LONG_DATE("dd MMMM yyyy");
+    LONG_DATE("dd MMMM yyyy"),
+    FULL_DATE("dd MMMM yyyy HH:mm");
 
     companion object {
         fun DateFormat.getFormatter(locale: Locale): DateTimeFormatter {

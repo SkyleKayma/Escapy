@@ -1,5 +1,8 @@
 package fr.skyle.escapy.data.repository.lobby.api
 
+import fr.skyle.escapy.data.vo.Lobby
+import kotlinx.coroutines.flow.Flow
+
 interface LobbyRepository {
 
     suspend fun createLobby(
@@ -12,6 +15,10 @@ interface LobbyRepository {
 
     suspend fun fetchLobbiesForCurrentUser(): Result<Unit>
 
+    fun watchActiveLobbiesForUser(userId: String): Flow<List<Lobby>>
+
+    fun watchCurrentUserActiveLobbies(): Flow<List<Lobby>>
+
 //    suspend fun joinLobby(lobbyId: String): Result<Unit>
 //
 //    suspend fun leaveLobby(lobbyId: String): Result<Unit>
@@ -19,6 +26,4 @@ interface LobbyRepository {
 //    suspend fun removeParticipant(lobbyId: String, participantId: String): Result<Unit>
 //
 //    fun watchLobby(lobbyId: String): Flow<Lobby?>
-//
-//    fun watchActiveLobbies(): Flow<List<Lobby>>
 }

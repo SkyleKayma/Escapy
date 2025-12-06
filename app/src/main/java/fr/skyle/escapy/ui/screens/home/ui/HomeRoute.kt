@@ -9,6 +9,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 fun HomeRoute(
     navigateToProfile: () -> Unit,
     navigateToCreateLobby: () -> Unit,
+    navigateToLobby: (lobbyId: String) -> Unit,
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
     val homeState by homeViewModel.state.collectAsStateWithLifecycle()
@@ -16,6 +17,7 @@ fun HomeRoute(
     HomeScreen(
         state = homeState,
         onProfileClicked = navigateToProfile,
-        onCreateLobby = navigateToCreateLobby
+        onCreateLobby = navigateToCreateLobby,
+        onHomeActiveLobbyClicked = navigateToLobby
     )
 }
