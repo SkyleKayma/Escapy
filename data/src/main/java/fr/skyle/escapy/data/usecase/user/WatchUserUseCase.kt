@@ -7,18 +7,14 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 interface WatchUserUseCase {
-    suspend operator fun invoke(
-        userId: String
-    ): Flow<User?>
+    suspend operator fun invoke(userId: String): Flow<User?>
 }
 
 class WatchUserUseCaseImpl @Inject constructor(
     private val userRepository: UserRepository
 ) : WatchUserUseCase {
 
-    override suspend fun invoke(
-        userId: String
-    ): Flow<User?> =
+    override suspend fun invoke(userId: String): Flow<User?> =
         userRepository.watchUser(userId).map { user ->
             user
         }

@@ -1,15 +1,13 @@
 package fr.skyle.escapy.data.usecase.firebaseAuth
 
 import fr.skyle.escapy.data.repository.auth.api.AuthRepository
-import timber.log.Timber
 import javax.inject.Inject
-import kotlin.coroutines.cancellation.CancellationException
 
 interface SignUpUseCase {
     suspend operator fun invoke(
         email: String,
         password: String,
-    ): SignUpUseCaseResponse
+    )
 }
 
 class SignUpUseCaseImpl @Inject constructor(
@@ -19,24 +17,10 @@ class SignUpUseCaseImpl @Inject constructor(
     override suspend fun invoke(
         email: String,
         password: String,
-    ): SignUpUseCaseResponse {
-        return try {
-            authRepository.signUp(
-                email = email,
-                password = password
-            ).getOrThrow()
-
-            SignUpUseCaseResponse.Success
-        } catch (e: CancellationException) {
-            throw e
-        } catch (e: Exception) {
-            Timber.e(e)
-            SignUpUseCaseResponse.Error(e.message)
-        }
+    ) {
+        authRepository.signUp(
+            email = email,
+            password = password
+        ).getOrThrow()
     }
-}
-
-sealed interface SignUpUseCaseResponse {
-    data object Success : SignUpUseCaseResponse
-    data class Error(val message: String?) : SignUpUseCaseResponse
 }

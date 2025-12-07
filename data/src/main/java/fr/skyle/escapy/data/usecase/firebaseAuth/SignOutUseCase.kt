@@ -4,20 +4,14 @@ import fr.skyle.escapy.data.repository.auth.api.AuthRepository
 import javax.inject.Inject
 
 interface SignOutUseCase {
-    operator fun invoke(): SignOutUseCaseResponse
+    operator fun invoke()
 }
 
 class SignOutUseCaseImpl @Inject constructor(
     private val authRepository: AuthRepository
 ) : SignOutUseCase {
 
-    override fun invoke(): SignOutUseCaseResponse {
+    override fun invoke() {
         authRepository.signOut()
-
-        return SignOutUseCaseResponse.Success
     }
-}
-
-sealed interface SignOutUseCaseResponse {
-    data object Success : SignOutUseCaseResponse
 }

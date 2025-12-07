@@ -6,19 +6,18 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.skyle.escapy.data.usecase.firebaseAuth.SignInAsGuestUseCase
-import fr.skyle.escapy.data.usecase.firebaseAuth.SignInAsGuestUseCaseResponse
 import fr.skyle.escapy.data.usecase.firebaseAuth.SignInFromEmailProviderUseCase
-import fr.skyle.escapy.data.usecase.firebaseAuth.SignInFromEmailProviderUseCaseResponse
 import fr.skyle.escapy.data.usecase.firebaseAuth.SignUpUseCase
-import fr.skyle.escapy.data.usecase.firebaseAuth.SignUpUseCaseResponse
 import fr.skyle.escapy.ui.main.navigation.Route
 import fr.skyle.escapy.ui.screens.signIn.ui.enums.AuthType
 import fr.skyle.escapy.ui.screens.signIn.ui.enums.SignInReason
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -44,31 +43,30 @@ class SignInViewModel @Inject constructor(
                 it.copy(isButtonLoading = true)
             }
 
-            val response = signInFromEmailProviderUseCase(
-                email = email,
-                password = password
-            )
+            try {
+                signInFromEmailProviderUseCase(
+                    email = email,
+                    password = password
+                )
 
-            when (response) {
-                is SignInFromEmailProviderUseCaseResponse.Error -> {
-                    _state.update {
-                        it.copy(
-                            event = SignInEvent.SignInError(response.message),
-                        )
-                    }
+                _state.update {
+                    it.copy(
+                        event = SignInEvent.SignInSuccess
+                    )
                 }
-
-                SignInFromEmailProviderUseCaseResponse.Success -> {
-                    _state.update {
-                        it.copy(
-                            event = SignInEvent.SignInSuccess
-                        )
-                    }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Timber.e(e)
+                _state.update {
+                    it.copy(
+                        event = SignInEvent.SignInError(e.message),
+                    )
                 }
-            }
-
-            _state.update {
-                it.copy(isButtonLoading = false)
+            } finally {
+                _state.update {
+                    it.copy(isButtonLoading = false)
+                }
             }
         }
     }
@@ -79,22 +77,23 @@ class SignInViewModel @Inject constructor(
                 it.copy(isButtonLoading = true)
             }
 
-            when (val response = signInAsGuestUseCase()) {
-                is SignInAsGuestUseCaseResponse.Error -> {
-                    _state.update {
-                        it.copy(event = SignInEvent.SignUpError(response.message))
-                    }
-                }
+            try {
+                signInAsGuestUseCase()
 
-                SignInAsGuestUseCaseResponse.Success -> {
-                    _state.update {
-                        it.copy(event = SignInEvent.SignUpSuccess)
-                    }
+                _state.update {
+                    it.copy(event = SignInEvent.SignUpSuccess)
                 }
-            }
-
-            _state.update {
-                it.copy(isButtonLoading = false)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Timber.e(e)
+                _state.update {
+                    it.copy(event = SignInEvent.SignUpError(e.message))
+                }
+            } finally {
+                _state.update {
+                    it.copy(isButtonLoading = false)
+                }
             }
         }
     }
@@ -114,31 +113,30 @@ class SignInViewModel @Inject constructor(
                 it.copy(isButtonLoading = true)
             }
 
-            val response = signUpUseCase(
-                email = email,
-                password = password
-            )
+            try {
+                signUpUseCase(
+                    email = email,
+                    password = password
+                )
 
-            when (response) {
-                is SignUpUseCaseResponse.Error -> {
-                    _state.update {
-                        it.copy(
-                            event = SignInEvent.SignUpError(response.message),
-                        )
-                    }
+                _state.update {
+                    it.copy(
+                        event = SignInEvent.SignUpSuccess
+                    )
                 }
-
-                SignUpUseCaseResponse.Success -> {
-                    _state.update {
-                        it.copy(
-                            event = SignInEvent.SignUpSuccess
-                        )
-                    }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Timber.e(e)
+                _state.update {
+                    it.copy(
+                        event = SignInEvent.SignUpError(e.message),
+                    )
                 }
-            }
-
-            _state.update {
-                it.copy(isButtonLoading = false)
+            } finally {
+                _state.update {
+                    it.copy(isButtonLoading = false)
+                }
             }
         }
     }

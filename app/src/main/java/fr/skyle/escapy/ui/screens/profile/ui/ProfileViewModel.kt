@@ -6,7 +6,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.skyle.escapy.data.enums.AuthProvider
 import fr.skyle.escapy.data.enums.Avatar
 import fr.skyle.escapy.data.usecase.firebaseAuth.SignOutUseCase
-import fr.skyle.escapy.data.usecase.firebaseAuth.SignOutUseCaseResponse
 import fr.skyle.escapy.data.usecase.user.WatchCurrentUserUseCase
 import fr.skyle.escapy.data.utils.FirebaseAuthManager
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -49,14 +48,12 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun signOut() {
-        when (signOutUseCase()) {
-            SignOutUseCaseResponse.Success -> {
-                _state.update {
-                    it.copy(
-                        event = ProfileEvent.SignOutSuccess
-                    )
-                }
-            }
+        signOutUseCase()
+
+        _state.update {
+            it.copy(
+                event = ProfileEvent.SignOutSuccess
+            )
         }
     }
 

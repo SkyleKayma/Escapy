@@ -2,19 +2,20 @@ package fr.skyle.escapy.ui.screens.deleteAccount.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.skyle.escapy.data.enums.AuthProvider
 import fr.skyle.escapy.data.usecase.firebaseAuth.DeleteAccountFromAnonymousProviderUseCase
-import fr.skyle.escapy.data.usecase.firebaseAuth.DeleteAccountFromAnonymousProviderUseCaseResponse
 import fr.skyle.escapy.data.usecase.firebaseAuth.DeleteAccountFromEmailProviderUseCase
-import fr.skyle.escapy.data.usecase.firebaseAuth.DeleteAccountFromEmailProviderUseCaseResponse
 import fr.skyle.escapy.data.utils.FirebaseAuthManager
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -44,28 +45,28 @@ class DeleteAccountViewModel @Inject constructor(
                 it.copy(isButtonLoading = true)
             }
 
-            when (val response = deleteAccountFromEmailProviderUseCase(password)) {
-                is DeleteAccountFromEmailProviderUseCaseResponse.Error -> {
-                    _state.update {
-                        it.copy(event = DeleteAccountEvent.Error(response.message))
-                    }
-                }
+            try {
+                deleteAccountFromEmailProviderUseCase(password)
 
-                DeleteAccountFromEmailProviderUseCaseResponse.InvalidCurrentPassword -> {
-                    _state.update {
-                        it.copy(event = DeleteAccountEvent.InvalidCurrentPassword)
-                    }
+                _state.update {
+                    it.copy(event = DeleteAccountEvent.Success)
                 }
-
-                DeleteAccountFromEmailProviderUseCaseResponse.Success -> {
-                    _state.update {
-                        it.copy(event = DeleteAccountEvent.Success)
-                    }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: FirebaseAuthInvalidCredentialsException) {
+                Timber.e(e)
+                _state.update {
+                    it.copy(event = DeleteAccountEvent.InvalidCurrentPassword)
                 }
-            }
-
-            _state.update {
-                it.copy(isButtonLoading = false)
+            } catch (e: Exception) {
+                Timber.e(e)
+                _state.update {
+                    it.copy(event = DeleteAccountEvent.Error(e.message))
+                }
+            } finally {
+                _state.update {
+                    it.copy(isButtonLoading = false)
+                }
             }
         }
     }
@@ -76,22 +77,23 @@ class DeleteAccountViewModel @Inject constructor(
                 it.copy(isButtonLoading = true)
             }
 
-            when (val response = deleteAccountFromAnonymousProviderUseCase()) {
-                is DeleteAccountFromAnonymousProviderUseCaseResponse.Error -> {
-                    _state.update {
-                        it.copy(event = DeleteAccountEvent.Error(response.message))
-                    }
-                }
+            try {
+                deleteAccountFromAnonymousProviderUseCase()
 
-                DeleteAccountFromAnonymousProviderUseCaseResponse.Success -> {
-                    _state.update {
-                        it.copy(event = DeleteAccountEvent.Success)
-                    }
+                _state.update {
+                    it.copy(event = DeleteAccountEvent.Success)
                 }
-            }
-
-            _state.update {
-                it.copy(isButtonLoading = false)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Timber.e(e)
+                _state.update {
+                    it.copy(event = DeleteAccountEvent.Error(e.message))
+                }
+            } finally {
+                _state.update {
+                    it.copy(isButtonLoading = false)
+                }
             }
         }
     }

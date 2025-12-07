@@ -2,16 +2,18 @@ package fr.skyle.escapy.ui.screens.changePassword.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.skyle.escapy.PASSWORD_VALID_LENGTH
 import fr.skyle.escapy.data.usecase.firebaseAuth.ChangePasswordForEmailProviderUseCase
-import fr.skyle.escapy.data.usecase.firebaseAuth.ChangePasswordForEmailProviderUseCaseResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
+import kotlin.coroutines.cancellation.CancellationException
 
 @HiltViewModel
 class ChangePasswordViewModel @Inject constructor(
@@ -36,30 +38,31 @@ class ChangePasswordViewModel @Inject constructor(
                 it.copy(isButtonLoading = true)
             }
 
-            val response = changePasswordForEmailProviderUseCase(
-                currentPassword = _state.value.currentPassword,
-                newPassword = _state.value.newPassword
-            )
+            try {
+                changePasswordForEmailProviderUseCase(
+                    currentPassword = _state.value.currentPassword,
+                    newPassword = _state.value.newPassword
+                )
 
-            when (response) {
-                is ChangePasswordForEmailProviderUseCaseResponse.Error ->
-                    _state.update {
-                        it.copy(event = ChangePasswordEvent.Error(response.message))
-                    }
-
-                ChangePasswordForEmailProviderUseCaseResponse.InvalidCurrentPassword ->
-                    _state.update {
-                        it.copy(event = ChangePasswordEvent.InvalidCurrentPassword)
-                    }
-
-                ChangePasswordForEmailProviderUseCaseResponse.Success ->
-                    _state.update {
-                        it.copy(event = ChangePasswordEvent.Success)
-                    }
-            }
-
-            _state.update {
-                it.copy(isButtonLoading = false)
+                _state.update {
+                    it.copy(event = ChangePasswordEvent.Success)
+                }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: FirebaseAuthInvalidCredentialsException) {
+                Timber.e(e)
+                _state.update {
+                    it.copy(event = ChangePasswordEvent.InvalidCurrentPassword)
+                }
+            } catch (e: Exception) {
+                Timber.e(e)
+                _state.update {
+                    it.copy(event = ChangePasswordEvent.Error(e.message))
+                }
+            } finally {
+                _state.update {
+                    it.copy(isButtonLoading = false)
+                }
             }
         }
     }

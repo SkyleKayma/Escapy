@@ -3,16 +3,18 @@ package fr.skyle.escapy.ui.screens.linkAccountWithEmail.ui
 import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.skyle.escapy.PASSWORD_VALID_LENGTH
 import fr.skyle.escapy.data.usecase.firebaseAuth.LinkAccountWithEmailProviderUseCase
-import fr.skyle.escapy.data.usecase.firebaseAuth.LinkAccountWithEmailProviderUseCaseResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
+import kotlin.coroutines.cancellation.CancellationException
 
 @HiltViewModel
 class LinkAccountWithEmailViewModel @Inject constructor(
@@ -38,33 +40,31 @@ class LinkAccountWithEmailViewModel @Inject constructor(
                 it.copy(isButtonLoading = true)
             }
 
-            val response = linkAccountWithEmailProviderUseCase(
-                email = _state.value.email,
-                password = _state.value.password
-            )
+            try {
+                linkAccountWithEmailProviderUseCase(
+                    email = _state.value.email,
+                    password = _state.value.password
+                )
 
-            when (response) {
-                LinkAccountWithEmailProviderUseCaseResponse.Success -> {
-                    _state.update {
-                        it.copy(event = LinkAccountWithEmailEvent.Success)
-                    }
+                _state.update {
+                    it.copy(event = LinkAccountWithEmailEvent.Success)
                 }
-
-                LinkAccountWithEmailProviderUseCaseResponse.EmailAlreadyUsed -> {
-                    _state.update {
-                        it.copy(event = LinkAccountWithEmailEvent.EmailAlreadyUsed)
-                    }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: FirebaseAuthUserCollisionException) {
+                Timber.e(e)
+                _state.update {
+                    it.copy(event = LinkAccountWithEmailEvent.EmailAlreadyUsed)
                 }
-
-                is LinkAccountWithEmailProviderUseCaseResponse.Error -> {
-                    _state.update {
-                        it.copy(event = LinkAccountWithEmailEvent.Error(response.message))
-                    }
+            } catch (e: Exception) {
+                Timber.e(e)
+                _state.update {
+                    it.copy(event = LinkAccountWithEmailEvent.Error(e.message))
                 }
-            }
-
-            _state.update {
-                it.copy(isButtonLoading = false)
+            } finally {
+                _state.update {
+                    it.copy(isButtonLoading = false)
+                }
             }
         }
     }
