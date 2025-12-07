@@ -8,6 +8,6 @@ data class LobbyUI(
     val duration: Long,
     val createdAt: Long,
     val status: LobbyStatus,
-    val createdBy: String,
+    val createdByName: String,
     val nbParticipants: Int
 )

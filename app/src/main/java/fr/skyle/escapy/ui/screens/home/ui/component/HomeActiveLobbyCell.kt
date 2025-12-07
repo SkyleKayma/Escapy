@@ -43,7 +43,7 @@ fun HomeActiveLobbyCell(
     status: LobbyStatus,
     duration: Long,
     createdAt: Long,
-    createdBy: String,
+    createdByName: String,
     nbParticipants: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -84,10 +84,10 @@ fun HomeActiveLobbyCell(
                 text = buildAnnotatedString(
                     fullText = stringResource(
                         R.string.home_active_lobby_cell_managed_by_format,
-                        createdBy
+                        createdByName
                     ),
                     AnnotatedData(
-                        text = createdBy,
+                        text = createdByName,
                         spanStyle = SpanStyle(
                             fontWeight = FontWeight.Bold,
                             color = ProjectTheme.colors.primary,
@@ -123,7 +123,7 @@ fun HomeActiveLobbyCell(
 
             val durationFormatted = formatDuration(duration)
             Text(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.fillMaxWidth(),
                 text = buildAnnotatedString(
                     fullText = stringResource(
                         R.string.home_active_lobby_cell_duration_format,
@@ -177,7 +177,7 @@ private fun HomeActiveLobbyCellPreview() {
             status = LobbyStatus.NOT_STARTED,
             duration = 1.hours.inWholeMilliseconds,
             createdAt = System.currentTimeMillis(),
-            createdBy = "Player_TlBaSwl2o1",
+            createdByName = "Player_TlBaSwl2o1",
             nbParticipants = 6,
             onClick = {},
         )

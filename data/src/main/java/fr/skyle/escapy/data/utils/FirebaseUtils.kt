@@ -32,7 +32,7 @@ suspend fun <T> Query.readOnce(clazz: Class<T>): FirebaseResponse<T> {
         get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val value = task.result.getValue(clazz)
-                Timber.i("🟩 READ → path=$path, value=$value")
+                Timber.i("🟩 READ → path=$path\ndata=$value")
                 continuation.resume(FirebaseResponse(value, null))
             } else {
                 val e = task.exception ?: Exception("Unknown Firebase error")
@@ -55,7 +55,7 @@ suspend fun <T> Query.readOnce(typeIndicator: GenericTypeIndicator<T>): Firebase
         get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val value = task.result.getValue(typeIndicator)
-                Timber.i("🟩 READ → path=$path, value=$value")
+                Timber.i("🟩 READ → path=$path\ndata=$value")
                 continuation.resume(FirebaseResponse(value, null))
             } else {
                 val e = task.exception ?: Exception("Unknown Firebase error")
@@ -74,7 +74,7 @@ suspend fun <T> Query.readOnce(typeIndicator: GenericTypeIndicator<T>): Firebase
 
 suspend fun DatabaseReference.writeOnce(data: Any): FirebaseResponse<Unit> {
     val path = this.toString()
-    Timber.i("ℹ️ WRITE → path=$path, data=$data")
+    Timber.i("ℹ️ WRITE → path=$path\ndata=$data")
 
     return suspendCancellableCoroutine { continuation ->
         setValue(data).addOnCompleteListener { task ->
@@ -96,9 +96,11 @@ suspend fun DatabaseReference.writeOnce(data: Any): FirebaseResponse<Unit> {
 
 // ---------------- UPDATE ----------------
 
-suspend fun DatabaseReference.updateOnce(data: Map<String, Any?>): FirebaseResponse<Unit> {
+suspend fun DatabaseReference.updateOnce(
+    data: Map<String, Any?>
+): FirebaseResponse<Unit> {
     val path = this.toString()
-    Timber.i("ℹ️ UPDATE → path=$path, data=$data")
+    Timber.i("ℹ️ UPDATE → path=$path\ndata=$data")
 
     return suspendCancellableCoroutine { continuation ->
         updateChildren(data).addOnCompleteListener { task ->
@@ -114,31 +116,6 @@ suspend fun DatabaseReference.updateOnce(data: Map<String, Any?>): FirebaseRespo
 
         continuation.invokeOnCancellation {
             Timber.w("⬜ UPDATE canceled → path=$path")
-        }
-    }
-}
-
-suspend fun DatabaseReference.updateChildrenOnce(
-    updates: Map<String, Any?>
-): FirebaseResponse<Unit> {
-    val path = this.toString()
-    Timber.i("⬜ UPDATE_CHILDREN → path=$path, updates=$updates")
-
-    return suspendCancellableCoroutine { continuation ->
-        updateChildren(updates).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Timber.i("🟩 UPDATE_CHILDREN → path=$path")
-                continuation.resume(FirebaseResponse(Unit, null))
-            } else {
-                val e = task.exception ?: Exception("Unknown Firebase error")
-                Timber.e(e, "🟥 UPDATE_CHILDREN → path=$path")
-
-                continuation.resume(FirebaseResponse(null, e))
-            }
-        }
-
-        continuation.invokeOnCancellation {
-            Timber.w("⬜ UPDATE_CHILDREN canceled → path=$path")
         }
     }
 }

@@ -10,6 +10,6 @@ fun Lobby.toLobbyUI(): LobbyUI =
         duration = duration,
         createdAt = createdAt,
         status = status,
-        createdBy = createdBy,
+        createdByName = createdByName,
         nbParticipants = participants.size
     )

@@ -172,7 +172,7 @@ private fun HomeScreenContent(
                             status = activeLobby.status,
                             duration = activeLobby.duration,
                             createdAt = activeLobby.createdAt,
-                            createdBy = activeLobby.createdBy,
+                            createdByName = activeLobby.createdByName,
                             nbParticipants = activeLobby.nbParticipants,
                             onClick = {
                                 onHomeActiveLobbyClicked(activeLobby.uid)
@@ -299,7 +299,7 @@ private fun HomeScreenContentWithLobbiesPreview() {
                     status = LobbyStatus.NOT_STARTED,
                     duration = 1.hours.inWholeMilliseconds,
                     createdAt = System.currentTimeMillis(),
-                    createdBy = "John Doe",
+                    createdByName = "John Doe",
                     nbParticipants = 2
                 ),
                 LobbyUI(
@@ -308,7 +308,7 @@ private fun HomeScreenContentWithLobbiesPreview() {
                     status = LobbyStatus.IN_PROGRESS,
                     duration = 1.hours.inWholeMilliseconds,
                     createdAt = System.currentTimeMillis(),
-                    createdBy = "John Doe",
+                    createdByName = "John Doe",
                     nbParticipants = 4
                 )
             ),
