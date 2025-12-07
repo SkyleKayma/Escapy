@@ -13,9 +13,12 @@ class UserLocalDataSourceImpl @Inject constructor(
     private val userDao: UserDao
 ) : UserLocalDataSource {
 
-    override suspend fun insertUser(user: User) {
+    override suspend fun insert(user: User) {
         userDao.insert(user)
     }
+
+    override suspend fun getUser(userId: String): User? =
+        userDao.getUser(userId)
 
     override fun watchUser(userId: String): Flow<User?> =
         userDao.watchUser(userId).distinctUntilChanged()

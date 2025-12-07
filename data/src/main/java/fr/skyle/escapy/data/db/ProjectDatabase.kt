@@ -10,11 +10,13 @@ import fr.skyle.escapy.data.db.dao.LobbyDao
 import fr.skyle.escapy.data.db.dao.UserDao
 import fr.skyle.escapy.data.vo.Lobby
 import fr.skyle.escapy.data.vo.User
+import fr.skyle.escapy.data.vo.junction.LobbyParticipantCrossRef
 
 @Database(
     entities = [
         User::class,
         Lobby::class,
+        LobbyParticipantCrossRef::class,
     ],
     version = 1
 )

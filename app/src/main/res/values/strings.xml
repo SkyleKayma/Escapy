@@ -24,6 +24,7 @@
     <string name="generic_error_invalid_fields">Certains champs sont invalides</string>
     <string name="generic_error_invalid_current_password">Votre mot de passe actuel est invalide</string>
     <string name="generic_error_email_already_used">L\'email est déjà utilisé</string>
+    <string name="generic_error_fetch_format">Une erreur est survenue lors de la récupération des données (%s)</string>
 
     <!-- Generic Password Rule -->
     <string name="generic_password_rule_uppercase">Contient une majuscule</string>

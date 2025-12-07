@@ -19,12 +19,12 @@ class UserRepositoryImpl @Inject constructor(
 ) : UserRepository {
 
     override suspend fun fetchUser(userId: String): Result<Unit> {
-        val response = userRemoteDataSource.fetchUser(userId)
+        val userResponse = userRemoteDataSource.getUser(userId)
 
-        val body = response.body
+        val body = userResponse.body
 
-        return if (response.isSuccessful && body != null) {
-            userLocalDataSource.insertUser(body.toUser(userId))
+        return if (userResponse.isSuccessful && body != null) {
+            userLocalDataSource.insert(body.toUser(userId))
 
             Result.success(Unit)
         } else {
@@ -37,7 +37,7 @@ class UserRepositoryImpl @Inject constructor(
         return fetchUser(user.uid)
     }
 
-    override suspend fun updateAvatar(avatar: Avatar): Result<Unit> {
+    override suspend fun updateRemoteAvatar(avatar: Avatar): Result<Unit> {
         val user = firebaseAuth.currentUser ?: throw Exception("No current user")
 
         val response = userRemoteDataSource.updateAvatar(user.uid, avatar)
@@ -47,6 +47,11 @@ class UserRepositoryImpl @Inject constructor(
         } else {
             Result.failure(Exception(response.exception))
         }
+    }
+
+    override suspend fun getCurrentUser(): User? {
+        val user = firebaseAuth.currentUser ?: throw Exception("No current user")
+        return userLocalDataSource.getUser(user.uid)
     }
 
     override fun watchUser(userId: String): Flow<User?> =

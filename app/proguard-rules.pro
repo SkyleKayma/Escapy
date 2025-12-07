@@ -19,3 +19,9 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# --- Firebase ---
+
+# Keep GenericTypeIndicator and subclasses
+-keep class com.google.firebase.database.GenericTypeIndicator { *; }
+-keep class * extends com.google.firebase.database.GenericTypeIndicator { *; }

@@ -1,5 +1,6 @@
 package fr.skyle.escapy.data.vo.mapper
 
+import fr.skyle.escapy.data.enums.Avatar
 import fr.skyle.escapy.data.rest.firebase.UserRequestDTO
 import fr.skyle.escapy.data.vo.User
 
@@ -14,6 +15,6 @@ fun UserRequestDTO.toUser(uid: String): User =
     User(
         uid = uid,
         username = username ?: "",
-        avatarType = avatarType,
-        createdAt = createdAt
+        avatarType = avatarType ?: Avatar.AVATAR_14.type,
+        createdAt = createdAt ?: 0L,
     )

@@ -20,7 +20,7 @@ fun LinkAccountWithEmailRoute(
 
     val linkAccountWithEmailState by linkAccountWithEmailViewModel.state.collectAsStateWithLifecycle()
 
-    val projectSnackbarState = rememberProjectSnackbarState()
+    val snackbarState = rememberProjectSnackbarState()
 
     LaunchedEffect(linkAccountWithEmailState.event) {
         linkAccountWithEmailState.event?.let { event ->
@@ -30,21 +30,21 @@ fun LinkAccountWithEmailRoute(
                 }
 
                 LinkAccountWithEmailViewModel.LinkAccountWithEmailEvent.InvalidFields -> {
-                    projectSnackbarState.showSnackbar(
+                    snackbarState.showSnackbar(
                         message = context.getString(R.string.generic_error_invalid_fields),
                         type = ProjectSnackbarDefaults.ProjectSnackbarType.NEUTRAL
                     )
                 }
 
                 LinkAccountWithEmailViewModel.LinkAccountWithEmailEvent.EmailAlreadyUsed -> {
-                    projectSnackbarState.showSnackbar(
+                    snackbarState.showSnackbar(
                         message = context.getString(R.string.generic_error_email_already_used),
                         type = ProjectSnackbarDefaults.ProjectSnackbarType.ERROR
                     )
                 }
 
                 is LinkAccountWithEmailViewModel.LinkAccountWithEmailEvent.Error -> {
-                    projectSnackbarState.showSnackbar(
+                    snackbarState.showSnackbar(
                         message = context.getString(
                             R.string.generic_error_format,
                             event.message ?: "-"
@@ -59,7 +59,7 @@ fun LinkAccountWithEmailRoute(
     }
 
     LinkAccountWithEmailScreen(
-        snackbarState = projectSnackbarState,
+        snackbarState = snackbarState,
         state = linkAccountWithEmailState,
         onEmailChange = linkAccountWithEmailViewModel::setEmail,
         onPasswordChange = linkAccountWithEmailViewModel::setPassword,

@@ -8,8 +8,8 @@ import fr.skyle.escapy.data.enums.Avatar
 data class User(
     @PrimaryKey val uid: String,
     val username: String,
-    val avatarType: Int? = null,
-    val createdAt: Long? = null,
+    val avatarType: Int,
+    val createdAt: Long,
 ) {
     companion object {
         fun createDefault(userId: String, userNamePrefix: String): User =
@@ -17,7 +17,7 @@ data class User(
                 uid = userId,
                 username = "${userNamePrefix}_${userId.takeLast(10)}",
                 avatarType = Avatar.entries.random().type,
-                createdAt = System.currentTimeMillis()
+                createdAt = System.currentTimeMillis(),
             )
     }
 }

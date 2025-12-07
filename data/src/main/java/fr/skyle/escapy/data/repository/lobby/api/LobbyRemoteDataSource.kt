@@ -9,9 +9,11 @@ interface LobbyRemoteDataSource {
 
     suspend fun fetchLobby(lobbyId: String): FirebaseResponse<LobbyRequestDTO>
 
-    suspend fun fetchLobbiesForCurrentUser(
-        currentUserId: String
+    suspend fun fetchLobbies(
+        lobbyIds: List<String>
     ): FirebaseResponse<Map<String, LobbyRequestDTO>>
+
+    suspend fun fetchUserLobbyIds(userId: String): FirebaseResponse<Map<String, Boolean>>
 
 //    suspend fun joinLobby(
 //        lobbyId: String,

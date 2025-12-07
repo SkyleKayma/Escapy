@@ -23,7 +23,7 @@ fun ChangeEmailRoute(
 
     val changeEmailState by changeEmailViewModel.state.collectAsStateWithLifecycle()
 
-    val projectSnackbarState = rememberProjectSnackbarState()
+    val snackbarState = rememberProjectSnackbarState()
 
     var isEmailVerificationSentDialogDisplayed by remember { mutableStateOf(false) }
 
@@ -35,21 +35,21 @@ fun ChangeEmailRoute(
                 }
 
                 ChangeEmailViewModel.ChangeEmailEvent.InvalidFields -> {
-                    projectSnackbarState.showSnackbar(
+                    snackbarState.showSnackbar(
                         message = context.getString(R.string.generic_error_invalid_fields),
                         type = ProjectSnackbarDefaults.ProjectSnackbarType.NEUTRAL
                     )
                 }
 
                 ChangeEmailViewModel.ChangeEmailEvent.InvalidCurrentPassword -> {
-                    projectSnackbarState.showSnackbar(
+                    snackbarState.showSnackbar(
                         message = context.getString(R.string.generic_error_invalid_current_password),
                         type = ProjectSnackbarDefaults.ProjectSnackbarType.ERROR
                     )
                 }
 
                 is ChangeEmailViewModel.ChangeEmailEvent.Error -> {
-                    projectSnackbarState.showSnackbar(
+                    snackbarState.showSnackbar(
                         message = context.getString(
                             R.string.generic_error_format,
                             event.message ?: "-"
@@ -64,7 +64,7 @@ fun ChangeEmailRoute(
     }
 
     ChangeEmailScreen(
-        snackbarState = projectSnackbarState,
+        snackbarState = snackbarState,
         state = changeEmailState,
         onCurrentPasswordChange = changeEmailViewModel::setCurrentPassword,
         onNewEmailChange = changeEmailViewModel::setNewEmail,

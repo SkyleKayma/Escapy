@@ -9,7 +9,10 @@ import fr.skyle.escapy.data.repository.lobby.model.CreateLobbyRequest
 import fr.skyle.escapy.data.rest.firebase.LobbyRequestDTO
 import fr.skyle.escapy.data.utils.model.FirebaseResponse
 import fr.skyle.escapy.data.utils.readOnce
-import fr.skyle.escapy.data.utils.writeOnce
+import fr.skyle.escapy.data.utils.updateChildrenOnce
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -19,10 +22,14 @@ class LobbyRemoteDataSourceImpl @Inject constructor(
 ) : LobbyRemoteDataSource {
 
     override suspend fun createLobby(request: CreateLobbyRequest): FirebaseResponse<Unit> {
-        val ref = dbRef.child(FirebaseNode.Lobbies.path)
+        val lobbyRef = dbRef.child(FirebaseNode.LOBBIES)
 
         // Generate new ID Firebase
-        val newLobbyRef = ref.push()
+        val newLobbyRef = lobbyRef.push()
+        val lobbyId = newLobbyRef.key ?: return FirebaseResponse(
+            null,
+            Exception("Failed to generate lobby ID")
+        )
 
         val dto = LobbyRequestDTO(
             lobbyTitle = request.title,
@@ -36,19 +43,48 @@ class LobbyRemoteDataSourceImpl @Inject constructor(
             participants = mapOf(request.createdBy to true)
         )
 
-        return newLobbyRef.writeOnce(dto)
+        // Multi-path update
+        val updates = hashMapOf(
+            "${FirebaseNode.LOBBIES}/$lobbyId" to dto,
+            "/userLobbies/${request.createdBy}/$lobbyId" to true
+        )
+
+        return dbRef.updateChildrenOnce(updates)
     }
 
     override suspend fun fetchLobby(lobbyId: String): FirebaseResponse<LobbyRequestDTO> =
         dbRef
-            .child(FirebaseNode.Lobbies.path)
+            .child(FirebaseNode.LOBBIES)
             .child(lobbyId)
             .readOnce(LobbyRequestDTO::class.java)
 
-    override suspend fun fetchLobbiesForCurrentUser(
-        currentUserId: String
-    ): FirebaseResponse<Map<String, LobbyRequestDTO>> =
-        dbRef
-            .child(FirebaseNode.Lobbies.path)
-            .readOnce(object : GenericTypeIndicator<Map<String, LobbyRequestDTO>>() {})
+    override suspend fun fetchLobbies(
+        lobbyIds: List<String>
+    ): FirebaseResponse<Map<String, LobbyRequestDTO>> = coroutineScope {
+        val result = mutableMapOf<String, LobbyRequestDTO>()
+
+        val jobs = lobbyIds.map { lobbyId ->
+            async {
+                val response = fetchLobby(lobbyId)
+
+                if (response.isSuccessful && response.body != null) {
+                    result[lobbyId] = response.body
+                } else if (!response.isSuccessful) {
+                    throw response.exception ?: Exception("Unknown Firebase error")
+                }
+            }
+        }
+
+        return@coroutineScope try {
+            jobs.awaitAll()
+            FirebaseResponse(result, null)
+        } catch (e: Exception) {
+            FirebaseResponse(null, e)
+        }
+    }
+
+    override suspend fun fetchUserLobbyIds(userId: String): FirebaseResponse<Map<String, Boolean>> =
+        dbRef.child(FirebaseNode.USER_LOBBIES)
+            .child(userId)
+            .readOnce(object : GenericTypeIndicator<Map<String, Boolean>>() {})
 }

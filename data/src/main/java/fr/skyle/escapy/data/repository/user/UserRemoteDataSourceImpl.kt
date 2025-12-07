@@ -16,9 +16,9 @@ class UserRemoteDataSourceImpl @Inject constructor(
     private val dbRef: DatabaseReference,
 ) : UserRemoteDataSource {
 
-    override suspend fun fetchUser(userId: String): FirebaseResponse<UserRequestDTO> =
+    override suspend fun getUser(userId: String): FirebaseResponse<UserRequestDTO> =
         dbRef
-            .child(FirebaseNode.Users.path)
+            .child(FirebaseNode.USERS)
             .child(userId)
             .readOnce(UserRequestDTO::class.java)
 
@@ -28,7 +28,7 @@ class UserRemoteDataSourceImpl @Inject constructor(
         )
 
         return dbRef
-            .child(FirebaseNode.Users.path)
+            .child(FirebaseNode.USERS)
             .child(userId)
             .updateOnce(update)
     }

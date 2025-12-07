@@ -63,14 +63,14 @@ class AuthRemoteDataSourceImpl @Inject constructor(
             val newUser = User.createDefault(userId, prefix)
 
             // Write
-            dbRef.child(FirebaseNode.Users.path)
+            dbRef.child(FirebaseNode.USERS)
                 .child(userId)
                 .setValue(newUser.toUserRequestDTO())
                 .awaitWithTimeout()
         }
 
         val response = dbRef
-            .child(FirebaseNode.Users.path)
+            .child(FirebaseNode.USERS)
             .child(userId)
             .readOnce(UserRequestDTO::class.java)
 

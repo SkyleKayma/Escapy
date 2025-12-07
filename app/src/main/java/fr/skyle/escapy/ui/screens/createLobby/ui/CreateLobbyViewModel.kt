@@ -4,12 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.skyle.escapy.data.usecase.lobby.CreateLobbyUseCase
-import fr.skyle.escapy.data.usecase.lobby.CreateLobbyUseCaseResponse
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -36,27 +37,26 @@ class CreateLobbyViewModel @Inject constructor(
                 it.copy(isButtonLoading = true)
             }
 
-            val response = createLobbyUseCase(
-                title = _state.value.title,
-                duration = _state.value.duration
-            )
+            try {
+                createLobbyUseCase(
+                    title = _state.value.title,
+                    duration = _state.value.duration
+                )
 
-            when (response) {
-                is CreateLobbyUseCaseResponse.Error -> {
-                    _state.update {
-                        it.copy(event = CreateLobbyEvent.Error(response.message))
-                    }
+                _state.update {
+                    it.copy(event = CreateLobbyEvent.Success)
                 }
-
-                CreateLobbyUseCaseResponse.Success -> {
-                    _state.update {
-                        it.copy(event = CreateLobbyEvent.Success)
-                    }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Timber.e(e)
+                _state.update {
+                    it.copy(event = CreateLobbyEvent.Error(e.message))
                 }
-            }
-
-            _state.update {
-                it.copy(isButtonLoading = false)
+            } finally {
+                _state.update {
+                    it.copy(isButtonLoading = false)
+                }
             }
         }
     }
@@ -123,10 +123,8 @@ class CreateLobbyViewModel @Inject constructor(
     }
 
     fun eventDelivered() {
-        viewModelScope.launch {
-            _state.update {
-                it.copy(event = null)
-            }
+        _state.update {
+            it.copy(event = null)
         }
     }
 

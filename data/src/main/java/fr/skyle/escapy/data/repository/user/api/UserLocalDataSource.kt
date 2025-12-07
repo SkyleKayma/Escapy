@@ -5,7 +5,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface UserLocalDataSource {
 
-    suspend fun insertUser(user: User)
+    suspend fun insert(user: User)
+
+    suspend fun getUser(userId: String): User?
 
     fun watchUser(userId: String): Flow<User?>
 }

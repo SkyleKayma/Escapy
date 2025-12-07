@@ -34,8 +34,8 @@ import fr.skyle.escapy.data.usecase.user.FetchCurrentUserUseCase
 import fr.skyle.escapy.data.usecase.user.FetchCurrentUserUseCaseImpl
 import fr.skyle.escapy.data.usecase.user.FetchUserUseCase
 import fr.skyle.escapy.data.usecase.user.FetchUserUseCaseImpl
-import fr.skyle.escapy.data.usecase.user.UpdateAvatarUseCase
-import fr.skyle.escapy.data.usecase.user.UpdateAvatarUseCaseImpl
+import fr.skyle.escapy.data.usecase.user.UpdateRemoteAvatarUseCase
+import fr.skyle.escapy.data.usecase.user.UpdateRemoteRemoteAvatarUseCaseImpl
 import fr.skyle.escapy.data.usecase.user.WatchCurrentUserUseCase
 import fr.skyle.escapy.data.usecase.user.WatchCurrentUserUseCaseImpl
 import fr.skyle.escapy.data.usecase.user.WatchUserUseCase
@@ -108,9 +108,9 @@ interface UseCaseModule {
 
     @Binds
     @Singleton
-    fun bindsUpdateAvatarUseCase(
-        updateAvatarUseCaseImpl: UpdateAvatarUseCaseImpl,
-    ): UpdateAvatarUseCase
+    fun bindsUpdateRemoteAvatarUseCase(
+        updateRemoteAvatarUseCaseImpl: UpdateRemoteRemoteAvatarUseCaseImpl,
+    ): UpdateRemoteAvatarUseCase
 
     @Binds
     @Singleton

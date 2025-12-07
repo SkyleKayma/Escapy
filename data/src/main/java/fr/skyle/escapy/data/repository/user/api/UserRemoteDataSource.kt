@@ -6,7 +6,10 @@ import fr.skyle.escapy.data.utils.model.FirebaseResponse
 
 interface UserRemoteDataSource {
 
-    suspend fun fetchUser(userId: String): FirebaseResponse<UserRequestDTO>
+    suspend fun getUser(userId: String): FirebaseResponse<UserRequestDTO>
 
-    suspend fun updateAvatar(userId: String, avatar: Avatar): FirebaseResponse<Unit>
+    suspend fun updateAvatar(
+        userId: String,
+        avatar: Avatar
+    ): FirebaseResponse<Unit>
 }

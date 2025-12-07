@@ -64,6 +64,6 @@ class AboutViewModel @Inject constructor(
 
     data class State(
         val isContributorsLoading: Boolean = true,
-        val contributors: List<GithubContributorUI> = listOf(),
+        val contributors: List<GithubContributorUI> = emptyList(),
     )
 }

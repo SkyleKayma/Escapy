@@ -34,7 +34,6 @@ class LobbyRepositoryImpl @Inject constructor(
         )
 
         val response = lobbyRemoteDataSource.createLobby(request)
-
         return if (response.isSuccessful) {
             Result.success(Unit)
         } else {
@@ -54,25 +53,48 @@ class LobbyRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun fetchLobbiesForCurrentUser(): Result<Unit> {
-        val user = firebaseAuth.currentUser ?: throw Exception("No current user")
-        val response = lobbyRemoteDataSource.fetchLobbiesForCurrentUser(user.uid)
+    override suspend fun fetchLobbies(lobbyIds: List<String>): Result<Unit> {
+        val response = lobbyRemoteDataSource.fetchLobbies(lobbyIds)
 
         val body = response.body
         return if (response.isSuccessful && body != null) {
-            val filtered = body.filter { (_, dto) ->
-                dto.participants?.get(user.uid) == true
-            }
-
-            val lobbies = filtered.map { (id, dto) ->
+            val lobbies = body.map { (id, dto) ->
                 dto.toLobby(id)
             }
 
             lobbyLocalDataSource.insertLobbies(lobbies)
-            Result.success(Unit)
 
+            Result.success(Unit)
         } else {
             Result.failure(Exception(response.exception))
+        }
+    }
+
+    override suspend fun fetchLobbiesForUser(userId: String): Result<Unit> {
+        // Fetch user lobby ids
+        val fetchUserLobbyIdsResponse = lobbyRemoteDataSource.fetchUserLobbyIds(userId)
+
+        val fetchUserLobbyIdsBody = fetchUserLobbyIdsResponse.body
+        if (!fetchUserLobbyIdsResponse.isSuccessful || fetchUserLobbyIdsBody.isNullOrEmpty()) {
+            return Result.failure(Exception(fetchUserLobbyIdsResponse.exception))
+        }
+
+        // Fetch lobbies based on ids
+        val lobbyIds = fetchUserLobbyIdsBody.keys.toList()
+        val fetchLobbyIdsResponse = lobbyRemoteDataSource.fetchLobbies(lobbyIds)
+
+        val fetchLobbyIdsBody = fetchLobbyIdsResponse.body
+        return if (fetchLobbyIdsResponse.isSuccessful && fetchLobbyIdsBody != null) {
+            val lobbies = fetchLobbyIdsBody.map { (id, dto) ->
+                dto.toLobby(id)
+            }
+
+            // Insert lobbies into Room
+            lobbyLocalDataSource.insertLobbies(lobbies)
+
+            Result.success(Unit)
+        } else {
+            Result.failure(Exception(fetchLobbyIdsResponse.exception))
         }
     }
 

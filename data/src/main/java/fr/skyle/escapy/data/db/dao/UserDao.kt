@@ -17,11 +17,11 @@ interface UserDao {
 
     // Read
 
-    @Query("SELECT * FROM User LIMIT 1")
-    suspend fun getUser(): User?
+    @Query("SELECT * FROM User WHERE uid = :userId LIMIT 1")
+    suspend fun getUser(userId: String): User?
 
-    @Query("SELECT * FROM User WHERE uid = :uid LIMIT 1")
-    fun watchUser(uid: String): Flow<User?>
+    @Query("SELECT * FROM User WHERE uid = :userId LIMIT 1")
+    fun watchUser(userId: String): Flow<User?>
 
     // Delete
 

@@ -97,10 +97,8 @@ class DeleteAccountViewModel @Inject constructor(
     }
 
     fun eventDelivered() {
-        viewModelScope.launch {
-            _state.update {
-                it.copy(event = null)
-            }
+        _state.update {
+            it.copy(event = null)
         }
     }
 

@@ -25,7 +25,7 @@ fun DeleteAccountRoute(
 
     val deleteAccountState by deleteAccountViewModel.state.collectAsStateWithLifecycle()
 
-    val projectSnackbarState = rememberProjectSnackbarState()
+    val snackbarState = rememberProjectSnackbarState()
 
     var password by remember {
         mutableStateOf("")
@@ -41,14 +41,14 @@ fun DeleteAccountRoute(
                 }
 
                 DeleteAccountViewModel.DeleteAccountEvent.InvalidCurrentPassword -> {
-                    projectSnackbarState.showSnackbar(
+                    snackbarState.showSnackbar(
                         message = context.getString(R.string.generic_error_invalid_current_password),
                         type = ProjectSnackbarDefaults.ProjectSnackbarType.ERROR
                     )
                 }
 
                 is DeleteAccountViewModel.DeleteAccountEvent.Error -> {
-                    projectSnackbarState.showSnackbar(
+                    snackbarState.showSnackbar(
                         message = context.getString(
                             R.string.generic_error_format,
                             event.message ?: "-"
@@ -63,7 +63,7 @@ fun DeleteAccountRoute(
     }
 
     DeleteAccountScreen(
-        snackbarState = projectSnackbarState,
+        snackbarState = snackbarState,
         state = deleteAccountState,
         password = password,
         onPasswordChange = {

@@ -51,7 +51,7 @@ fun EditAvatarBottomSheet(
 
     val state by editAvatarViewModel.state.collectAsStateWithLifecycle()
 
-    val projectSnackbarState = rememberProjectSnackbarState()
+    val snackbarState = rememberProjectSnackbarState()
 
     val animateToDismiss: () -> Unit = {
         scope.launch { sheetState.hide() }.invokeOnCompletion {
@@ -65,7 +65,7 @@ fun EditAvatarBottomSheet(
         state.event?.let { event ->
             when (event) {
                 is EditAvatarViewModel.EditAvatarEvent.Error -> {
-                    projectSnackbarState.showSnackbar(
+                    snackbarState.showSnackbar(
                         message = context.getString(
                             R.string.generic_error_format,
                             event.message ?: "-"
@@ -89,7 +89,7 @@ fun EditAvatarBottomSheet(
         state.event?.let { event ->
             when (event) {
                 is EditAvatarViewModel.EditAvatarEvent.Error -> {
-                    projectSnackbarState.showSnackbar(
+                    snackbarState.showSnackbar(
                         message = errorFormat.format(event.message ?: "-"),
                         type = ProjectSnackbarDefaults.ProjectSnackbarType.ERROR
                     )
@@ -107,7 +107,7 @@ fun EditAvatarBottomSheet(
     ProjectBottomSheet(
         modifier = Modifier.fillMaxSize(),
         sheetState = sheetState,
-        snackbarState = projectSnackbarState,
+        snackbarState = snackbarState,
         onDismissRequest = animateToDismiss,
     ) {
         EditAvatarBottomSheetContent(

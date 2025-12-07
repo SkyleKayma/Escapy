@@ -20,13 +20,13 @@ fun SignInRoute(
 
     val signInState by signInViewModel.state.collectAsStateWithLifecycle()
 
-    val projectSnackbarState = rememberProjectSnackbarState()
+    val snackbarState = rememberProjectSnackbarState()
 
     LaunchedEffect(signInState.event) {
         signInState.event?.let { event ->
             when (event) {
                 is SignInViewModel.SignInEvent.SignInError -> {
-                    projectSnackbarState.showSnackbar(
+                    snackbarState.showSnackbar(
                         message = context.getString(
                             R.string.generic_error_format,
                             event.message ?: "-"
@@ -41,7 +41,7 @@ fun SignInRoute(
                 }
 
                 is SignInViewModel.SignInEvent.SignUpError -> {
-                    projectSnackbarState.showSnackbar(
+                    snackbarState.showSnackbar(
                         message = context.getString(
                             R.string.generic_error_format,
                             event.message ?: "-"
@@ -59,7 +59,7 @@ fun SignInRoute(
         signInState.signInReasonEvent?.let { event ->
             when (event) {
                 is SignInViewModel.SignInReasonEvent.FromReason -> {
-                    projectSnackbarState.showSnackbar(
+                    snackbarState.showSnackbar(
                         message = context.getString(event.signInReason.messageId),
                         type = ProjectSnackbarDefaults.ProjectSnackbarType.NEUTRAL
                     )
@@ -71,7 +71,7 @@ fun SignInRoute(
     }
 
     SignInScreen(
-        snackbarState = projectSnackbarState,
+        snackbarState = snackbarState,
         state = signInState,
         onSignInClicked = signInViewModel::signIn,
         onSignUpClicked = signInViewModel::signUp,

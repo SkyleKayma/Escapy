@@ -1,33 +1,21 @@
 package fr.skyle.escapy.data.usecase.lobby
 
 import fr.skyle.escapy.data.repository.lobby.api.LobbyRepository
-import kotlinx.coroutines.CancellationException
-import timber.log.Timber
+import fr.skyle.escapy.data.repository.user.api.UserRepository
 import javax.inject.Inject
 
 interface FetchLobbiesForCurrentUserUseCase {
-    suspend operator fun invoke(): FetchLobbiesForCurrentUserUseCaseResponse
+    suspend operator fun invoke()
 }
 
 class FetchLobbiesForCurrentUserUseCaseImpl @Inject constructor(
-    private val lobbyRepository: LobbyRepository
+    private val userRepository: UserRepository,
+    private val lobbyRepository: LobbyRepository,
 ) : FetchLobbiesForCurrentUserUseCase {
 
-    override suspend fun invoke(): FetchLobbiesForCurrentUserUseCaseResponse {
-        return try {
-            lobbyRepository.fetchLobbiesForCurrentUser().getOrThrow()
+    override suspend fun invoke() {
+        val user = userRepository.getCurrentUser() ?: throw Exception("User not found")
 
-            FetchLobbiesForCurrentUserUseCaseResponse.Success
-        } catch (e: CancellationException) {
-            throw e
-        } catch (e: Exception) {
-            Timber.e(e)
-            FetchLobbiesForCurrentUserUseCaseResponse.Error(e.message)
-        }
+        lobbyRepository.fetchLobbiesForUser(user.uid).getOrThrow()
     }
-}
-
-sealed interface FetchLobbiesForCurrentUserUseCaseResponse {
-    data object Success : FetchLobbiesForCurrentUserUseCaseResponse
-    data class Error(val message: String?) : FetchLobbiesForCurrentUserUseCaseResponse
 }

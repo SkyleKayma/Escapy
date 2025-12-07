@@ -28,7 +28,7 @@ fun CreateLobbyRoute(
 
     val createLobbyState by createLobbyViewModel.state.collectAsStateWithLifecycle()
 
-    val projectSnackbarState = rememberProjectSnackbarState()
+    val snackbarState = rememberProjectSnackbarState()
 
     var isTimePickerVisible by remember { mutableStateOf(false) }
 
@@ -36,7 +36,7 @@ fun CreateLobbyRoute(
         createLobbyState.event?.let { event ->
             when (event) {
                 is CreateLobbyViewModel.CreateLobbyEvent.Error -> {
-                    projectSnackbarState.showSnackbar(
+                    snackbarState.showSnackbar(
                         message = context.getString(
                             R.string.generic_error_format,
                             event.message ?: "-"
@@ -46,7 +46,7 @@ fun CreateLobbyRoute(
                 }
 
                 CreateLobbyViewModel.CreateLobbyEvent.InvalidFields -> {
-                    projectSnackbarState.showSnackbar(
+                    snackbarState.showSnackbar(
                         message = context.getString(R.string.generic_error_invalid_fields),
                         type = ProjectSnackbarDefaults.ProjectSnackbarType.NEUTRAL
                     )
@@ -62,7 +62,7 @@ fun CreateLobbyRoute(
     }
 
     CreateLobbyScreen(
-        snackbarState = projectSnackbarState,
+        snackbarState = snackbarState,
         state = createLobbyState,
         onTitleChange = createLobbyViewModel::setTitle,
         onShowTimePicker = {

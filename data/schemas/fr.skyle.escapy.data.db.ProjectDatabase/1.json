@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "2b9ab6b55655f3511f0eced0e1dd2e7b",
+    "identityHash": "34458785960cd62081eb594a4aca0d22",
     "entities": [
       {
         "tableName": "User",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` TEXT NOT NULL, `username` TEXT NOT NULL, `avatarType` INTEGER, `createdAt` INTEGER, PRIMARY KEY(`uid`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` TEXT NOT NULL, `username` TEXT NOT NULL, `avatarType` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, PRIMARY KEY(`uid`))",
         "fields": [
           {
             "fieldPath": "uid",
@@ -23,12 +23,14 @@
           {
             "fieldPath": "avatarType",
             "columnName": "avatarType",
-            "affinity": "INTEGER"
+            "affinity": "INTEGER",
+            "notNull": true
           },
           {
             "fieldPath": "createdAt",
             "columnName": "createdAt",
-            "affinity": "INTEGER"
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -107,11 +109,69 @@
             "uid"
           ]
         }
+      },
+      {
+        "tableName": "LobbyParticipantCrossRef",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`lobbyId` TEXT NOT NULL, `userId` TEXT NOT NULL, PRIMARY KEY(`lobbyId`, `userId`), FOREIGN KEY(`lobbyId`) REFERENCES `Lobby`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "lobbyId",
+            "columnName": "lobbyId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userId",
+            "columnName": "userId",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "lobbyId",
+            "userId"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_LobbyParticipantCrossRef_lobbyId",
+            "unique": false,
+            "columnNames": [
+              "lobbyId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_LobbyParticipantCrossRef_lobbyId` ON `${TABLE_NAME}` (`lobbyId`)"
+          },
+          {
+            "name": "index_LobbyParticipantCrossRef_userId",
+            "unique": false,
+            "columnNames": [
+              "userId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_LobbyParticipantCrossRef_userId` ON `${TABLE_NAME}` (`userId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Lobby",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "lobbyId"
+            ],
+            "referencedColumns": [
+              "uid"
+            ]
+          }
+        ]
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2b9ab6b55655f3511f0eced0e1dd2e7b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '34458785960cd62081eb594a4aca0d22')"
     ]
   }
 }

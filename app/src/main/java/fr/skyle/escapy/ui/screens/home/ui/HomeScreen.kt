@@ -1,6 +1,5 @@
 package fr.skyle.escapy.ui.screens.home.ui
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -17,12 +16,12 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Person2
 import androidx.compose.material.icons.filled.QrCode
 import androidx.compose.material.icons.filled.TextFields
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
@@ -36,6 +35,8 @@ import fr.skyle.escapy.designsystem.core.button.ProjectButton
 import fr.skyle.escapy.designsystem.core.button.ProjectButtonDefaults
 import fr.skyle.escapy.designsystem.core.iconButton.ProjectIconButton
 import fr.skyle.escapy.designsystem.core.iconButton.ProjectIconButtonDefaults
+import fr.skyle.escapy.designsystem.core.snackbar.state.ProjectSnackbarState
+import fr.skyle.escapy.designsystem.core.snackbar.state.rememberProjectSnackbarState
 import fr.skyle.escapy.designsystem.core.topAppBar.ProjectTopAppBar
 import fr.skyle.escapy.designsystem.theme.ProjectTheme
 import fr.skyle.escapy.ui.core.structure.ProjectScreenStructure
@@ -50,14 +51,17 @@ import kotlin.time.Duration.Companion.hours
 
 @Composable
 fun HomeScreen(
+    snackbarState: ProjectSnackbarState,
     state: HomeViewModel.State,
     onProfileClicked: () -> Unit,
     onCreateLobby: () -> Unit,
+    onRefresh: () -> Unit,
     onHomeActiveLobbyClicked: (lobbyId: String) -> Unit,
 ) {
     ProjectScreenStructure(
         modifier = Modifier.fillMaxSize(),
         isPatternDisplayed = true,
+        snackbarState = snackbarState,
         topContent = {
             ProjectTopAppBar(
                 modifier = Modifier.fillMaxWidth(),
@@ -92,8 +96,9 @@ fun HomeScreen(
             modifier = Modifier.fillMaxSize(),
             innerPadding = innerPadding,
             username = state.username,
-            isActiveLobbiesLoading = state.isActiveLobbiesLoading,
+            isRefreshing = state.isRefreshing,
             activeLobbies = state.activeLobbies,
+            onRefresh = onRefresh,
             onHomeActiveLobbyClicked = onHomeActiveLobbyClicked,
         )
     }
@@ -103,61 +108,53 @@ fun HomeScreen(
 private fun HomeScreenContent(
     innerPadding: PaddingValues,
     username: String?,
-    isActiveLobbiesLoading: Boolean,
+    isRefreshing: Boolean,
     activeLobbies: List<LobbyUI>,
+    onRefresh: () -> Unit,
     onHomeActiveLobbyClicked: (lobbyId: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier
-            .padding(top = innerPadding.calculateTopPadding())
-            .verticalScroll(rememberScrollState())
-            .padding(start = 24.dp, end = 24.dp, bottom = 24.dp)
+    PullToRefreshBox(
+        modifier = modifier.padding(top = innerPadding.calculateTopPadding()),
+        isRefreshing = isRefreshing,
+        state = rememberPullToRefreshState(),
+        onRefresh = onRefresh,
     ) {
-        val welcomeTitle = username?.let {
-            buildAnnotatedString(
-                fullText = stringResource(R.string.home_welcome_format, username),
-                AnnotatedData(
-                    text = username,
-                    spanStyle = SpanStyle(
-                        color = ProjectTheme.colors.primary
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(start = 24.dp, end = 24.dp, bottom = 24.dp)
+        ) {
+            val welcomeTitle = username?.let {
+                buildAnnotatedString(
+                    fullText = stringResource(R.string.home_welcome_format, username),
+                    AnnotatedData(
+                        text = username,
+                        spanStyle = SpanStyle(
+                            color = ProjectTheme.colors.primary
+                        )
                     )
                 )
+            } ?: AnnotatedString(stringResource(R.string.home_welcome))
+
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = welcomeTitle,
+                style = ProjectTheme.typography.h1,
+                color = ProjectTheme.colors.onSurface
             )
-        } ?: run {
-            AnnotatedString(stringResource(R.string.home_welcome))
-        }
 
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = welcomeTitle,
-            style = ProjectTheme.typography.h1,
-            color = ProjectTheme.colors.onSurface
-        )
+            Spacer(modifier = Modifier.height(24.dp))
 
-        Spacer(modifier = Modifier.height(24.dp))
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(R.string.home_game_in_progress),
+                style = ProjectTheme.typography.b1,
+                color = ProjectTheme.colors.onSurface
+            )
 
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = stringResource(R.string.home_game_in_progress),
-            style = ProjectTheme.typography.b1,
-            color = ProjectTheme.colors.onSurface
-        )
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        if (isActiveLobbiesLoading) {
-            Box(modifier = Modifier.fillMaxWidth()) {
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .size(40.dp)
-                        .align(Alignment.Center),
-                    color = ProjectTheme.colors.primary,
-                    trackColor = ProjectTheme.colors.surfaceContainerHigh,
-                    strokeWidth = 3.dp
-                )
-            }
-        } else {
+            Spacer(modifier = Modifier.height(24.dp))
             if (activeLobbies.isEmpty()) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
@@ -188,70 +185,70 @@ private fun HomeScreenContent(
                     }
                 }
             }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(R.string.home_join_a_room),
+                style = ProjectTheme.typography.b1,
+                color = ProjectTheme.colors.onSurface
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            HomeActionCell(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(R.string.home_join_a_room_via_id),
+                icon = rememberVectorPainter(Icons.Default.TextFields),
+                onClick = {
+                    // TODO
+                }
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = "OU",
+                style = ProjectTheme.typography.b2,
+                color = ProjectTheme.colors.onSurface,
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            HomeActionCell(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(R.string.home_join_a_room_via_qrcode),
+                icon = rememberVectorPainter(Icons.Default.QrCode),
+                onClick = {
+                    // TODO
+                }
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            ProjectButton(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(R.string.home_history),
+                style = ProjectButtonDefaults.Style.FILLED,
+                tint = ProjectButtonDefaults.Tint.PRIMARY,
+                size = ProjectButtonDefaults.Size.LARGE,
+                onClick = {
+                    // TODO
+                },
+                trailingContent = {
+                    Icon(
+                        modifier = Modifier.size(24.dp),
+                        painter = rememberVectorPainter(Icons.AutoMirrored.Filled.ArrowForward),
+                        contentDescription = null
+                    )
+                }
+            )
+
+            Spacer(modifier = Modifier.height(innerPadding.calculateBottomPadding()))
         }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = stringResource(R.string.home_join_a_room),
-            style = ProjectTheme.typography.b1,
-            color = ProjectTheme.colors.onSurface
-        )
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        HomeActionCell(
-            modifier = Modifier.fillMaxWidth(),
-            text = stringResource(R.string.home_join_a_room_via_id),
-            icon = rememberVectorPainter(Icons.Default.TextFields),
-            onClick = {
-                // TODO
-            }
-        )
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = "OU",
-            style = ProjectTheme.typography.b2,
-            color = ProjectTheme.colors.onSurface,
-            textAlign = TextAlign.Center
-        )
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-        HomeActionCell(
-            modifier = Modifier.fillMaxWidth(),
-            text = stringResource(R.string.home_join_a_room_via_qrcode),
-            icon = rememberVectorPainter(Icons.Default.QrCode),
-            onClick = {
-                // TODO
-            }
-        )
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        ProjectButton(
-            modifier = Modifier.fillMaxWidth(),
-            text = stringResource(R.string.home_history),
-            style = ProjectButtonDefaults.Style.FILLED,
-            tint = ProjectButtonDefaults.Tint.PRIMARY,
-            size = ProjectButtonDefaults.Size.LARGE,
-            onClick = {
-                // TODO
-            },
-            trailingContent = {
-                Icon(
-                    modifier = Modifier.size(24.dp),
-                    painter = rememberVectorPainter(Icons.AutoMirrored.Filled.ArrowForward),
-                    contentDescription = null
-                )
-            }
-        )
-
-        Spacer(modifier = Modifier.height(innerPadding.calculateBottomPadding()))
     }
 }
 
@@ -260,11 +257,13 @@ private fun HomeScreenContent(
 private fun HomeScreenPreview() {
     ProjectTheme {
         HomeScreen(
+            snackbarState = rememberProjectSnackbarState(),
             state = HomeViewModel.State(
                 username = "John Doe"
             ),
             onProfileClicked = {},
             onCreateLobby = {},
+            onRefresh = {},
             onHomeActiveLobbyClicked = {},
         )
     }
@@ -277,8 +276,9 @@ private fun HomeScreenContentPreview() {
         HomeScreenContent(
             innerPadding = PaddingValues(),
             username = "John Doe",
-            isActiveLobbiesLoading = false,
-            activeLobbies = listOf(),
+            isRefreshing = false,
+            activeLobbies = emptyList(),
+            onRefresh = {},
             onHomeActiveLobbyClicked = {}
         )
     }
@@ -291,7 +291,7 @@ private fun HomeScreenContentWithLobbiesPreview() {
         HomeScreenContent(
             innerPadding = PaddingValues(),
             username = "John Doe",
-            isActiveLobbiesLoading = false,
+            isRefreshing = false,
             activeLobbies = listOf(
                 LobbyUI(
                     uid = "1",
@@ -312,6 +312,7 @@ private fun HomeScreenContentWithLobbiesPreview() {
                     nbParticipants = 4
                 )
             ),
+            onRefresh = {},
             onHomeActiveLobbyClicked = {}
         )
     }

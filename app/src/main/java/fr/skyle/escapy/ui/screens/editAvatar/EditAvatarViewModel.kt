@@ -5,9 +5,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.skyle.escapy.MIN_DELAY_BEFORE_SHOWING_LOADER
 import fr.skyle.escapy.data.enums.Avatar
-import fr.skyle.escapy.data.usecase.user.UpdateAvatarUseCase
-import fr.skyle.escapy.data.usecase.user.UpdateAvatarUseCaseResponse
+import fr.skyle.escapy.data.usecase.user.UpdateRemoteAvatarUseCase
 import fr.skyle.escapy.data.usecase.user.WatchCurrentUserUseCase
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,12 +16,13 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class EditAvatarViewModel @Inject constructor(
     private val watchCurrentUserUseCase: WatchCurrentUserUseCase,
-    private val updateAvatarUseCase: UpdateAvatarUseCase,
+    private val updateRemoteAvatarUseCase: UpdateRemoteAvatarUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<State>(State())
@@ -47,46 +48,44 @@ class EditAvatarViewModel @Inject constructor(
                 it.copy(isAvatarUpdating = true)
             }
 
-            // Start a delayed job to show the loading state only if api call is slow
-            val showLoadingJob = launch {
-                delay(MIN_DELAY_BEFORE_SHOWING_LOADER)
+            try {
+                // Start a delayed job to show the loading state only if api call is slow
+                val showLoadingJob = launch {
+                    delay(MIN_DELAY_BEFORE_SHOWING_LOADER)
+                    _state.update {
+                        it.copy(isLoadingShown = true)
+                    }
+                }
+
+                updateRemoteAvatarUseCase(avatar)
+
+                // Cancel loading job
+                showLoadingJob.cancel()
+
                 _state.update {
-                    it.copy(isLoadingShown = true)
+                    it.copy(event = EditAvatarEvent.Success)
                 }
-            }
-
-            val response = updateAvatarUseCase(avatar)
-
-            showLoadingJob.cancel()
-
-            when (response) {
-                is UpdateAvatarUseCaseResponse.Error -> {
-                    _state.update {
-                        it.copy(event = EditAvatarEvent.Error(response.message))
-                    }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Timber.e(e)
+                _state.update {
+                    it.copy(event = EditAvatarEvent.Error(e.message))
                 }
-
-                UpdateAvatarUseCaseResponse.Success -> {
-                    _state.update {
-                        it.copy(event = EditAvatarEvent.Success)
-                    }
+            } finally {
+                _state.update {
+                    it.copy(
+                        isAvatarUpdating = false,
+                        isLoadingShown = false
+                    )
                 }
-            }
-
-            _state.update {
-                it.copy(
-                    isAvatarUpdating = false,
-                    isLoadingShown = false
-                )
             }
         }
     }
 
     fun eventDelivered() {
-        viewModelScope.launch {
-            _state.update {
-                it.copy(event = null)
-            }
+        _state.update {
+            it.copy(event = null)
         }
     }
 

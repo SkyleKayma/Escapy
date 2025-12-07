@@ -10,7 +10,9 @@ interface UserRepository {
 
     suspend fun fetchCurrentUser(): Result<Unit>
 
-    suspend fun updateAvatar(avatar: Avatar): Result<Unit>
+    suspend fun updateRemoteAvatar(avatar: Avatar): Result<Unit>
+
+    suspend fun getCurrentUser(): User?
 
     fun watchUser(userId: String): Flow<User?>
 
