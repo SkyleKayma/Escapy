@@ -9,7 +9,9 @@ import fr.skyle.escapy.data.repository.lobby.model.CreateLobbyRequest
 import fr.skyle.escapy.data.rest.firebase.LobbyRequestDTO
 import fr.skyle.escapy.data.utils.model.FirebaseResponse
 import fr.skyle.escapy.data.utils.readOnce
-import fr.skyle.escapy.data.utils.updateChildrenOnce
+import fr.skyle.escapy.data.utils.updateOnce
+import fr.skyle.escapy.data.vo.Lobby
+import fr.skyle.escapy.data.vo.mapper.toRequestDTO
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -31,25 +33,27 @@ class LobbyRemoteDataSourceImpl @Inject constructor(
             Exception("Failed to generate lobby ID")
         )
 
-        val dto = LobbyRequestDTO(
-            lobbyTitle = request.title,
+        val lobby = Lobby(
+            uid = lobbyId,
+            title = request.title,
             password = request.password,
             duration = request.duration,
             createdAt = System.currentTimeMillis(),
             startedAt = null,
             endedAt = null,
-            status = LobbyStatus.NOT_STARTED.name,
+            status = LobbyStatus.NOT_STARTED,
             createdBy = request.createdBy,
-            participants = mapOf(request.createdBy to true)
+            createdByName = request.createdByName,
+            participants = listOf(request.createdBy)
         )
 
         // Multi-path update
         val updates = hashMapOf(
-            "${FirebaseNode.LOBBIES}/$lobbyId" to dto,
-            "/userLobbies/${request.createdBy}/$lobbyId" to true
+            "/${FirebaseNode.LOBBIES}/$lobbyId" to lobby.toRequestDTO(),
+            "/${FirebaseNode.USER_LOBBIES}/${request.createdBy}/$lobbyId" to true
         )
 
-        return dbRef.updateChildrenOnce(updates)
+        return dbRef.updateOnce(updates)
     }
 
     override suspend fun fetchLobby(lobbyId: String): FirebaseResponse<LobbyRequestDTO> =

@@ -5,6 +5,7 @@ import fr.skyle.escapy.data.repository.lobby.api.LobbyLocalDataSource
 import fr.skyle.escapy.data.repository.lobby.api.LobbyRemoteDataSource
 import fr.skyle.escapy.data.repository.lobby.api.LobbyRepository
 import fr.skyle.escapy.data.repository.lobby.model.CreateLobbyRequest
+import fr.skyle.escapy.data.repository.user.api.UserLocalDataSource
 import fr.skyle.escapy.data.vo.Lobby
 import fr.skyle.escapy.data.vo.mapper.toLobby
 import kotlinx.coroutines.flow.Flow
@@ -16,6 +17,7 @@ class LobbyRepositoryImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val lobbyRemoteDataSource: LobbyRemoteDataSource,
     private val lobbyLocalDataSource: LobbyLocalDataSource,
+    private val userLocalDataSource: UserLocalDataSource
 ) : LobbyRepository {
 
     override suspend fun createLobby(
@@ -26,11 +28,15 @@ class LobbyRepositoryImpl @Inject constructor(
         val user = firebaseAuth.currentUser
             ?: throw Exception("No current user")
 
+        val userLocal = userLocalDataSource.getUser(user.uid)
+            ?: throw Exception("No current local user")
+
         val request = CreateLobbyRequest(
             title = title,
             password = password,
             duration = duration,
-            createdBy = user.uid
+            createdBy = user.uid,
+            createdByName = userLocal.username,
         )
 
         val response = lobbyRemoteDataSource.createLobby(request)

@@ -4,7 +4,7 @@ import androidx.annotation.Keep
 
 @Keep
 data class LobbyRequestDTO(
-    var lobbyTitle: String? = null,
+    var title: String? = null,
     var password: String? = null,
     var duration: Long? = null,
     var createdAt: Long? = null,
@@ -12,5 +12,6 @@ data class LobbyRequestDTO(
     var endedAt: Long? = null,
     var status: String? = null,
     var createdBy: String? = null,
+    var createdByName: String? = null,
     var participants: Map<String, Boolean>? = null
 )

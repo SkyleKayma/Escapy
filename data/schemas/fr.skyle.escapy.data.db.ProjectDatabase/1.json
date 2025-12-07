@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "34458785960cd62081eb594a4aca0d22",
+    "identityHash": "a2e0f80584d23cf1250f49fafb9fb1f4",
     "entities": [
       {
         "tableName": "User",
@@ -42,7 +42,7 @@
       },
       {
         "tableName": "Lobby",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` TEXT NOT NULL, `title` TEXT NOT NULL, `password` TEXT NOT NULL, `duration` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, `startedAt` INTEGER, `endedAt` INTEGER, `status` TEXT NOT NULL, `createdBy` TEXT NOT NULL, `participants` TEXT NOT NULL, PRIMARY KEY(`uid`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` TEXT NOT NULL, `title` TEXT NOT NULL, `password` TEXT, `duration` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, `startedAt` INTEGER, `endedAt` INTEGER, `status` TEXT NOT NULL, `createdBy` TEXT NOT NULL, `createdByName` TEXT NOT NULL, `participants` TEXT NOT NULL, PRIMARY KEY(`uid`))",
         "fields": [
           {
             "fieldPath": "uid",
@@ -59,8 +59,7 @@
           {
             "fieldPath": "password",
             "columnName": "password",
-            "affinity": "TEXT",
-            "notNull": true
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "duration",
@@ -93,6 +92,12 @@
           {
             "fieldPath": "createdBy",
             "columnName": "createdBy",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdByName",
+            "columnName": "createdByName",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -171,7 +176,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '34458785960cd62081eb594a4aca0d22')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a2e0f80584d23cf1250f49fafb9fb1f4')"
     ]
   }
 }
