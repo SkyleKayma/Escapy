@@ -41,6 +41,7 @@ class AuthRemoteDataSourceImpl @Inject constructor(
             withContext(Dispatchers.IO) {
                 database.clearAllTables()
             }
+            dataStore.clear()
             dataStore.setCurrentUserId(userId)
         }
     }
