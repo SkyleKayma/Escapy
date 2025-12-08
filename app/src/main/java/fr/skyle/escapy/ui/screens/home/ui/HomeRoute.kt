@@ -27,7 +27,7 @@ fun HomeRoute(
     LaunchedEffect(homeState.event) {
         homeState.event?.let { event ->
             when (event) {
-                is HomeViewModel.HomeEvent.FetchError -> {
+                is HomeViewModel.HomeEvent.Error -> {
                     snackbarState.showSnackbar(
                         message = context.getString(
                             R.string.generic_error_fetch_format,
@@ -35,6 +35,24 @@ fun HomeRoute(
                         ),
                         type = ProjectSnackbarDefaults.ProjectSnackbarType.ERROR
                     )
+                }
+
+                HomeViewModel.HomeEvent.LobbyNotExisting -> {
+                    snackbarState.showSnackbar(
+                        message = context.getString(R.string.home_error_lobby_not_existing),
+                        type = ProjectSnackbarDefaults.ProjectSnackbarType.NEUTRAL
+                    )
+                }
+
+                HomeViewModel.HomeEvent.NotInLobby -> {
+                    snackbarState.showSnackbar(
+                        message = context.getString(R.string.home_error_not_in_lobby),
+                        type = ProjectSnackbarDefaults.ProjectSnackbarType.ERROR
+                    )
+                }
+
+                is HomeViewModel.HomeEvent.HasAccessToLobby -> {
+                    navigateToLobby(event.lobbyId)
                 }
             }
 
@@ -48,7 +66,7 @@ fun HomeRoute(
         onProfileClicked = navigateToProfile,
         onCreateLobby = navigateToCreateLobby,
         onRefresh = homeViewModel::fetch,
-        onHomeActiveLobbyClicked = navigateToLobby,
+        onHomeActiveLobbyClicked = homeViewModel::ensureLobbyIsAccessible,
         onJoinLobbyByQRCodeClicked = navigateToJoinLobbyByQRCode
     )
 }

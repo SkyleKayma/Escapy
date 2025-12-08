@@ -4,6 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.skyle.escapy.MIN_DELAY_TO_SHOW_LOADER
+import fr.skyle.escapy.data.usecase.lobby.EnsureLobbyAccessibleUseCase
+import fr.skyle.escapy.data.usecase.lobby.EnsureLobbyAccessibleUseCaseLobbyDoesNotExist
+import fr.skyle.escapy.data.usecase.lobby.EnsureLobbyAccessibleUseCaseNotInLobby
 import fr.skyle.escapy.data.usecase.lobby.FetchLobbiesForCurrentUserUseCaseImpl
 import fr.skyle.escapy.data.usecase.lobby.WatchCurrentUserActiveLobbiesUseCase
 import fr.skyle.escapy.data.usecase.user.FetchCurrentUserUseCaseImpl
@@ -28,7 +31,8 @@ class HomeViewModel @Inject constructor(
     watchCurrentUserUseCase: WatchCurrentUserUseCase,
     private val watchCurrentUserActiveLobbiesUseCase: WatchCurrentUserActiveLobbiesUseCase,
     private val fetchCurrentUserUseCaseImpl: FetchCurrentUserUseCaseImpl,
-    private val fetchLobbiesForCurrentUserUseCaseImpl: FetchLobbiesForCurrentUserUseCaseImpl
+    private val fetchLobbiesForCurrentUserUseCaseImpl: FetchLobbiesForCurrentUserUseCaseImpl,
+    private val ensureLobbyAccessibleUseCase: EnsureLobbyAccessibleUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<State>(State())
@@ -49,10 +53,9 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             watchCurrentUserActiveLobbiesUseCase()
                 .collect { lobbies ->
-                    Timber.d("0 ${lobbies.joinToString(";")}")
                     _state.update {
                         it.copy(
-                            activeLobbies = lobbies.map { it.toLobbyUI() }
+                            activeLobbies = lobbies.map { it.toLobbyUI() }.sortedBy { it.createdAt }
                         )
                     }
                 }
@@ -82,11 +85,48 @@ class HomeViewModel @Inject constructor(
             } catch (e: Exception) {
                 Timber.e(e)
                 _state.update {
-                    it.copy(event = HomeEvent.FetchError(e.message))
+                    it.copy(event = HomeEvent.Error(e.message))
                 }
             } finally {
                 _state.update {
                     it.copy(isRefreshing = false)
+                }
+            }
+        }
+    }
+
+    fun ensureLobbyIsAccessible(lobbyId: String) {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(isChecking = true)
+            }
+
+            try {
+                ensureLobbyAccessibleUseCase(lobbyId)
+
+                _state.update {
+                    it.copy(event = HomeEvent.HasAccessToLobby(lobbyId))
+                }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: EnsureLobbyAccessibleUseCaseLobbyDoesNotExist) {
+                Timber.e(e)
+                _state.update {
+                    it.copy(event = HomeEvent.LobbyNotExisting)
+                }
+            } catch (e: EnsureLobbyAccessibleUseCaseNotInLobby) {
+                Timber.e(e)
+                _state.update {
+                    it.copy(event = HomeEvent.NotInLobby)
+                }
+            } catch (e: Exception) {
+                Timber.e(e)
+                _state.update {
+                    it.copy(event = HomeEvent.Error(e.message))
+                }
+            } finally {
+                _state.update {
+                    it.copy(isChecking = false)
                 }
             }
         }
@@ -101,11 +141,15 @@ class HomeViewModel @Inject constructor(
     data class State(
         val username: String? = null,
         val isRefreshing: Boolean = false,
+        val isChecking: Boolean = false,
         val activeLobbies: List<LobbyUI> = emptyList(),
         val event: HomeEvent? = null
     )
 
     sealed interface HomeEvent {
-        data class FetchError(val message: String?) : HomeEvent
+        data class Error(val message: String?) : HomeEvent
+        data object LobbyNotExisting : HomeEvent
+        data object NotInLobby : HomeEvent
+        data class HasAccessToLobby(val lobbyId: String) : HomeEvent
     }
 }

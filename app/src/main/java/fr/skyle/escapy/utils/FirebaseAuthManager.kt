@@ -1,7 +1,8 @@
-package fr.skyle.escapy.data.utils
+package fr.skyle.escapy.utils
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import fr.skyle.escapy.data.utils.getAuthProvider
 import fr.skyle.escapy.data.utils.model.FirebaseConnectionState
 import fr.skyle.escapy.data.utils.model.FirebaseUserSnapshot
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -57,7 +58,7 @@ class FirebaseAuthManager @Inject constructor(
         )
 
         if (_state.value != newState) {
-            Timber.d("Firebase auth state updated: $newState")
+            Timber.Forest.d("Firebase auth state updated: $newState")
             _state.value = newState
         }
     }
@@ -84,4 +85,3 @@ class FirebaseAuthManager @Inject constructor(
         val connectionState: FirebaseConnectionState
     )
 }
-

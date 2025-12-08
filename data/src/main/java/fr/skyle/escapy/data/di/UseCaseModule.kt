@@ -24,6 +24,8 @@ import fr.skyle.escapy.data.usecase.firebaseAuth.SignUpUseCase
 import fr.skyle.escapy.data.usecase.firebaseAuth.SignUpUseCaseImpl
 import fr.skyle.escapy.data.usecase.lobby.CreateLobbyUseCase
 import fr.skyle.escapy.data.usecase.lobby.CreateLobbyUseCaseImpl
+import fr.skyle.escapy.data.usecase.lobby.EnsureLobbyAccessibleUseCase
+import fr.skyle.escapy.data.usecase.lobby.EnsureLobbyAccessibleUseCaseImpl
 import fr.skyle.escapy.data.usecase.lobby.FetchLobbiesForCurrentUserUseCase
 import fr.skyle.escapy.data.usecase.lobby.FetchLobbiesForCurrentUserUseCaseImpl
 import fr.skyle.escapy.data.usecase.lobby.FetchLobbyUseCase
@@ -169,4 +171,10 @@ interface UseCaseModule {
     fun bindsValidateLobbyQRCodeUseCase(
         validateLobbyQRCodeUseCaseImpl: ValidateLobbyQRCodeUseCaseImpl,
     ): ValidateLobbyQRCodeUseCase
+
+    @Binds
+    @Singleton
+    fun bindsEnsureLobbyAccessibleUseCase(
+        ensureLobbyAccessibleUseCaseImpl: EnsureLobbyAccessibleUseCaseImpl,
+    ): EnsureLobbyAccessibleUseCase
 }

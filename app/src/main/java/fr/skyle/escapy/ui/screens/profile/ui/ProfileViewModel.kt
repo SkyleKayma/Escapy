@@ -7,7 +7,7 @@ import fr.skyle.escapy.data.enums.AuthProvider
 import fr.skyle.escapy.data.enums.Avatar
 import fr.skyle.escapy.data.usecase.firebaseAuth.SignOutUseCase
 import fr.skyle.escapy.data.usecase.user.WatchCurrentUserUseCase
-import fr.skyle.escapy.data.utils.FirebaseAuthManager
+import fr.skyle.escapy.utils.FirebaseAuthManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

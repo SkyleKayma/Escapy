@@ -66,6 +66,8 @@
     <string name="home_join_a_room_via_qrcode">Par QRcode</string>
     <string name="home_join_a_room_via_id">Par ID</string>
     <string name="home_history">Historique des parties</string>
+    <string name="home_error_lobby_not_existing">Ce salon n\'existe plus</string>
+    <string name="home_error_not_in_lobby">Vous ne faites pas parti de ce salon</string>
 
     <!-- Home Active Lobby Cell -->
     <string name="home_active_lobby_cell_managed_by_format">Géré par: %s</string>
