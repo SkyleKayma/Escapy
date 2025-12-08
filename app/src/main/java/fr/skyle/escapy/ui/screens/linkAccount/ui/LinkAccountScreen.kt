@@ -124,6 +124,7 @@ private fun LinkAccountScreenPreview() {
 private fun LinkAccountScreenContentPreview() {
     ProjectTheme {
         LinkAccountScreenContent(
+            modifier = Modifier.fillMaxSize(),
             innerPadding = PaddingValues(),
             onAuthProviderClicked = {},
         )

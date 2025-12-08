@@ -175,6 +175,7 @@ private fun ChangeEmailScreenPreview() {
 private fun ChangeEmailScreenContentPreview() {
     ProjectTheme {
         ChangeEmailScreenContent(
+            modifier = Modifier.fillMaxSize(),
             innerPadding = PaddingValues(),
             isButtonLoading = false,
             newEmail = "",
@@ -193,6 +194,7 @@ private fun ChangeEmailScreenContentPreview() {
 private fun ChangeEmailScreenContentLoadingPreview() {
     ProjectTheme {
         ChangeEmailScreenContent(
+            modifier = Modifier.fillMaxSize(),
             innerPadding = PaddingValues(),
             isButtonLoading = true,
             newEmail = "",

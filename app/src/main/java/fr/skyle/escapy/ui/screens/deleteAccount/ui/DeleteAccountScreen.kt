@@ -212,6 +212,7 @@ private fun DeleteAccountScreenContentPreview(
 ) {
     ProjectTheme {
         DeleteAccountScreenContent(
+            modifier = Modifier.fillMaxSize(),
             innerPadding = PaddingValues(),
             authProvider = data.authProvider,
             isButtonLoading = data.isButtonLoading,

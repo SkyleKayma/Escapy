@@ -53,6 +53,9 @@ fun NavGraphBuilder.homeRoute(
             },
             navigateToLobby = { lobbyId ->
                 // TODO
+            },
+            navigateToJoinLobbyByQRCode = {
+                navHostController.navigateWithLifecycle(Route.JoinLobbyByQRCode)
             }
         )
     }

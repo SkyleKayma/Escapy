@@ -159,6 +159,7 @@ private fun AboutScreenPreview() {
 private fun AboutScreenContentPreview() {
     ProjectTheme {
         AboutScreenContent(
+            modifier = Modifier.fillMaxSize(),
             innerPadding = PaddingValues(),
             isContributorsLoading = false,
             contributors = listOf(
@@ -181,6 +182,7 @@ private fun AboutScreenContentPreview() {
 private fun AboutScreenContentContributorsLoadingPreview() {
     ProjectTheme {
         AboutScreenContent(
+            modifier = Modifier.fillMaxSize(),
             innerPadding = PaddingValues(),
             isContributorsLoading = true,
             contributors = listOf(

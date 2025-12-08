@@ -104,6 +104,10 @@ class LobbyRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun watchLobby(lobbyId: String): Flow<Lobby?> {
+        return lobbyLocalDataSource.watchLobby(lobbyId)
+    }
+
     override fun watchActiveLobbiesForUser(userId: String): Flow<List<Lobby>> {
         return lobbyLocalDataSource.watchActiveLobbiesForUser(userId)
     }

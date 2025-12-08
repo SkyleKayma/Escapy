@@ -56,7 +56,7 @@ fun NavController.navigateWithLifecycle(
 
 inline fun <reified R : Any> NavController.navigateToDestinationAndPopUpTo(
     routeToNavigateTo: Any,
-    isInclusive: Boolean = true
+    isInclusive: Boolean = false
 ) {
     navigate(routeToNavigateTo) {
         popUpTo<R> {

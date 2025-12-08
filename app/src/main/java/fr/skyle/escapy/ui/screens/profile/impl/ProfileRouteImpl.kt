@@ -31,7 +31,10 @@ fun NavGraphBuilder.profileRoute(
                 navHostController.navigateWithLifecycle(Route.About)
             },
             navigateBackToSignIn = {
-                navHostController.navigateToDestinationAndPopUpTo<Graph.Main>(Route.SignIn())
+                navHostController.navigateToDestinationAndPopUpTo<Graph.Main>(
+                    routeToNavigateTo = Route.SignIn(),
+                    isInclusive = true
+                )
             },
             navigateToDeleteAccount = {
                 navHostController.navigateWithLifecycle(Route.DeleteAccount)

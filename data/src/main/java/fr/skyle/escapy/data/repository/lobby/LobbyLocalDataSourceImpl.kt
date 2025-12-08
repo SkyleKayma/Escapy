@@ -53,6 +53,9 @@ class LobbyLocalDataSourceImpl @Inject constructor(
         }
     }
 
+    override fun watchLobby(lobbyId: String): Flow<Lobby?> =
+        lobbyDao.watchLobby(lobbyId).distinctUntilChanged()
+
     override fun watchActiveLobbiesForUser(userId: String): Flow<List<Lobby>> =
         lobbyDao.watchLobbiesForUser(
             userId = userId,

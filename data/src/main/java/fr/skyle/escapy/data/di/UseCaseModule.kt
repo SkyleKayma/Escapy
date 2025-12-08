@@ -28,8 +28,12 @@ import fr.skyle.escapy.data.usecase.lobby.FetchLobbiesForCurrentUserUseCase
 import fr.skyle.escapy.data.usecase.lobby.FetchLobbiesForCurrentUserUseCaseImpl
 import fr.skyle.escapy.data.usecase.lobby.FetchLobbyUseCase
 import fr.skyle.escapy.data.usecase.lobby.FetchLobbyUseCaseImpl
+import fr.skyle.escapy.data.usecase.lobby.ValidateLobbyQRCodeUseCase
+import fr.skyle.escapy.data.usecase.lobby.ValidateLobbyQRCodeUseCaseImpl
 import fr.skyle.escapy.data.usecase.lobby.WatchCurrentUserActiveLobbiesUseCase
 import fr.skyle.escapy.data.usecase.lobby.WatchCurrentUserActiveLobbiesUseCaseImpl
+import fr.skyle.escapy.data.usecase.lobby.WatchLobbyUseCase
+import fr.skyle.escapy.data.usecase.lobby.WatchLobbyUseCaseImpl
 import fr.skyle.escapy.data.usecase.user.FetchCurrentUserUseCase
 import fr.skyle.escapy.data.usecase.user.FetchCurrentUserUseCaseImpl
 import fr.skyle.escapy.data.usecase.user.FetchUserUseCase
@@ -153,4 +157,16 @@ interface UseCaseModule {
     fun bindsWatchCurrentUserActiveLobbiesUseCase(
         watchCurrentUserActiveLobbiesUseCaseImpl: WatchCurrentUserActiveLobbiesUseCaseImpl,
     ): WatchCurrentUserActiveLobbiesUseCase
+
+    @Binds
+    @Singleton
+    fun bindsWatchLobbyUseCase(
+        watchLobbyUseCaseImpl: WatchLobbyUseCaseImpl,
+    ): WatchLobbyUseCase
+
+    @Binds
+    @Singleton
+    fun bindsValidateLobbyQRCodeUseCase(
+        validateLobbyQRCodeUseCaseImpl: ValidateLobbyQRCodeUseCaseImpl,
+    ): ValidateLobbyQRCodeUseCase
 }

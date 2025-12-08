@@ -35,6 +35,9 @@ sealed interface Route {
 
     @Serializable
     data object CreateLobby : Route
+
+    @Serializable
+    data object JoinLobbyByQRCode : Route
 }
 
 @Serializable

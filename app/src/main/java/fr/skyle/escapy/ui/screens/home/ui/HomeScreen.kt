@@ -57,6 +57,7 @@ fun HomeScreen(
     onCreateLobby: () -> Unit,
     onRefresh: () -> Unit,
     onHomeActiveLobbyClicked: (lobbyId: String) -> Unit,
+    onJoinLobbyByQRCodeClicked: () -> Unit,
 ) {
     ProjectScreenStructure(
         modifier = Modifier.fillMaxSize(),
@@ -100,6 +101,7 @@ fun HomeScreen(
             activeLobbies = state.activeLobbies,
             onRefresh = onRefresh,
             onHomeActiveLobbyClicked = onHomeActiveLobbyClicked,
+            onJoinLobbyByQRCodeClicked = onJoinLobbyByQRCodeClicked,
         )
     }
 }
@@ -112,6 +114,7 @@ private fun HomeScreenContent(
     activeLobbies: List<LobbyUI>,
     onRefresh: () -> Unit,
     onHomeActiveLobbyClicked: (lobbyId: String) -> Unit,
+    onJoinLobbyByQRCodeClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     PullToRefreshBox(
@@ -222,9 +225,7 @@ private fun HomeScreenContent(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(R.string.home_join_a_room_via_qrcode),
                 icon = rememberVectorPainter(Icons.Default.QrCode),
-                onClick = {
-                    // TODO
-                }
+                onClick = onJoinLobbyByQRCodeClicked
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -265,6 +266,7 @@ private fun HomeScreenPreview() {
             onCreateLobby = {},
             onRefresh = {},
             onHomeActiveLobbyClicked = {},
+            onJoinLobbyByQRCodeClicked = {},
         )
     }
 }
@@ -274,12 +276,14 @@ private fun HomeScreenPreview() {
 private fun HomeScreenContentPreview() {
     ProjectTheme {
         HomeScreenContent(
+            modifier = Modifier.fillMaxSize(),
             innerPadding = PaddingValues(),
             username = "John Doe",
             isRefreshing = false,
             activeLobbies = emptyList(),
             onRefresh = {},
-            onHomeActiveLobbyClicked = {}
+            onHomeActiveLobbyClicked = {},
+            onJoinLobbyByQRCodeClicked = {},
         )
     }
 }
@@ -289,6 +293,7 @@ private fun HomeScreenContentPreview() {
 private fun HomeScreenContentWithLobbiesPreview() {
     ProjectTheme {
         HomeScreenContent(
+            modifier = Modifier.fillMaxSize(),
             innerPadding = PaddingValues(),
             username = "John Doe",
             isRefreshing = false,
@@ -313,7 +318,8 @@ private fun HomeScreenContentWithLobbiesPreview() {
                 )
             ),
             onRefresh = {},
-            onHomeActiveLobbyClicked = {}
+            onHomeActiveLobbyClicked = {},
+            onJoinLobbyByQRCodeClicked = {},
         )
     }
 }

@@ -220,6 +220,7 @@ private fun LinkAccountWithEmailScreenPreview() {
 private fun LinkAccountScreenContentPreview() {
     ProjectTheme {
         LinkAccountWithEmailScreenContent(
+            modifier = Modifier.fillMaxSize(),
             innerPadding = PaddingValues(),
             isButtonLoading = false,
             email = "",

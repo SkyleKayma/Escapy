@@ -15,6 +15,7 @@ fun HomeRoute(
     navigateToProfile: () -> Unit,
     navigateToCreateLobby: () -> Unit,
     navigateToLobby: (lobbyId: String) -> Unit,
+    navigateToJoinLobbyByQRCode: () -> Unit,
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
@@ -26,9 +27,12 @@ fun HomeRoute(
     LaunchedEffect(homeState.event) {
         homeState.event?.let { event ->
             when (event) {
-                HomeViewModel.HomeEvent.FetchError -> {
+                is HomeViewModel.HomeEvent.FetchError -> {
                     snackbarState.showSnackbar(
-                        message = context.getString(R.string.generic_error_fetch_format),
+                        message = context.getString(
+                            R.string.generic_error_fetch_format,
+                            event.message
+                        ),
                         type = ProjectSnackbarDefaults.ProjectSnackbarType.ERROR
                     )
                 }
@@ -44,6 +48,7 @@ fun HomeRoute(
         onProfileClicked = navigateToProfile,
         onCreateLobby = navigateToCreateLobby,
         onRefresh = homeViewModel::fetch,
-        onHomeActiveLobbyClicked = navigateToLobby
+        onHomeActiveLobbyClicked = navigateToLobby,
+        onJoinLobbyByQRCodeClicked = navigateToJoinLobbyByQRCode
     )
 }

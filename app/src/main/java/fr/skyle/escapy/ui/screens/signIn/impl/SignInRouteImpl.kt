@@ -24,7 +24,10 @@ fun NavGraphBuilder.signInRoute(
     ) {
         SignInRoute(
             navigateToHome = {
-                navHostController.navigateToDestinationAndPopUpTo<Graph.Auth>(Route.Home)
+                navHostController.navigateToDestinationAndPopUpTo<Graph.Auth>(
+                    routeToNavigateTo = Route.Home,
+                    isInclusive = true
+                )
             }
         )
     }

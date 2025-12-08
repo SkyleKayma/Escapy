@@ -41,9 +41,10 @@ fun MainScreen(
             when (event) {
                 MainViewModel.MainEvent.LogoutEvent -> {
                     navHostController.navigateToDestinationAndPopUpTo<Graph.Main>(
-                        Route.SignIn(
-                            reason = SignInReason.SESSION_EXPIRED
-                        )
+                        routeToNavigateTo = Route.SignIn(
+                            reason = SignInReason.SESSION_EXPIRED,
+                        ),
+                        isInclusive = true
                     )
                 }
             }

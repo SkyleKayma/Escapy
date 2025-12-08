@@ -327,6 +327,7 @@ private fun SignInScreenContentPreview(
 ) {
     ProjectTheme {
         SignInScreenContent(
+            modifier = Modifier.fillMaxSize(),
             innerPadding = PaddingValues(),
             authType = data.authType,
             isButtonLoading = data.isButtonLoading,

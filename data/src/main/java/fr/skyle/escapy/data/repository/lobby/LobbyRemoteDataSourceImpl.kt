@@ -64,28 +64,29 @@ class LobbyRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun fetchLobbies(
         lobbyIds: List<String>
-    ): FirebaseResponse<Map<String, LobbyRequestDTO>> = coroutineScope {
-        val result = mutableMapOf<String, LobbyRequestDTO>()
+    ): FirebaseResponse<Map<String, LobbyRequestDTO>> =
+        coroutineScope {
+            val result = mutableMapOf<String, LobbyRequestDTO>()
 
-        val jobs = lobbyIds.map { lobbyId ->
-            async {
-                val response = fetchLobby(lobbyId)
+            val jobs = lobbyIds.map { lobbyId ->
+                async {
+                    val response = fetchLobby(lobbyId)
 
-                if (response.isSuccessful && response.body != null) {
-                    result[lobbyId] = response.body
-                } else if (!response.isSuccessful) {
-                    throw response.exception ?: Exception("Unknown Firebase error")
+                    if (response.isSuccessful && response.body != null) {
+                        result[lobbyId] = response.body
+                    } else if (!response.isSuccessful) {
+                        throw response.exception ?: Exception("Unknown Firebase error")
+                    }
                 }
             }
-        }
 
-        return@coroutineScope try {
-            jobs.awaitAll()
-            FirebaseResponse(result, null)
-        } catch (e: Exception) {
-            FirebaseResponse(null, e)
+            return@coroutineScope try {
+                jobs.awaitAll()
+                FirebaseResponse(result, null)
+            } catch (e: Exception) {
+                FirebaseResponse(null, e)
+            }
         }
-    }
 
     override suspend fun fetchUserLobbyIds(userId: String): FirebaseResponse<Map<String, Boolean>> =
         dbRef.child(FirebaseNode.USER_LOBBIES)

@@ -152,4 +152,13 @@ dependencies {
 
     // Firebase
     implementation(libs.firebase.auth)
+
+    // Camera
+    implementation(libs.bundles.camera)
+
+    // MLKit
+    implementation(libs.mlkit.barcode.scanning)
+
+    // Accompanist
+    implementation(libs.accompanist.permissions)
 }

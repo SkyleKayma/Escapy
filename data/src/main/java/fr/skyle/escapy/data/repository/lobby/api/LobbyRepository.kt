@@ -17,6 +17,8 @@ interface LobbyRepository {
 
     suspend fun fetchLobbiesForUser(userId: String): Result<Unit>
 
+    fun watchLobby(lobbyId: String): Flow<Lobby?>
+
     fun watchActiveLobbiesForUser(userId: String): Flow<List<Lobby>>
 
     fun watchCurrentUserActiveLobbies(): Flow<List<Lobby>>
@@ -26,6 +28,4 @@ interface LobbyRepository {
 //    suspend fun leaveLobby(lobbyId: String): Result<Unit>
 //
 //    suspend fun removeParticipant(lobbyId: String, participantId: String): Result<Unit>
-//
-//    fun watchLobby(lobbyId: String): Flow<Lobby?>
 }

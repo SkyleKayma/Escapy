@@ -211,6 +211,7 @@ private fun ChangePasswordScreenPreview() {
 private fun ChangePasswordScreenContentPreview() {
     ProjectTheme {
         ChangePasswordScreenContent(
+            modifier = Modifier.fillMaxSize(),
             innerPadding = PaddingValues(),
             isButtonLoading = false,
             currentPassword = "",
@@ -232,6 +233,7 @@ private fun ChangePasswordScreenContentPreview() {
 private fun ChangePasswordScreenContentLoadingPreview() {
     ProjectTheme {
         ChangePasswordScreenContent(
+            modifier = Modifier.fillMaxSize(),
             innerPadding = PaddingValues(),
             isButtonLoading = true,
             currentPassword = "",

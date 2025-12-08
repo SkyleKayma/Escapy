@@ -35,7 +35,7 @@ fun ProjectLoadingDialog(
 private fun ProjectLoadingDialogPreview() {
     ProjectTheme {
         ProjectLoadingDialog(
-            title = stringResource(R.string.edit_avatar_loading_dialog_title),
+            title = stringResource(R.string.generic_loading_modifying),
         )
     }
 }

@@ -32,6 +32,11 @@
     <string name="generic_password_rule_digit">Contient au moins 1 chiffre</string>
     <string name="generic_password_rule_special">Contient au moins 1 caractère spécial</string>
 
+    <!-- Generic Loading -->
+    <string name="generic_loading_verifying">Vérification en cours...</string>
+    <string name="generic_loading_modifying">Modification en cours...</string>
+    <string name="generic_loading_deleting">Suppression en cours...</string>
+
     <!-- SignIn -->
     <string name="sign_in_title">Connexion</string>
     <string name="sign_in_action">Se connecter</string>
@@ -121,9 +126,6 @@
     <!-- Edit Avatar -->
     <string name="edit_avatar_screen_title">Modifier votre avatar</string>
 
-    <!-- Edit Avatar Loading -->
-    <string name="edit_avatar_loading_dialog_title">Modification de votre avatar en cours...</string>
-
     <!-- Delete Account -->
     <string name="delete_account_screen_title">Supprimer mon compte</string>
     <string name="delete_account_current_password">Mot de passe actuel</string>
@@ -156,5 +158,15 @@
     <string name="lobby_status_not_started">En attente</string>
     <string name="lobby_status_in_progress">En cours</string>
     <string name="lobby_status_finished">Terminé</string>
+
+    <!-- Join Lobby By QRCode -->
+    <string name="join_lobby_by_qrcode_screen_title">Rejoindre par QRCode</string>
+    <string name="join_lobby_by_qrcode_error_qrcode_invalid">Le QRCode scanné est invalide</string>
+
+    <!-- Permission Camera -->
+    <string name="permission_camera_required">Permission caméra requise</string>
+    <string name="permission_camera_authorize">Autoriser</string>
+    <string name="permission_camera_refused_enable_in_settings">Sans la permission de la caméra vous ne pouvez pas scanner de QRCode. Autorisez-la dans les paramètres du téléphone.</string>
+    <string name="permission_camera_settings">Paramètres</string>
 
 </resources>

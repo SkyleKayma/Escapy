@@ -8,10 +8,9 @@ interface LobbyLocalDataSource {
 
     suspend fun insertLobbies(lobbies: List<Lobby>)
 
+    fun watchLobby(lobbyId: String): Flow<Lobby?>
+
     fun watchActiveLobbiesForUser(userId: String): Flow<List<Lobby>>
-
-//    fun watchLobby(lobbyId: String): Flow<Lobby?>
-
 
 //    fun watchLobbiesCreatedBy(uid: String): Flow<List<Lobby>>
 //

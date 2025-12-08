@@ -3,7 +3,7 @@ package fr.skyle.escapy.ui.screens.home.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fr.skyle.escapy.MIN_FETCH_DELAY
+import fr.skyle.escapy.MIN_DELAY_TO_SHOW_LOADER
 import fr.skyle.escapy.data.usecase.lobby.FetchLobbiesForCurrentUserUseCaseImpl
 import fr.skyle.escapy.data.usecase.lobby.WatchCurrentUserActiveLobbiesUseCase
 import fr.skyle.escapy.data.usecase.user.FetchCurrentUserUseCaseImpl
@@ -11,6 +11,7 @@ import fr.skyle.escapy.data.usecase.user.WatchCurrentUserUseCase
 import fr.skyle.escapy.ui.screens.home.ui.mapper.toLobbyUI
 import fr.skyle.escapy.ui.screens.home.ui.model.LobbyUI
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
@@ -65,9 +66,9 @@ class HomeViewModel @Inject constructor(
             }
 
             try {
-                val minDelayJob = async { delay(MIN_FETCH_DELAY) }
+                val minDelayJob = async(SupervisorJob()) { delay(MIN_DELAY_TO_SHOW_LOADER) }
 
-                val fetchJob = async {
+                val fetchJob = async(SupervisorJob()) {
                     // Fetch user
                     fetchCurrentUserUseCaseImpl()
 
@@ -75,13 +76,13 @@ class HomeViewModel @Inject constructor(
                     fetchLobbiesForCurrentUserUseCaseImpl()
                 }
 
-                listOf(minDelayJob, fetchJob).awaitAll()
+                awaitAll(minDelayJob, fetchJob)
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
                 Timber.e(e)
                 _state.update {
-                    it.copy(event = HomeEvent.FetchError)
+                    it.copy(event = HomeEvent.FetchError(e.message))
                 }
             } finally {
                 _state.update {
@@ -105,6 +106,6 @@ class HomeViewModel @Inject constructor(
     )
 
     sealed interface HomeEvent {
-        object FetchError : HomeEvent
+        data class FetchError(val message: String?) : HomeEvent
     }
 }

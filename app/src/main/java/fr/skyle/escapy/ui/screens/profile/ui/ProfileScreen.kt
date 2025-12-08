@@ -269,6 +269,7 @@ private fun ProfileScreenContentPreview(
 ) {
     ProjectTheme {
         ProfileScreenContent(
+            modifier = Modifier.fillMaxSize(),
             innerPadding = PaddingValues(),
             username = "John Doe",
             email = "john.doe@test.fr",

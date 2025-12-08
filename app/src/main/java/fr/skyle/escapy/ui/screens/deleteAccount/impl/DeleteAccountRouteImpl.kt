@@ -15,7 +15,10 @@ fun NavGraphBuilder.deleteAccountRoute(
     composable<Route.DeleteAccount> {
         DeleteAccountRoute(
             navigateBackToSignIn = {
-                navHostController.navigateToDestinationAndPopUpTo<Graph.Main>(Route.SignIn())
+                navHostController.navigateToDestinationAndPopUpTo<Graph.Main>(
+                    routeToNavigateTo = Route.SignIn(),
+                    isInclusive = true
+                )
             },
             navigateBack = navHostController::popBackStackWithLifecycle
         )

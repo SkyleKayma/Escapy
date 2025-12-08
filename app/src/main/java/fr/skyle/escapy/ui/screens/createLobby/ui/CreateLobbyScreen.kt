@@ -195,6 +195,7 @@ private fun CreateLobbyScreenContentPreview(
 ) {
     ProjectTheme {
         CreateLobbyScreenContent(
+            modifier = Modifier.fillMaxSize(),
             innerPadding = PaddingValues(),
             isButtonLoading = data.isButtonLoading,
             title = "",
@@ -215,6 +216,7 @@ private fun CreateLobbyScreenContentWithDurationPreview(
 ) {
     ProjectTheme {
         CreateLobbyScreenContent(
+            modifier = Modifier.fillMaxSize(),
             innerPadding = PaddingValues(),
             isButtonLoading = data.isButtonLoading,
             title = "",

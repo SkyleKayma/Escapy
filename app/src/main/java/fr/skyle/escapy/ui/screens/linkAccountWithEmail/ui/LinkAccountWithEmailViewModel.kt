@@ -21,8 +21,7 @@ class LinkAccountWithEmailViewModel @Inject constructor(
     private val linkAccountWithEmailProviderUseCase: LinkAccountWithEmailProviderUseCase
 ) : ViewModel() {
 
-    private val _state =
-        MutableStateFlow<State>(State())
+    private val _state: MutableStateFlow<State> = MutableStateFlow<State>(State())
     val state: StateFlow<State> by lazy { _state.asStateFlow() }
 
     fun linkAccountWithEmailProvider() {
