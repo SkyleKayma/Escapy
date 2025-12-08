@@ -38,6 +38,9 @@ sealed interface Route {
 
     @Serializable
     data object JoinLobbyByQRCode : Route
+
+    @Serializable
+    data class LobbyRoute(val lobbyId: String) : Route
 }
 
 @Serializable

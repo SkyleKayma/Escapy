@@ -13,8 +13,10 @@ fun NavGraphBuilder.joinLobbyByQRCodeRoute(
 ) {
     composable<Route.JoinLobbyByQRCode> {
         JoinLobbyByQRCodeRoute(
-            navigateToLobby = {
-                navHostController.navigateToDestinationAndPopUpTo<Route.Home>(Route.About)
+            navigateToLobby = { lobbyId ->
+                navHostController.navigateToDestinationAndPopUpTo<Route.Home>(
+                    Route.LobbyRoute(lobbyId)
+                )
             },
             navigateBack = navHostController::popBackStackWithLifecycle
         )

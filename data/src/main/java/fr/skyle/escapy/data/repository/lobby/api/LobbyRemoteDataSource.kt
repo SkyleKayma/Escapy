@@ -5,7 +5,7 @@ import fr.skyle.escapy.data.rest.firebase.LobbyRequestDTO
 import fr.skyle.escapy.data.utils.model.FirebaseResponse
 
 interface LobbyRemoteDataSource {
-    suspend fun createLobby(request: CreateLobbyRequest): FirebaseResponse<Unit>
+    suspend fun createLobby(request: CreateLobbyRequest): FirebaseResponse<String>
 
     suspend fun fetchLobby(lobbyId: String): FirebaseResponse<LobbyRequestDTO>
 

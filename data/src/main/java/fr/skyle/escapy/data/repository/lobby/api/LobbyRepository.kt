@@ -9,7 +9,7 @@ interface LobbyRepository {
         title: String,
         password: String?,
         duration: Long
-    ): Result<Unit>
+    ): Result<String>
 
     suspend fun fetchLobby(lobbyId: String): Result<Unit>
 

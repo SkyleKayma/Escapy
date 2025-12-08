@@ -24,7 +24,7 @@ class LobbyRepositoryImpl @Inject constructor(
         title: String,
         password: String?,
         duration: Long
-    ): Result<Unit> {
+    ): Result<String> {
         val user = firebaseAuth.currentUser
             ?: throw Exception("No current user")
 
@@ -40,8 +40,10 @@ class LobbyRepositoryImpl @Inject constructor(
         )
 
         val response = lobbyRemoteDataSource.createLobby(request)
-        return if (response.isSuccessful) {
-            Result.success(Unit)
+
+        val body = response.body
+        return if (response.isSuccessful && body != null) {
+            Result.success(body)
         } else {
             Result.failure(Exception(response.exception))
         }

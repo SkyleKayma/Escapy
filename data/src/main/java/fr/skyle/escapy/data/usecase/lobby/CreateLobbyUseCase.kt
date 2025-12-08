@@ -8,7 +8,7 @@ interface CreateLobbyUseCase {
     suspend operator fun invoke(
         title: String,
         duration: Long
-    )
+    ): String
 }
 
 class CreateLobbyUseCaseImpl @Inject constructor(
@@ -18,13 +18,15 @@ class CreateLobbyUseCaseImpl @Inject constructor(
     override suspend fun invoke(
         title: String,
         duration: Long
-    ) {
+    ): String {
         val password = Random.nextInt(1000, 10000).toString()
 
-        lobbyRepository.createLobby(
+        val lobbyId = lobbyRepository.createLobby(
             title = title,
             password = password,
             duration = duration
         ).getOrThrow()
+
+        return lobbyId
     }
 }

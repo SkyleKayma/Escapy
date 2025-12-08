@@ -16,6 +16,7 @@ import fr.skyle.escapy.ui.screens.home.impl.homeRoute
 import fr.skyle.escapy.ui.screens.joinLobbyByQRCode.impl.joinLobbyByQRCodeRoute
 import fr.skyle.escapy.ui.screens.linkAccount.impl.linkAccountRoute
 import fr.skyle.escapy.ui.screens.linkAccountWithEmail.impl.linkAccountWithEmailRoute
+import fr.skyle.escapy.ui.screens.lobby.impl.lobbyRoute
 import fr.skyle.escapy.ui.screens.profile.impl.profileRoute
 import fr.skyle.escapy.ui.screens.signIn.impl.signInRoute
 
@@ -102,6 +103,10 @@ fun ProjectNavHost(
             )
 
             joinLobbyByQRCodeRoute(
+                navHostController = navHostController
+            )
+
+            lobbyRoute(
                 navHostController = navHostController
             )
         }

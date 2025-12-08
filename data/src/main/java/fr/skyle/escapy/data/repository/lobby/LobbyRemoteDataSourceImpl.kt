@@ -23,7 +23,7 @@ class LobbyRemoteDataSourceImpl @Inject constructor(
     private val dbRef: DatabaseReference,
 ) : LobbyRemoteDataSource {
 
-    override suspend fun createLobby(request: CreateLobbyRequest): FirebaseResponse<Unit> {
+    override suspend fun createLobby(request: CreateLobbyRequest): FirebaseResponse<String> {
         val lobbyRef = dbRef.child(FirebaseNode.LOBBIES)
 
         // Generate new ID Firebase
@@ -53,7 +53,13 @@ class LobbyRemoteDataSourceImpl @Inject constructor(
             "/${FirebaseNode.USER_LOBBIES}/${request.createdBy}/$lobbyId" to true
         )
 
-        return dbRef.updateOnce(updates)
+        val response = dbRef.updateOnce(updates)
+
+        return if (response.isSuccessful) {
+            FirebaseResponse(lobbyId, null)
+        } else {
+            FirebaseResponse(null, response.exception)
+        }
     }
 
     override suspend fun fetchLobby(lobbyId: String): FirebaseResponse<LobbyRequestDTO> =

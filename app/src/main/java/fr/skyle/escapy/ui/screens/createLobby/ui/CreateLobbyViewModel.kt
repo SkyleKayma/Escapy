@@ -38,13 +38,13 @@ class CreateLobbyViewModel @Inject constructor(
             }
 
             try {
-                createLobbyUseCase(
+                val lobbyId = createLobbyUseCase(
                     title = _state.value.title,
                     duration = _state.value.duration
                 )
 
                 _state.update {
-                    it.copy(event = CreateLobbyEvent.Success)
+                    it.copy(event = CreateLobbyEvent.Success(lobbyId))
                 }
             } catch (e: CancellationException) {
                 throw e
@@ -154,7 +154,7 @@ class CreateLobbyViewModel @Inject constructor(
     }
 
     sealed interface CreateLobbyEvent {
-        data object Success : CreateLobbyEvent
+        data class Success(val lobbyId: String) : CreateLobbyEvent
         data object InvalidFields : CreateLobbyEvent
         data class Error(val message: String?) : CreateLobbyEvent
     }

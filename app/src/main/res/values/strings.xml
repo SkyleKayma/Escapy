@@ -169,4 +169,7 @@
     <string name="permission_camera_refused_enable_in_settings">Sans la permission de la caméra vous ne pouvez pas scanner de QRCode. Autorisez-la dans les paramètres du téléphone.</string>
     <string name="permission_camera_settings">Paramètres</string>
 
+    <!-- Lobby -->
+    <string name="lobby_screen_title">Salon</string>
+
 </resources>

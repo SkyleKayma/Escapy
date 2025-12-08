@@ -20,7 +20,7 @@ import fr.skyle.escapy.designsystem.core.timePicker.ProjectTimePickerDialog
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateLobbyRoute(
-    navigateToLobby: () -> Unit,
+    navigateToLobby: (lobbyId: String) -> Unit,
     navigateBack: () -> Unit,
     createLobbyViewModel: CreateLobbyViewModel = hiltViewModel()
 ) {
@@ -52,8 +52,8 @@ fun CreateLobbyRoute(
                     )
                 }
 
-                CreateLobbyViewModel.CreateLobbyEvent.Success -> {
-                    navigateToLobby()
+                is CreateLobbyViewModel.CreateLobbyEvent.Success -> {
+                    navigateToLobby(event.lobbyId)
                 }
             }
 
