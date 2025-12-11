@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 interface WatchCurrentUserUseCase {
+
     suspend operator fun invoke(): Flow<User?>
 }
 

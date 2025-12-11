@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.skyle.escapy.MIN_DELAY_BEFORE_SHOWING_SCREEN_LOADER
-import fr.skyle.escapy.data.repository.github.api.GithubRepository
+import fr.skyle.escapy.data.usecase.github.GetGithubContributorsUseCase
 import fr.skyle.escapy.ui.screens.about.ui.mapper.toGithubContributorUI
 import fr.skyle.escapy.ui.screens.about.ui.model.GithubContributorUI
 import kotlinx.coroutines.delay
@@ -19,7 +19,7 @@ import kotlin.coroutines.cancellation.CancellationException
 
 @HiltViewModel
 class AboutViewModel @Inject constructor(
-    private val githubRepository: GithubRepository
+    private val getGithubContributorsUseCase: GetGithubContributorsUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<State>(State())
@@ -40,8 +40,7 @@ class AboutViewModel @Inject constructor(
             }
 
             try {
-                val contributorsUI = githubRepository.getGithubContributors()
-                    .getOrThrow()
+                val contributorsUI = getGithubContributorsUseCase()
                     .sortedByDescending { it.nbContributions }
                     .map { it.toGithubContributorUI() }
 

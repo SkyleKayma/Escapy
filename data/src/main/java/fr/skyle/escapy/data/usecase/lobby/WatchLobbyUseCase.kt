@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 interface WatchLobbyUseCase {
+
     suspend operator fun invoke(lobbyId: String): Flow<Lobby?>
 }
 

@@ -4,6 +4,7 @@ import fr.skyle.escapy.data.repository.auth.api.AuthRepository
 import javax.inject.Inject
 
 interface LinkAccountWithEmailProviderUseCase {
+
     suspend operator fun invoke(
         email: String,
         password: String,
@@ -21,6 +22,6 @@ class LinkAccountWithEmailProviderUseCaseImpl @Inject constructor(
         authRepository.linkAccountWithEmailProvider(
             email = email,
             password = password
-        ).getOrThrow()
+        )
     }
 }

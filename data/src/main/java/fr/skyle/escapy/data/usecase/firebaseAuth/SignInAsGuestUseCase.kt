@@ -4,6 +4,7 @@ import fr.skyle.escapy.data.repository.auth.api.AuthRepository
 import javax.inject.Inject
 
 interface SignInAsGuestUseCase {
+
     suspend operator fun invoke()
 }
 
@@ -12,6 +13,6 @@ class SignInAsGuestUseCaseImpl @Inject constructor(
 ) : SignInAsGuestUseCase {
 
     override suspend fun invoke() {
-        authRepository.signUpAsGuest().getOrThrow()
+        authRepository.signUpAsGuest()
     }
 }

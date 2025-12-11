@@ -69,7 +69,9 @@ class HomeViewModel @Inject constructor(
             }
 
             try {
-                val minDelayJob = async(SupervisorJob()) { delay(MIN_DELAY_TO_SHOW_LOADER) }
+                val minDelayJob = async(SupervisorJob()) {
+                    delay(MIN_DELAY_TO_SHOW_LOADER)
+                }
 
                 val fetchJob = async(SupervisorJob()) {
                     // Fetch user

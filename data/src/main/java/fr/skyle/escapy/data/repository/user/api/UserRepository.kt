@@ -6,11 +6,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
 
-    suspend fun fetchUser(userId: String): Result<Unit>
+    suspend fun fetchUser(userId: String)
 
-    suspend fun fetchCurrentUser(): Result<Unit>
+    suspend fun fetchCurrentUser()
 
-    suspend fun updateRemoteAvatar(avatar: Avatar): Result<Unit>
+    suspend fun updateRemoteAvatar(avatar: Avatar)
 
     suspend fun getCurrentUser(): User?
 

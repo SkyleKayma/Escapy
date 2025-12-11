@@ -4,6 +4,7 @@ import fr.skyle.escapy.data.repository.auth.api.AuthRepository
 import javax.inject.Inject
 
 interface SignOutUseCase {
+
     operator fun invoke()
 }
 

@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 interface EnsureLobbyAccessibleUseCase {
+
     suspend operator fun invoke(lobbyId: String)
 }
 

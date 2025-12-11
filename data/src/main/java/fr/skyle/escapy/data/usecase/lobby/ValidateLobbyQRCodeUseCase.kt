@@ -4,6 +4,7 @@ import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 interface ValidateLobbyQRCodeUseCase {
+
     suspend operator fun invoke(
         lobbyId: String,
         password: String,

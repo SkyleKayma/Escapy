@@ -7,10 +7,8 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.GenericTypeIndicator
 import com.google.firebase.database.Query
 import fr.skyle.escapy.data.enums.AuthProvider
-import fr.skyle.escapy.data.utils.model.FirebaseResponse
-import kotlinx.coroutines.suspendCancellableCoroutine
+import fr.skyle.escapy.data.ext.awaitWithTimeout
 import timber.log.Timber
-import kotlin.coroutines.resume
 
 fun AuthResult.requireUser(): FirebaseUser =
     requireNotNull(user) { "Firebase user is null" }
@@ -24,98 +22,61 @@ fun FirebaseUser.getAuthProvider(): AuthProvider? {
     return AuthProvider.fromProviderId(realProvider)
 }
 
-suspend fun <T> Query.readOnce(clazz: Class<T>): FirebaseResponse<T> {
+suspend fun <T> Query.readOnce(clazz: Class<T>): T? {
     val path = this.toString()
     Timber.i("ℹ️ READ → path=$path")
 
-    return suspendCancellableCoroutine { continuation ->
-        get().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val value = task.result.getValue(clazz)
-                Timber.i("🟩 READ → path=$path\ndata=$value")
-                continuation.resume(FirebaseResponse(value, null))
-            } else {
-                val e = task.exception ?: Exception("Unknown Firebase error")
-                Timber.e(e, "🟥 READ → path=$path")
-                continuation.resume(FirebaseResponse(null, e))
-            }
-        }
+    val snapshot = get().addOnFailureListener { e ->
+        Timber.e(e, "🟥 READ → path=$path")
+    }.awaitWithTimeout()
 
-        continuation.invokeOnCancellation {
-            Timber.w("⬜ READ canceled → path=$path")
-        }
-    }
+    val value = snapshot.getValue(clazz)
+    Timber.i("🟩 READ → path=$path\ndata=$value")
+
+    return value
 }
 
-suspend fun <T> Query.readOnce(typeIndicator: GenericTypeIndicator<T>): FirebaseResponse<T> {
+suspend fun <T> Query.readOnce(typeIndicator: GenericTypeIndicator<T>): T? {
     val path = this.toString()
     Timber.i("ℹ️ READ → path=$path")
 
-    return suspendCancellableCoroutine { continuation ->
-        get().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val value = task.result.getValue(typeIndicator)
-                Timber.i("🟩 READ → path=$path\ndata=$value")
-                continuation.resume(FirebaseResponse(value, null))
-            } else {
-                val e = task.exception ?: Exception("Unknown Firebase error")
-                Timber.e(e, "🟥 READ → path=$path")
-                continuation.resume(FirebaseResponse(null, e))
-            }
-        }
+    val snapshot = get()
+        .addOnFailureListener { e ->
+            Timber.e(e, "🟥 READ → path=$path")
+        }.awaitWithTimeout()
 
-        continuation.invokeOnCancellation {
-            Timber.w("⬜ READ canceled → path=$path")
-        }
-    }
+    val value = snapshot.getValue(typeIndicator)
+    Timber.i("🟩 READ → path=$path\ndata=$value")
+
+    return value
 }
 
 // ---------------- WRITE ----------------
 
-suspend fun DatabaseReference.writeOnce(data: Any): FirebaseResponse<Unit> {
+suspend fun DatabaseReference.writeOnce(data: Any) {
     val path = this.toString()
     Timber.i("ℹ️ WRITE → path=$path\ndata=$data")
 
-    return suspendCancellableCoroutine { continuation ->
-        setValue(data).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Timber.i("🟩 WRITE → path=$path")
-                continuation.resume(FirebaseResponse(Unit, null))
-            } else {
-                val e = task.exception ?: Exception("Unknown Firebase error")
-                Timber.e(e, "🟥 WRITE → path=$path")
-                continuation.resume(FirebaseResponse(null, e))
-            }
+    setValue(data)
+        .addOnFailureListener { e ->
+            Timber.e(e, "🟥 WRITE → path=$path")
         }
+        .awaitWithTimeout()
 
-        continuation.invokeOnCancellation {
-            Timber.w("⬜ WRITE canceled → path=$path")
-        }
-    }
+    Timber.i("🟩 WRITE → path=$path")
 }
 
 // ---------------- UPDATE ----------------
 
-suspend fun DatabaseReference.updateOnce(
-    data: Map<String, Any?>
-): FirebaseResponse<Unit> {
+suspend fun DatabaseReference.updateOnce(data: Map<String, Any?>) {
     val path = this.toString()
     Timber.i("ℹ️ UPDATE → path=$path\ndata=$data")
 
-    return suspendCancellableCoroutine { continuation ->
-        updateChildren(data).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Timber.i("🟩 UPDATE → path=$path")
-                continuation.resume(FirebaseResponse(Unit, null))
-            } else {
-                val e = task.exception ?: Exception("Unknown Firebase error")
-                Timber.e(e, "🟥 UPDATE → path=$path")
-                continuation.resume(FirebaseResponse(null, e))
-            }
+    updateChildren(data)
+        .addOnFailureListener { e ->
+            Timber.e(e, "🟥 UPDATE → path=$path")
         }
+        .awaitWithTimeout()
 
-        continuation.invokeOnCancellation {
-            Timber.w("⬜ UPDATE canceled → path=$path")
-        }
-    }
+    Timber.i("🟩 UPDATE → path=$path")
 }

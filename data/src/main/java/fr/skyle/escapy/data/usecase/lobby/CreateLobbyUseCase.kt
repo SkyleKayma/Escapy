@@ -5,6 +5,7 @@ import javax.inject.Inject
 import kotlin.random.Random
 
 interface CreateLobbyUseCase {
+
     suspend operator fun invoke(
         title: String,
         duration: Long
@@ -25,7 +26,7 @@ class CreateLobbyUseCaseImpl @Inject constructor(
             title = title,
             password = password,
             duration = duration
-        ).getOrThrow()
+        )
 
         return lobbyId
     }

@@ -4,6 +4,7 @@ import fr.skyle.escapy.data.repository.auth.api.AuthRepository
 import javax.inject.Inject
 
 interface ChangePasswordForEmailProviderUseCase {
+
     suspend operator fun invoke(
         currentPassword: String,
         newPassword: String
@@ -21,6 +22,6 @@ class ChangePasswordForEmailProviderUseCaseImpl @Inject constructor(
         authRepository.updatePassword(
             currentPassword = currentPassword,
             newPassword = newPassword
-        ).getOrThrow()
+        )
     }
 }

@@ -70,12 +70,12 @@ class AuthRemoteDataSourceImpl @Inject constructor(
                 .awaitWithTimeout()
         }
 
-        val response = dbRef
+        val userRequestDTO = dbRef
             .child(FirebaseNode.USERS)
             .child(userId)
             .readOnce(UserRequestDTO::class.java)
 
-        response.body
+        userRequestDTO
             ?.toUser(userId)
             ?.let {
                 // This is helpful to have user info on home screen directly after login

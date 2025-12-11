@@ -4,6 +4,7 @@ import fr.skyle.escapy.data.repository.lobby.api.LobbyRepository
 import javax.inject.Inject
 
 interface FetchLobbyUseCase {
+    
     suspend operator fun invoke(lobbyId: String)
 }
 
@@ -12,6 +13,6 @@ class FetchLobbyUseCaseImpl @Inject constructor(
 ) : FetchLobbyUseCase {
 
     override suspend fun invoke(lobbyId: String) {
-        lobbyRepository.fetchLobby(lobbyId).getOrThrow()
+        lobbyRepository.fetchLobby(lobbyId)
     }
 }

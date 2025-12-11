@@ -6,8 +6,12 @@ import fr.skyle.escapy.data.repository.lobby.api.LobbyRemoteDataSource
 import fr.skyle.escapy.data.repository.lobby.api.LobbyRepository
 import fr.skyle.escapy.data.repository.lobby.model.CreateLobbyRequest
 import fr.skyle.escapy.data.repository.user.api.UserLocalDataSource
+import fr.skyle.escapy.data.rest.firebase.LobbyRequestDTO
 import fr.skyle.escapy.data.vo.Lobby
 import fr.skyle.escapy.data.vo.mapper.toLobby
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -24,7 +28,7 @@ class LobbyRepositoryImpl @Inject constructor(
         title: String,
         password: String?,
         duration: Long
-    ): Result<String> {
+    ): String {
         val user = firebaseAuth.currentUser
             ?: throw Exception("No current user")
 
@@ -39,87 +43,57 @@ class LobbyRepositoryImpl @Inject constructor(
             createdByName = userLocal.username,
         )
 
-        val response = lobbyRemoteDataSource.createLobby(request)
+        val lobbyId = lobbyRemoteDataSource.createLobby(request)
+        return lobbyId
+    }
 
-        val body = response.body
-        return if (response.isSuccessful && body != null) {
-            Result.success(body)
-        } else {
-            Result.failure(Exception(response.exception))
+    override suspend fun fetchLobby(lobbyId: String) {
+        val lobbyRequestDTO = lobbyRemoteDataSource.fetchLobby(lobbyId)
+
+        lobbyRequestDTO?.let {
+            lobbyLocalDataSource.insertLobby(it.toLobby(lobbyId))
         }
     }
 
-    override suspend fun fetchLobby(lobbyId: String): Result<Unit> {
-        val response = lobbyRemoteDataSource.fetchLobby(lobbyId)
+    override suspend fun fetchLobbies(lobbyIds: List<String>) {
+        coroutineScope {
+            val result = mutableMapOf<String, LobbyRequestDTO>()
 
-        val body = response.body
-        return if (response.isSuccessful && body != null) {
-            lobbyLocalDataSource.insertLobby(body.toLobby(lobbyId))
-            Result.success(Unit)
-        } else {
-            Result.failure(Exception(response.exception))
-        }
-    }
-
-    override suspend fun fetchLobbies(lobbyIds: List<String>): Result<Unit> {
-        val response = lobbyRemoteDataSource.fetchLobbies(lobbyIds)
-
-        val body = response.body
-        return if (response.isSuccessful && body != null) {
-            val lobbies = body.map { (id, dto) ->
-                dto.toLobby(id)
+            val jobs = lobbyIds.map { lobbyId ->
+                async {
+                    fetchLobby(lobbyId)
+                }
             }
 
-            lobbyLocalDataSource.insertLobbies(lobbies)
+            jobs.awaitAll()
 
-            Result.success(Unit)
-        } else {
-            Result.failure(Exception(response.exception))
+            val lobbies = result.map { (id, dto) ->
+                dto.toLobby(id)
+            }
+            lobbyLocalDataSource.insertLobbies(lobbies)
         }
     }
 
-    override suspend fun fetchLobbiesForUser(userId: String): Result<Unit> {
+    override suspend fun fetchLobbiesForUser(userId: String) {
         // Fetch user lobby ids
-        val fetchUserLobbyIdsResponse = lobbyRemoteDataSource.fetchUserLobbyIds(userId)
-
-        val fetchUserLobbyIdsBody = fetchUserLobbyIdsResponse.body
-        if (!fetchUserLobbyIdsResponse.isSuccessful || fetchUserLobbyIdsBody.isNullOrEmpty()) {
-            return Result.failure(Exception(fetchUserLobbyIdsResponse.exception))
-        }
+        val lobbyIds = lobbyRemoteDataSource.fetchUserLobbyIds(userId)?.map { it.key } ?: listOf()
 
         // Fetch lobbies based on ids
-        val lobbyIds = fetchUserLobbyIdsBody.keys.toList()
-        val fetchLobbyIdsResponse = lobbyRemoteDataSource.fetchLobbies(lobbyIds)
-
-        val fetchLobbyIdsBody = fetchLobbyIdsResponse.body
-        return if (fetchLobbyIdsResponse.isSuccessful && fetchLobbyIdsBody != null) {
-            val lobbies = fetchLobbyIdsBody.map { (id, dto) ->
-                dto.toLobby(id)
-            }
-
-            // Insert lobbies into Room
-            lobbyLocalDataSource.insertLobbies(lobbies)
-
-            Result.success(Unit)
-        } else {
-            Result.failure(Exception(fetchLobbyIdsResponse.exception))
-        }
+        fetchLobbies(lobbyIds)
     }
 
-    override fun watchLobby(lobbyId: String): Flow<Lobby?> {
-        return lobbyLocalDataSource.watchLobby(lobbyId)
-    }
+    override fun watchLobby(lobbyId: String): Flow<Lobby?> =
+        lobbyLocalDataSource.watchLobby(lobbyId)
 
-    override fun watchActiveLobbiesForUser(userId: String): Flow<List<Lobby>> {
-        return lobbyLocalDataSource.watchActiveLobbiesForUser(userId)
-    }
+    override fun watchActiveLobbiesForUser(userId: String): Flow<List<Lobby>> =
+        lobbyLocalDataSource.watchActiveLobbiesForUser(userId)
 
     override fun watchCurrentUserActiveLobbies(): Flow<List<Lobby>> {
         val user = firebaseAuth.currentUser ?: throw Exception("No current user")
         return watchActiveLobbiesForUser(user.uid)
     }
 
-//    override suspend fun joinLobby(lobbyId: String): Result<Unit> {
+//    override suspend fun joinLobby(lobbyId: String) {
 //        val user = firebaseAuth.currentUser ?: return Result.failure(Exception("Not authenticated"))
 //
 //        val response = lobbyRemoteDataSource.joinLobby(
@@ -136,7 +110,7 @@ class LobbyRepositoryImpl @Inject constructor(
 //        }
 //    }
 //
-//    override suspend fun leaveLobby(lobbyId: String): Result<Unit> {
+//    override suspend fun leaveLobby(lobbyId: String) {
 //        val user = firebaseAuth.currentUser ?: return Result.failure(Exception("Not authenticated"))
 //
 //        val response = lobbyRemoteDataSource.leaveLobby(
@@ -153,7 +127,7 @@ class LobbyRepositoryImpl @Inject constructor(
 //        }
 //    }
 //
-//    override suspend fun removeParticipant(lobbyId: String, participantId: String): Result<Unit> {
+//    override suspend fun removeParticipant(lobbyId: String, participantId: String) {
 //        val user = firebaseAuth.currentUser ?: return Result.failure(Exception("Not authenticated"))
 //
 //        val response = lobbyRemoteDataSource.removeParticipant(

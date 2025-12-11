@@ -18,39 +18,34 @@ class UserRepositoryImpl @Inject constructor(
     private val userLocalDataSource: UserLocalDataSource,
 ) : UserRepository {
 
-    override suspend fun fetchUser(userId: String): Result<Unit> {
-        val userResponse = userRemoteDataSource.getUser(userId)
+    override suspend fun fetchUser(userId: String) {
+        val userRequestDTO = userRemoteDataSource.getUser(userId)
+            ?: throw Exception("User not found")
 
-        val body = userResponse.body
-
-        return if (userResponse.isSuccessful && body != null) {
-            userLocalDataSource.insert(body.toUser(userId))
-
-            Result.success(Unit)
-        } else {
-            Result.failure(Exception())
-        }
+        userLocalDataSource.insert(userRequestDTO.toUser(userId))
     }
 
-    override suspend fun fetchCurrentUser(): Result<Unit> {
-        val user = firebaseAuth.currentUser ?: throw Exception("No current user")
+    override suspend fun fetchCurrentUser() {
+        val user = firebaseAuth.currentUser
+            ?: throw Exception("No current user")
+
         return fetchUser(user.uid)
     }
 
-    override suspend fun updateRemoteAvatar(avatar: Avatar): Result<Unit> {
-        val user = firebaseAuth.currentUser ?: throw Exception("No current user")
+    override suspend fun updateRemoteAvatar(avatar: Avatar) {
+        val user = firebaseAuth.currentUser
+            ?: throw Exception("No current user")
 
-        val response = userRemoteDataSource.updateAvatar(user.uid, avatar)
-
-        return if (response.isSuccessful) {
-            Result.success(Unit)
-        } else {
-            Result.failure(Exception(response.exception))
-        }
+        userRemoteDataSource.updateAvatar(
+            userId = user.uid,
+            avatar = avatar
+        )
     }
 
     override suspend fun getCurrentUser(): User? {
-        val user = firebaseAuth.currentUser ?: throw Exception("No current user")
+        val user = firebaseAuth.currentUser
+            ?: throw Exception("No current user")
+
         return userLocalDataSource.getUser(user.uid)
     }
 

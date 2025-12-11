@@ -22,6 +22,8 @@ import fr.skyle.escapy.data.usecase.firebaseAuth.SignOutUseCase
 import fr.skyle.escapy.data.usecase.firebaseAuth.SignOutUseCaseImpl
 import fr.skyle.escapy.data.usecase.firebaseAuth.SignUpUseCase
 import fr.skyle.escapy.data.usecase.firebaseAuth.SignUpUseCaseImpl
+import fr.skyle.escapy.data.usecase.github.GetGithubContributorsUseCase
+import fr.skyle.escapy.data.usecase.github.GetGithubContributorsUseCaseImpl
 import fr.skyle.escapy.data.usecase.lobby.CreateLobbyUseCase
 import fr.skyle.escapy.data.usecase.lobby.CreateLobbyUseCaseImpl
 import fr.skyle.escapy.data.usecase.lobby.EnsureLobbyAccessibleUseCase
@@ -177,4 +179,10 @@ interface UseCaseModule {
     fun bindsEnsureLobbyAccessibleUseCase(
         ensureLobbyAccessibleUseCaseImpl: EnsureLobbyAccessibleUseCaseImpl,
     ): EnsureLobbyAccessibleUseCase
+
+    @Binds
+    @Singleton
+    fun bindsGetGithubContributorsUseCase(
+        getGithubContributorsUseCaseImpl: GetGithubContributorsUseCaseImpl,
+    ): GetGithubContributorsUseCase
 }

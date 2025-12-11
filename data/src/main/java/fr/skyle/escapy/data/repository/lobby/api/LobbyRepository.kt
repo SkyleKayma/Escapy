@@ -9,13 +9,13 @@ interface LobbyRepository {
         title: String,
         password: String?,
         duration: Long
-    ): Result<String>
+    ): String
 
-    suspend fun fetchLobby(lobbyId: String): Result<Unit>
+    suspend fun fetchLobby(lobbyId: String)
 
-    suspend fun fetchLobbies(lobbyIds: List<String>): Result<Unit>
+    suspend fun fetchLobbies(lobbyIds: List<String>)
 
-    suspend fun fetchLobbiesForUser(userId: String): Result<Unit>
+    suspend fun fetchLobbiesForUser(userId: String)
 
     fun watchLobby(lobbyId: String): Flow<Lobby?>
 
@@ -23,9 +23,9 @@ interface LobbyRepository {
 
     fun watchCurrentUserActiveLobbies(): Flow<List<Lobby>>
 
-//    suspend fun joinLobby(lobbyId: String): Result<Unit>
+//    suspend fun joinLobby(lobbyId: String)
 //
-//    suspend fun leaveLobby(lobbyId: String): Result<Unit>
+//    suspend fun leaveLobby(lobbyId: String)
 //
-//    suspend fun removeParticipant(lobbyId: String, participantId: String): Result<Unit>
+//    suspend fun removeParticipant(lobbyId: String, participantId: String)
 }

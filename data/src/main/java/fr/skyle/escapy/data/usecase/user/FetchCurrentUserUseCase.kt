@@ -4,6 +4,7 @@ import fr.skyle.escapy.data.repository.user.api.UserRepository
 import javax.inject.Inject
 
 interface FetchCurrentUserUseCase {
+
     suspend operator fun invoke()
 }
 
@@ -12,6 +13,6 @@ class FetchCurrentUserUseCaseImpl @Inject constructor(
 ) : FetchCurrentUserUseCase {
 
     override suspend fun invoke() {
-        userRepository.fetchCurrentUser().getOrThrow()
+        userRepository.fetchCurrentUser()
     }
 }

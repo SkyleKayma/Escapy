@@ -12,15 +12,8 @@ class GithubRepositoryImpl @Inject constructor(
     private val githubAPI: GithubAPI,
 ) : GithubRepository {
 
-    override suspend fun getGithubContributors(): Result<List<GithubContributor>> {
-        val response = githubAPI.getGithubContributors()
-
-        return if (response.isSuccessful) {
-            val body = response.body() ?: emptyList()
-
-            Result.success(body.mapNotNull { it.toGithubContributor() })
-        } else {
-            Result.failure(Exception(response.message()))
-        }
+    override suspend fun getGithubContributors(): List<GithubContributor> {
+        val githubContributors = githubAPI.getGithubContributors()
+        return githubContributors?.mapNotNull { it.toGithubContributor() } ?: emptyList()
     }
 }

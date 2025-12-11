@@ -4,6 +4,7 @@ import fr.skyle.escapy.data.repository.auth.api.AuthRepository
 import javax.inject.Inject
 
 interface SignUpUseCase {
+
     suspend operator fun invoke(
         email: String,
         password: String,
@@ -21,6 +22,6 @@ class SignUpUseCaseImpl @Inject constructor(
         authRepository.signUp(
             email = email,
             password = password
-        ).getOrThrow()
+        )
     }
 }

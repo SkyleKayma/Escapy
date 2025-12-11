@@ -34,7 +34,6 @@ class JoinLobbyByQRCodeViewModel @Inject constructor(
     private val _state: MutableStateFlow<State> = MutableStateFlow<State>(State())
     val state: StateFlow<State> by lazy { _state.asStateFlow() }
 
-
     // Camera
     private val cameraExecutor = Executors.newSingleThreadExecutor()
 

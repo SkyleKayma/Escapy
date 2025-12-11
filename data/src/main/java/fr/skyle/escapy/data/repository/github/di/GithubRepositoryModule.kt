@@ -4,7 +4,9 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import fr.skyle.escapy.data.repository.github.GithubLocalDataSourceImpl
 import fr.skyle.escapy.data.repository.github.GithubRepositoryImpl
+import fr.skyle.escapy.data.repository.github.api.GithubLocalDataSource
 import fr.skyle.escapy.data.repository.github.api.GithubRepository
 
 @Module
@@ -15,4 +17,9 @@ interface GithubRepositoryModule {
     fun bindsGithubRepository(
         githubRepositoryImpl: GithubRepositoryImpl,
     ): GithubRepository
+
+    @Binds
+    fun bindsGithubLocalDataSource(
+        githubLocalDataSourceImpl: GithubLocalDataSourceImpl,
+    ): GithubLocalDataSource
 }

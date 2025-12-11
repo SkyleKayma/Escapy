@@ -5,6 +5,7 @@ import fr.skyle.escapy.data.repository.user.api.UserRepository
 import javax.inject.Inject
 
 interface UpdateRemoteAvatarUseCase {
+
     suspend operator fun invoke(avatar: Avatar)
 }
 
@@ -14,7 +15,10 @@ class UpdateRemoteRemoteAvatarUseCaseImpl @Inject constructor(
 ) : UpdateRemoteAvatarUseCase {
 
     override suspend fun invoke(avatar: Avatar) {
-        userRepository.updateRemoteAvatar(avatar).getOrThrow()
+        // Update
+        userRepository.updateRemoteAvatar(avatar)
+
+        // Fetch after update
         fetchCurrentUserUseCase()
     }
 }

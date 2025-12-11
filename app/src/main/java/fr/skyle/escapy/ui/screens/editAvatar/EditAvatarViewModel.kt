@@ -48,15 +48,15 @@ class EditAvatarViewModel @Inject constructor(
                 it.copy(isAvatarUpdating = true)
             }
 
-            try {
-                // Start a delayed job to show the loading state only if api call is slow
-                val showLoadingJob = launch {
-                    delay(MIN_DELAY_BEFORE_SHOWING_LOADER)
-                    _state.update {
-                        it.copy(isLoadingShown = true)
-                    }
+            // Start a delayed job to show the loading state only if api call is slow
+            val showLoadingJob = launch {
+                delay(MIN_DELAY_BEFORE_SHOWING_LOADER)
+                _state.update {
+                    it.copy(isLoadingShown = true)
                 }
+            }
 
+            try {
                 updateRemoteAvatarUseCase(avatar)
 
                 // Cancel loading job
